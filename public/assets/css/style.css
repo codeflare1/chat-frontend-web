@@ -1,0 +1,44 @@
+body{
+    font-family: "Inter", sans-serif;
+
+}
+.hero_section::after{
+    background-image: url('../img/wave.png');
+}
+@media screen and (min-width:768px){
+
+    .slider_testimonial .slider_new .slick-slide {
+        padding: 15px 25px;
+        height: 450px;
+    }
+}
+@media screen and (max-width:767px){
+
+    .slider_testimonial .slick-dots {
+        padding: 25px 0 25px;
+    }
+    .slider_testimonial .slider_new .slick-slide {
+        padding: 10px 15px;
+    }
+}
+
+.slider_testimonial .slider_new .slick-slide > div{
+    height: 100%;
+}
+
+.slider_testimonial .slider_new .slick-list {
+    margin: 0 -15px;
+}
+
+.slider_testimonial .slick-dots li.slick-active button:before {
+    opacity: .75;
+    color: #157EFD;
+}
+
+.PhoneInput input{
+    outline: none;
+}
+
+.PhoneInput--focus{
+    outline: 1px solid #157EFD;
+}
