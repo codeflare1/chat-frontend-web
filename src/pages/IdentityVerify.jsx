@@ -23,7 +23,7 @@ const IdentityVerify = () => {
                     <div className="continue_btn">
                             <Link
                                 href='/password'
-                                className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center'>
+                                className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline hover:bg-darkblue'>
                                 Next
                             </Link>
                        

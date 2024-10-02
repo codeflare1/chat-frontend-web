@@ -17,14 +17,14 @@ const OtpVerify = () => {
                             value={otp}
                             onChange={setOtp}
                             numInputs={4}
-                            inputStyle={'p-4 border max-w-58 text-Newblack text-lg rounded-md !w-full focus:outline-primary'}
+                            inputStyle={'p-4 border max-w-12 h-12 text-Newblack text-lg rounded-md !w-full focus:outline-primary'}
                             // renderSeparator={<span>-</span>}
                             renderInput={(props) => <input {...props} />}
                         />
                     </div>
 
                     <div className="continue_btn">
-                        <Link href='/profile' className='no-underline bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center'>Continue</Link>
+                        <Link href='/profile' className='no-underline bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center hover:bg-darkblue'>Continue</Link>
                     </div>
                 </div>
             </div>

@@ -42,3 +42,15 @@ body{
 .PhoneInput--focus{
     outline: 1px solid #157EFD;
 }
+
+.tabs_button.Mui-selected {
+    color: #0d6efd;
+}
+
+.setting_tabs .MuiTabs-indicator{
+    background-color: #0d6efd;
+}
+
+.input_fields .MuiInputLabel-formControl{
+top: -4px;
+}

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box, Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Box, Typography, } from '@mui/material';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';

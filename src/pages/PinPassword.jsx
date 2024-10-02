@@ -28,28 +28,30 @@ const PinPassword = () => {
                             <TextField
                                 // type="text"
                                 value={maskedPin}
-                                className='w-full rounded-2xl border focus:outline-primary focus:outline-1 text-center' 
+                                className='w-full rounded-2xl border focus:outline-primary focus:outline-1 text-center'
                                 onChange={handlePinChange}
                                 placeholder="Enter your PIN"
                                 fullWidth
                                 InputProps={{
-                                  className: 'bg-white  rounded-md',
-                                  sx: {
-                                    '& input': {
-                                    //   padding: '0 30px 0 0 ', 
-                                      backgroundColor: 'white',
-                                      textAlign: 'center',
+                                    className: 'bg-white  rounded-md',
+                                    sx: {
+                                        '& input': {
+                                            paddingTop: '6px',
+                                            paddingBottom: '6px',
+                                            height: '36px',
+                                            backgroundColor: 'white',
+                                            textAlign: 'center',
+                                        },
                                     },
-                                  },
                                 }}
-                                
+
                             />
                             <p className='text-center text-xs text-grayc leading-150 mt-1.5'>PIN must be at least 4 digits</p>
                         </div>
                     </div>
 
                     <div className="continue_btn">
-                        <Link href='' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center'>Next</Link>
+                        <Link href='/dashboard' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline hover:bg-darkblue'>Next</Link>
                     </div>
                 </div>
             </div>

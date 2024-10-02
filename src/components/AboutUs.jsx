@@ -26,7 +26,7 @@ function About() {
                                 </div> */}
 
                                 <Stack spacing={2} direction="row" className='group_btn flex flex-wrap gap-5 items-center justify-center md:justify-start'>
-                                    <Button variant="contained" className='flex-1 sm:flex-none font-semibold text-lg tracking-tight px-50 py-5 capitalize bg-primary border border-solid border-primary text-white rounded-full leading-4 hover:bg-white hover:text-primary shadow-none hover:shadow-none'>Download</Button>
+                                    <Button variant="contained" className='flex-1 sm:flex-none font-semibold text-lg tracking-tight px-50 py-5 capitalize bg-primary border border-solid border-primary text-white rounded-full leading-4 hover:bg-darkblue shadow-none hover:shadow-none'>Download</Button>
                                     <Button variant="outlined" className='flex-1 sm:flex-none font-semibold text-lg tracking-tight px-50 py-5 capitalize border border-gray-300 text-Newblack rounded-full leading-4 hover:bg-none'>Get Started</Button>
                                 </Stack>
                             </div>

@@ -6,11 +6,13 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        'primary':'#157EFD',
+        'primary':'#0d6efd',
+        'darkblue':'#0b5ed7',
         'Newblack':'#1E1E1E',
         'newgray':'#4A4A4A',
         'grayLight':'#F9f9f9',
         'grayc':'#598496',
+        'sidebar':'#f4f4f4',
       },
       padding:{
         '51':'51px',
@@ -20,6 +22,7 @@ module.exports = {
         '35':'35px',
         '27':'27px',
         '87':'87px',
+        '14d':'14px',
       },
       maxWidth:{
         '27':'27rem',
@@ -52,6 +55,9 @@ module.exports = {
       fontFamily: {
         inter: ['Inter', 'sans-serif'], 
       },
+      minWidth:{
+        unset:'unset'
+      }
     },
   },
   plugins: [],

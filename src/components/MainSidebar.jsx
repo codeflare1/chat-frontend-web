@@ -8,9 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
-
+import SettingPopup from './SettingPopup'
+import ProfileModal from './ProfileModal'
 const NAVIGATION = [
   {
     icon: <MenuOpenIcon />,
@@ -53,14 +52,14 @@ const MainSidebar = ({ toggleSidebar, isSidebarOpen }) => {
       </List>
 
       <List>
-        <ListItem button className="p-4">
-          <ListItemIcon className='text-newgray'>
-            <SettingsIcon />
+        <ListItem button className="p-0">
+          <ListItemIcon>
+            <SettingPopup />
           </ListItemIcon>
         </ListItem>
-        <ListItem button className="p-4">
-          <ListItemIcon className='text-newgray'>
-            <PersonIcon />
+        <ListItem button className="p-0">
+          <ListItemIcon>
+            <ProfileModal />
           </ListItemIcon>
         </ListItem>
       </List>

@@ -4,19 +4,19 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SidebarPopContent from './SidebarPopContent';
+import PersonIcon from '@mui/icons-material/Person';
+import ProfileView from './ProfileView';
 import IconButton from '@mui/material/IconButton';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-const SettingPopup = () => {
+const ProfileModal = () => {
   const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: 767,
-    minHeight: 570,
+    maxWidth: 375,
+    // minHeight: 450,
     width: '100%',
     bgcolor: 'background.paper',
     boxShadow: 24,
@@ -28,7 +28,7 @@ const SettingPopup = () => {
   return (
     <div>
       <Button onClick={handleOpen} className='min-w-unset p-4 text-newgray'>
-        <SettingsIcon />
+        <PersonIcon />
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -52,7 +52,7 @@ const SettingPopup = () => {
             >
               <CloseOutlinedIcon className='justify-end' />
             </IconButton>
-            <SidebarPopContent />
+            <ProfileView/>
           </Box>
         </Fade>
       </Modal>
@@ -60,4 +60,4 @@ const SettingPopup = () => {
   )
 }
 
-export default SettingPopup
+export default ProfileModal

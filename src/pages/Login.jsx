@@ -19,14 +19,14 @@ const Login = () => {
                     <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Enter your Phone number to get started.</p>
                     <div className="input_form mb-10">
                         <PhoneInput
-                            className='border p-2.5 rounded-2xl'
+                            className='border p-2.5 rounded-2xl h-12'
                             placeholder="Enter phone number"
                             value={value}
                             onChange={setValue} />
                     </div>
 
                         <div className="continue_btn">
-                            <Link href='/otpverify' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline'>Continue</Link>
+                            <Link href='/otpverify' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline hover:bg-darkblue'>Continue</Link>
                         </div>
                 </div>
             </div>

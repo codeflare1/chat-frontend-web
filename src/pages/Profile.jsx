@@ -57,7 +57,7 @@ const Profile = () => {
                             <div className="fname">
                                 <TextField
                                      id="outlined-basic" label="First name" variant="outlined"
-                                    className='p-0'
+                                    className='p-0 '
                                     onChange={(e) => setFirstName(e.target.value)} 
                                     value={firstName}
                                     fullWidth
@@ -65,8 +65,10 @@ const Profile = () => {
                                       className: 'bg-white rounded-md',
                                       sx: {
                                         '& input': {
-                                          padding: '', 
-                                          backgroundColor: 'white',
+                                            paddingTop: '6px', 
+                                            paddingBottom: '6px', 
+                                            height:'36px',
+                                             backgroundColor: 'white',
                                         },
                                       },
                                     }}
@@ -84,9 +86,36 @@ const Profile = () => {
                                       className: 'bg-white rounded-md',
                                       sx: {
                                         '& input': {
-                                          padding: '', 
+                                            paddingTop: '6px', 
+                                            paddingBottom: '6px', 
+                                            height:'36px',
                                           backgroundColor: 'white',
                                         },
+                                        '&:hover': {
+                                            borderColor: '#0d6efd',
+                                            },
+                                      },
+                                    }}
+                                    
+                                />
+                            </div>
+                            <div className="email">
+                                <TextField
+                                     id="outlined-basic" label="Email" variant="outlined"
+                                    className='p-0  '
+                                    fullWidth
+                                    InputProps={{
+                                      className: 'bg-white rounded-md',
+                                      sx: {
+                                        '& input': {
+                                            paddingTop: '6px', 
+                                            paddingBottom: '6px', 
+                                            height:'36px',
+                                          backgroundColor: 'white',
+                                        },
+                                        '&:hover': {
+                                            borderColor: '#0d6efd',
+                                            },
                                       },
                                     }}
                                     
@@ -96,7 +125,7 @@ const Profile = () => {
                     </div>
 
                     <div className="continue_btn">
-                        <Link href='/id-verify' className='no-underline bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center'>
+                        <Link href='/id-verify' className='no-underline bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center hover:bg-darkblue'>
                             Next
                         </Link>
                     </div>
