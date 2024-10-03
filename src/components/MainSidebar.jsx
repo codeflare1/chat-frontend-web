@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Add this for linking
 import ChatIcon from '@mui/icons-material/Chat';
 import GroupIcon from '@mui/icons-material/Group';
 import CallIcon from '@mui/icons-material/Call';
@@ -8,20 +9,29 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import SettingPopup from './SettingPopup'
-import ProfileModal from './ProfileModal'
+import SettingPopup from './SettingPopup';
+import ProfileModal from './ProfileModal';
+
 const NAVIGATION = [
   {
+    // title: 'Menu',
     icon: <MenuIcon />,
+    // link: '/menu',
   },
   {
+    // title: 'Chat',
     icon: <ChatIcon />,
+    link: '/chat',
   },
   {
+    // title: 'Groups',
     icon: <GroupIcon />,
+    link: '/group',
   },
   {
+    // title: 'Calls',
     icon: <CallIcon />,
+    link: '/call',
   },
 ];
 
@@ -29,13 +39,13 @@ const MainSidebar = ({ toggleSidebar, isSidebarOpen }) => {
   return (
     <Box
       sx={{
-        display: isSidebarOpen ? 'flex' : 'none', 
+        display: isSidebarOpen ? 'flex' : 'none',
         flexDirection: 'column',
         height: '100vh',
         width: '60px',
         bgcolor: '#f0f0f0',
         justifyContent: 'space-between',
-        borderRight:'1px solid #b5b5b5',
+        borderRight: '1px solid #b5b5b5',
       }}
     >
       <List sx={{ p: 0 }}>
@@ -45,8 +55,10 @@ const MainSidebar = ({ toggleSidebar, isSidebarOpen }) => {
             key={index}
             className="py-3 p-4"
             onClick={index === 0 ? toggleSidebar : null}
+            component={Link} // Use Link component to navigate
+            to={item.link} // Link destination
           >
-            <ListItemIcon className='text-newgray'>{item.icon}</ListItemIcon>
+            <ListItemIcon className="text-newgray">{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
           </ListItem>
         ))}

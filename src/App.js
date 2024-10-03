@@ -10,11 +10,16 @@ import Profile from './pages/Profile';
 import PinPassword from './pages/PinPassword';
 import IdentityVerify from './pages/IdentityVerify';
 import Dashboard from './layout/dashboard/Dashboard';
+import Calls from './pages/Calls';
+import Group from './pages/Group';
+import Chat from './pages/Chat';
+
+
 
 function App() {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/login' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard';
+  const hideHeaderFooter = location.pathname === '/login' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/group' || location.pathname === '/chat';
 
   return (
     <div className="App">
@@ -27,6 +32,10 @@ function App() {
         <Route path="/password" element={<PinPassword />} />
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/call" element={<Calls />} />
+        <Route path="/group" element={<Group/>} />
+        <Route path="/chat" element={<Chat/>} />
+
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       {!hideHeaderFooter && <Footer />}
