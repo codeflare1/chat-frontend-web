@@ -55,7 +55,7 @@ const ProfileView = () => {
           }}
         />
         <div className="about_btn mb-3">
-          <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className='me-2 text-gray-500' />}>
+          <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
             About
           </Button>
         </div>
@@ -63,11 +63,11 @@ const ProfileView = () => {
           <p className='text-sm text-newgray'>Your profile and changes to it will be visible to people you message, contacts and groups.</p>
         </div>
         <div className="user_name mb-3">
-          <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<AlternateEmailOutlinedIcon className='me-2 text-gray-500' />}>
+          <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<AlternateEmailOutlinedIcon className='text-gray-500 w-6 h-6' />}>
             Username
           </Button>
         </div>
-        <div className="stat-content pb-4 border-b mb-3">
+        <div className="stat-content pb-4">
           <p className='text-sm text-newgray'>People can now message you using your optional username so you don’t have to give out your phone number.</p>
         </div>
       </div>

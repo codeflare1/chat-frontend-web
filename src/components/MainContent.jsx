@@ -1,6 +1,6 @@
 // components/MainContent.js
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
 const MainContent = () => {
   return (
@@ -11,14 +11,14 @@ const MainContent = () => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        bgcolor: '#f9f9f9',
+        bgcolor: '#ffffff',
       }}
     >
-      <Typography variant="h4" color="primary">
+      <Typography variant="h6" className='text-Newblack font-semibold'>
         Welcome to Signal
       </Typography>
-      <Typography variant="body2" sx={{ mt: 1 }}>
-        See what's new in this update
+      <Typography variant="body2" sx={{ mt: 0.5 }} className='text-newgray'>
+        See <Link href="" className='no-underline text-primary'>what's new</Link> in this update
       </Typography>
     </Box>
   );

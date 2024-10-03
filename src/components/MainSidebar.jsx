@@ -7,12 +7,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import MenuIcon from '@mui/icons-material/Menu';
 import SettingPopup from './SettingPopup'
 import ProfileModal from './ProfileModal'
 const NAVIGATION = [
   {
-    icon: <MenuOpenIcon />,
+    icon: <MenuIcon />,
   },
   {
     icon: <ChatIcon />,
@@ -33,8 +33,9 @@ const MainSidebar = ({ toggleSidebar, isSidebarOpen }) => {
         flexDirection: 'column',
         height: '100vh',
         width: '60px',
-        bgcolor: '#f4f4f4',
+        bgcolor: '#f0f0f0',
         justifyContent: 'space-between',
+        borderRight:'1px solid #b5b5b5',
       }}
     >
       <List sx={{ p: 0 }}>

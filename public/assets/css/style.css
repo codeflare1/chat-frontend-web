@@ -54,3 +54,7 @@ body{
 .input_fields .MuiInputLabel-formControl{
 top: -4px;
 }
+
+::-webkit-scrollbar{
+    display: none;
+}

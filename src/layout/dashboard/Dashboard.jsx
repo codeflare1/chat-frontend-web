@@ -12,7 +12,7 @@ const Dashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', overflow:'hidden' }}>
         <MainSidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <ChatList isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <MainContent />

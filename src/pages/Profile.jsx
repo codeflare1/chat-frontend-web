@@ -105,7 +105,7 @@ const Profile = () => {
                                     className='p-0  '
                                     fullWidth
                                     InputProps={{
-                                      className: 'bg-white rounded-md',
+                                      className: 'bg-white rounded-md hover:border-primary',
                                       sx: {
                                         '& input': {
                                             paddingTop: '6px', 
