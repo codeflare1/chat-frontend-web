@@ -16,6 +16,7 @@ module.exports = {
         'search':'#e2e2e2',
         'Chathover':'#e9e9e9',
         'bgChat':'#f0f0f0',
+        'grayn':'#888',
       },
       padding:{
         '51':'51px',

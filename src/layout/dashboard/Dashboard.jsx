@@ -5,7 +5,7 @@ import Layout from '../Layout';
 const Dashboard = () => {
   return (
         <Layout>
-      <MainContent />
+          <MainContent />
         </Layout>
   );
 };

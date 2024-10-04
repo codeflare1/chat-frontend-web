@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import ArchivePopup from './ChatArchivePopup';
 import ChatCard from './ChatCard';
 
-const ChatList = ({ isSidebarOpen, toggleSidebar }) => {
+const GroupList = ({ isSidebarOpen, toggleSidebar }) => {
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -153,7 +153,7 @@ const ChatList = ({ isSidebarOpen, toggleSidebar }) => {
                 />
               )}
               <Typography variant="h6" className="p-0 font-semibold leading-none">
-                Chats
+                Groups
               </Typography>
             </Box>
             <ButtonGroup disableElevation variant="text">
@@ -197,4 +197,4 @@ const ChatList = ({ isSidebarOpen, toggleSidebar }) => {
   );
 };
 
-export default ChatList;
+export default GroupList;

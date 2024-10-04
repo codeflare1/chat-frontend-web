@@ -19,7 +19,7 @@ export default function SimplePopup() {
       <div aria-describedby={id} type="button" onClick={handleClick} className='' >
         <MoreHorizIcon />
       </div>
-      <BasePopup id={id} open={open} anchor={anchor}>
+      <BasePopup className='z-50' id={id} open={open} anchor={anchor}>
         <PopupBody>View Archive</PopupBody>
       </BasePopup>
     </div>

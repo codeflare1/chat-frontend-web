@@ -23,11 +23,11 @@ const NAVIGATION = [
     icon: <ChatIcon />,
     link: '/chat',
   },
-  {
-    // title: 'Groups',
-    icon: <GroupIcon />,
-    link: '/group',
-  },
+  // {
+  //   // title: 'Groups',
+  //   icon: <GroupIcon />,
+  //   link: '/group',
+  // },
   {
     // title: 'Calls',
     icon: <CallIcon />,
