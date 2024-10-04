@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,8 +10,12 @@ import Button from '@mui/material/Button';
 import CallHistroyPopup from './CallHistroyPopup';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CallCard from './CallCard';
+import { LayoutContext } from '../context/LayotContextToggleProvider';
 
-const CallList = ({ isSidebarOpen, toggleSidebar }) => {
+const CallList = () => {
+
+    
+  const {isSidebarOpen, toggleSidebar } = useContext(LayoutContext)
     const CallList = [
         {
           name: 'John Doe',
