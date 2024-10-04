@@ -28,7 +28,7 @@ const CallList = ({ isSidebarOpen, toggleSidebar }) => {
           type:'voice',
           // userImage: '../assets/img/user-2.png', 
           lastMessage: 'Let’s catch up tomorrow!',
-          time: '1hour',
+          time: '8:16 pm',
           isDelivered: false,
         },
         {
@@ -55,7 +55,7 @@ const CallList = ({ isSidebarOpen, toggleSidebar }) => {
           status:'Incoming',
           type:'voice',
           lastMessage: 'I need the report ASAP.',
-          time: '2hour',
+          time: '9:23 am',
           isDelivered: true,
         },
         

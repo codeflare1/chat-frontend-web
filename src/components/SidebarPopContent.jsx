@@ -11,6 +11,7 @@ import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined';
 import GeneralSetting from './GeneralSetting';
+import AppearanceSetting from './AppearanceSetting';
 
 const SidebarPopContent = () => {
     const [value, setValue] = React.useState(0);
@@ -106,22 +107,22 @@ const SidebarPopContent = () => {
                         {...a11yProps(5)}
                     />
                 </Tabs>
-                <TabPanel value={value} index={0} className='w-full'>
+                <TabPanel value={value} index={0} className='w-full inner_setting'>
                     <GeneralSetting />
                 </TabPanel>
-                <TabPanel value={value} index={1}>
-                    Content for Item Two
+                <TabPanel value={value} index={1} className='w-full inner_setting'>
+                    <AppearanceSetting />
                 </TabPanel>
-                <TabPanel value={value} index={2}>
+                <TabPanel value={value} index={2} className='w-full inner_setting'>
                     Content for Item Three
                 </TabPanel>
-                <TabPanel value={value} index={3}>
+                <TabPanel value={value} index={3} className='w-full inner_setting'>
                     Content for Item Four
                 </TabPanel>
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={4} className='w-full inner_setting'>
                     Content for Item Five
                 </TabPanel>
-                <TabPanel value={value} index={5}>
+                <TabPanel value={value} index={5} className='w-full inner_setting'>
                     Content for Item Six
                 </TabPanel>
             </Box>

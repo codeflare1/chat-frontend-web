@@ -44,11 +44,13 @@ body{
 }
 
 .tabs_button.Mui-selected {
-    color: #0d6efd;
+    color: #1E1E1E;
+    font-weight: 600;
+    background-color: #dedede;
 }
 
 .setting_tabs .MuiTabs-indicator{
-    background-color: #0d6efd;
+    display: none;
 }
 
 .input_fields .MuiInputLabel-formControl{
@@ -57,4 +59,8 @@ top: -4px;
 
 ::-webkit-scrollbar{
     display: none;
+}
+
+.inner_setting .MuiBox-root{
+padding: 0;
 }

@@ -9,14 +9,13 @@ const ForgotPin = () => {
             <div className="login h-screen flex justify-center items-center">
                 <div className="user_login max-w-xl w-full mx-auto text-left p-4 md:p-8 shadow-cardShad rounded-2xl">
                     <h2 className='text-Newblack text-2xl md:text-3xl font-extrabold mb-2'>Forgot your PIN</h2>
-                    <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Please enter the email address you'd like your password
-                    reset information sent to</p>
+                    <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Please enter the phone number you'd like your password reset information sent to</p>
                     <div className="input_form mb-10">
                         <div className="inputIpin">
                             <TextField
                                 type="email"
                                 className='w-full rounded-2xl border focus:outline-primary focus:outline-1'
-                                placeholder="Enter email address"
+                                placeholder="Enter phone number"
                                 fullWidth
                                 InputProps={{
                                     className: 'bg-white  rounded-md',

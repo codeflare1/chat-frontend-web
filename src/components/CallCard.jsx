@@ -35,7 +35,7 @@ const CallCard = ({ calls }) => {
       <Box sx={{ flexGrow: 1, marginLeft: '12px' }}>
         <Typography
           variant="body1"
-          className="text-Newblack text-sm font-semibold"
+          className="text-Newblack text-sm font-semibold mb-0.5"
         >
           {calls.name}
         </Typography>
