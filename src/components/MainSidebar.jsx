@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'; // Add this for linking
 import ChatIcon from '@mui/icons-material/Chat';
 import GroupIcon from '@mui/icons-material/Group';
@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingPopup from './SettingPopup';
 import ProfileModal from './ProfileModal';
+import { LayoutContext } from '../context/LayotContextToggleProvider';
 
 const NAVIGATION = [
   {
@@ -35,7 +36,9 @@ const NAVIGATION = [
   },
 ];
 
-const MainSidebar = ({ toggleSidebar, isSidebarOpen }) => {
+const MainSidebar = () => {
+
+  const {isSidebarOpen, toggleSidebar } = useContext(LayoutContext)
   return (
     <Box
       sx={{
