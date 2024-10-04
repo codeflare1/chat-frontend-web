@@ -9,7 +9,18 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Typography } from '@mui/material';
 import LanguagePicker from './LanguagePicker';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
 const LanguagePopup = () => {
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+      setAge(event.target.value);
+    };
+
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -29,16 +40,39 @@ const LanguagePopup = () => {
     return (
         <div>
 
-            <Box>
-                <Button onClick={handleOpen} variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d ' >
-                    <Typography variant="h6" className="text-Newblack capitalize text-base">
-                        <LanguageIcon className=' text-gray-500 w-6 h-6' />  Language
-                    </Typography>
-                    <Typography variant="h6" className="text-gray-400 capitalize text-base">
-                        System language
-                    </Typography>
-                </Button>
+            <Box className='flex flex-col gap-2'>
+                <Box>
+                    <Button onClick={handleOpen} variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d px-3.5' >
+                        <Typography variant="h6" className="text-Newblack capitalize text-base flex items-center gap-3">
+                            <LanguageIcon className=' text-gray-500 w-6 h-6' />  Language
+                        </Typography>
+                        <Typography variant="h6" className="text-gray-400 capitalize text-base">
+                            System language
+                        </Typography>
+                    </Button>
+                </Box>
+                <Box>
+                    <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d px-3.5' >
+                        <Typography variant="h6" className="text-Newblack capitalize text-base flex items-center gap-3">
+                        <PaletteOutlinedIcon className=' text-gray-500 w-6 h-6' />  Theme
+                        </Typography>
+                        
+                        <FormControl sx={{ minWidth: 140 }}  >
+                            <Select
+                            value={10}
+                            onChange={handleChange}
+                            displayEmpty
+                            className='h-12 text-left capitalize'
+                            >
+                            <MenuItem value={10}>System</MenuItem>
+                            <MenuItem value={20}>Light</MenuItem>
+                            <MenuItem value={30}>Dark</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Button>
+                </Box>
             </Box>
+            {/* Modal */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

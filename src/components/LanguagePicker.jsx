@@ -87,7 +87,7 @@ const LanguagePicker = () => {
                     </RadioGroup>
                 </FormControl>
             </Box>
-            <Box className="p-4 ">
+            <Box className="p-4 syicky bg-white -bottom-0.5 flex justify-end gap-4">
              <Button variant="outlined">
                 Cancel
                 </Button>

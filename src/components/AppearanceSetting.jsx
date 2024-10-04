@@ -7,7 +7,7 @@ const AppearanceSetting = () => {
     <div>
     <Box className="setting-item">
       <Box className="tab_title border-b !p-4 flex justify-center items-center" >
-        <h2 className='font-semibold text-Newblack'>General</h2>
+        <h2 className='font-semibold text-Newblack'>Appearance</h2>
       </Box>
       
       <Box className="personal_detail">

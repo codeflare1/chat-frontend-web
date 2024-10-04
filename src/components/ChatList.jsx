@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography } from '@mui/material';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,8 +9,11 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import ArchivePopup from './ChatArchivePopup';
 import ChatCard from './ChatCard';
+import { LayoutContext } from '../context/LayotContextToggleProvider';
 
-const ChatList = ({ isSidebarOpen, toggleSidebar }) => {
+const ChatList = () => {
+  const {isSidebarOpen, toggleSidebar } = useContext(LayoutContext)
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
