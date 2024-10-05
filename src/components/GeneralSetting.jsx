@@ -29,9 +29,9 @@ const GeneralSetting = () => {
                 </Box>
                 <Box className="flex justify-between">
                   <Typography variant="body1" className="text-gray-700">
-                    Email
+                    Device name
                   </Typography>
-                  <Typography variant="body1" className='text-gray-400'>junuju@yopmail.com</Typography>
+                  <Typography variant="body1" className='text-gray-400'>Macbook M2</Typography>
                 </Box>
               </Box>
             </Box>

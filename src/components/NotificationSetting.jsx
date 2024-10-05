@@ -76,8 +76,8 @@ const NotificationSetting = () => {
 
                     {/* notification content Section */}
                     <Box className='!p-5'>
-                     <FormControlLabel className="text-sm text-gray-700"
- control={<Checkbox defaultChecked />} label="Push Notification Sounds" />
+                        <FormControlLabel className="text-sm text-gray-700"
+                            control={<Checkbox defaultChecked />} label="Push Notification Sounds" />
 
                         <FormGroup>
                             <FormControlLabel
@@ -85,7 +85,8 @@ const NotificationSetting = () => {
                                 label="In-Chat message sounds"
                                 className="text-sm text-gray-700"
                             />
-                            <FormHelperText className='m-0 ps-8'>Relay all calls through the Signal server to avoid revealing your IP address to your contact. Enabling will reduce call quality.</FormHelperText>
+                            <FormHelperText className='m-0 ps-8'>Hear a notification sound for sent and received messages while
+                            in the chat.</FormHelperText>
                         </FormGroup>
 
                     </Box>
