@@ -99,7 +99,7 @@ const Profile = () => {
                                     
                                 />
                             </div>
-                            <div className="email">
+                            {/* <div className="email">
                                 <TextField
                                      id="outlined-basic" label="Email" variant="outlined"
                                     className='p-0  '
@@ -120,7 +120,7 @@ const Profile = () => {
                                     }}
                                     
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

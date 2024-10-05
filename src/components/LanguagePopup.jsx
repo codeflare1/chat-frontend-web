@@ -42,7 +42,7 @@ const LanguagePopup = () => {
 
             <Box className='flex flex-col gap-2'>
                 <Box>
-                    <Button onClick={handleOpen} variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d px-3.5' >
+                    <Button onClick={handleOpen} variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d px-3.5 rounded-none' >
                         <Typography variant="h6" className="text-Newblack capitalize text-base flex items-center gap-3">
                             <LanguageIcon className=' text-gray-500 w-6 h-6' />  Language
                         </Typography>
@@ -52,24 +52,24 @@ const LanguagePopup = () => {
                     </Button>
                 </Box>
                 <Box>
-                    <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-between items-center ps-14d px-3.5' >
+                    <Box className='flex w-full h-12 hover:bg-transparent justify-between items-center !ps-14d !px-3.5 rounded-none' >
                         <Typography variant="h6" className="text-Newblack capitalize text-base flex items-center gap-3">
                         <PaletteOutlinedIcon className=' text-gray-500 w-6 h-6' />  Theme
                         </Typography>
                         
                         <FormControl sx={{ minWidth: 140 }}  >
                             <Select
-                            value={10}
+                            value={age}
                             onChange={handleChange}
                             displayEmpty
                             className='h-12 text-left capitalize'
                             >
-                            <MenuItem value={10}>System</MenuItem>
+                            <MenuItem value="">System</MenuItem>
                             <MenuItem value={20}>Light</MenuItem>
                             <MenuItem value={30}>Dark</MenuItem>
                             </Select>
                         </FormControl>
-                    </Button>
+                    </Box>
                 </Box>
             </Box>
             {/* Modal */}

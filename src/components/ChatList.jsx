@@ -128,33 +128,33 @@ const ChatList = () => {
     <Box
       sx={{
         width: '350px',
-        bgcolor: '#f0f0f0',
+        bgcolor: '#f9f9f9',
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        padding:'0 12px',
-        borderRight: '1px solid #b5b5b5',
+        padding:'0',
+        borderRight: '1px solid #dfdfdf',
         overflowY:'scroll'
       }}
     >
       <Box
         sx={{
           width: '100%',
-          bgcolor: '#f0f0f0',
+          bgcolor: '#f9f9f9',
           display: 'flex',
           flexDirection: 'column',
           height: '100vh',
         }}
       >
-        <div className="flex flex-col sticky bg-bgChat top-0 z-50">
-          <Box className="flex justify-between pt-3 pb-2">
+        <div className="flex flex-col sticky bg-bgChat top-0 z-50 pt-2 px-2.5 pb-0">
+          <Box className="flex justify-between">
             <Box className="flex items-center">
               {!isSidebarOpen && (
                 <MenuIcon
                   onClick={toggleSidebar}
                   style={{ cursor: 'pointer', marginRight: '8px' }}
                 />
-              )}
+              )} 
               <Typography variant="h6" className="p-0 font-semibold leading-none">
                 Chats
               </Typography>
@@ -197,6 +197,7 @@ const ChatList = () => {
         )}
       </Box>
     </Box>
+
   );
 };
 

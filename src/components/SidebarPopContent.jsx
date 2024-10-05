@@ -12,6 +12,10 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined';
 import GeneralSetting from './GeneralSetting';
 import AppearanceSetting from './AppearanceSetting';
+import ChatSetting from './ChatSetting';
+import CallSetting from './CallSetting';
+import PrivacySetting from './PrivacySetting';
+import NotificationSetting from './NotificationSetting';
 
 const SidebarPopContent = () => {
     const [value, setValue] = React.useState(0);
@@ -114,16 +118,16 @@ const SidebarPopContent = () => {
                     <AppearanceSetting />
                 </TabPanel>
                 <TabPanel value={value} index={2} className='w-full inner_setting'>
-                    Content for Item Three
+                    <ChatSetting />
                 </TabPanel>
                 <TabPanel value={value} index={3} className='w-full inner_setting'>
-                    Content for Item Four
+                    <CallSetting />
                 </TabPanel>
                 <TabPanel value={value} index={4} className='w-full inner_setting'>
-                    Content for Item Five
+                    <NotificationSetting />
                 </TabPanel>
                 <TabPanel value={value} index={5} className='w-full inner_setting'>
-                    Content for Item Six
+                    <PrivacySetting />
                 </TabPanel>
             </Box>
         </div>

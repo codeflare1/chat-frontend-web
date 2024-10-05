@@ -46,9 +46,9 @@ const MainSidebar = () => {
         flexDirection: 'column',
         height: '100vh',
         width: '60px',
-        bgcolor: '#f0f0f0',
+        bgcolor: '#f9f9f9',
         justifyContent: 'space-between',
-        borderRight: '1px solid #b5b5b5',
+        borderRight: '1px solid #dfdfdf',
       }}
     >
       <List sx={{ p: 0 }}>

@@ -15,7 +15,7 @@ module.exports = {
         'sidebar':'#f4f4f4',
         'search':'#e2e2e2',
         'Chathover':'#e9e9e9',
-        'bgChat':'#f0f0f0',
+        'bgChat':'#f9f9f9',
         'grayn':'#888',
       },
       padding:{
@@ -32,6 +32,7 @@ module.exports = {
         '27':'27rem',
         '493':'493px',
         '58':'58px',
+        '135':'135px',
       },
       margin:{
         '30':'30px',
@@ -47,6 +48,7 @@ module.exports = {
       },
       gap:{
         '108':'108px',
+        '82':'82px',
       },
       boxShadow: {
         'cardShad': '0 2px 13px 2px rgb(0 0 0 / 10%)',
@@ -61,6 +63,9 @@ module.exports = {
       },
       minWidth:{
         unset:'unset'
+      },
+      height:{
+        '500':'500px',
       }
     },
   },

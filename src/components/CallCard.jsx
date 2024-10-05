@@ -7,25 +7,20 @@ import PhoneIcon from '@mui/icons-material/Phone';
 const CallCard = ({ calls }) => {
   return (
     <Box
-      className="call_card p-2 hover:bg-Chathover rounded-lg"
+      className="call_card px-2.5 py-2 rounded-none hover:bg-Chathover"
       sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '12px',
+        padding: '0',
         cursor: 'pointer',
-        // bgcolor: '#fff', // Use white background for the card
       }}
     >
       {/* User Avatar */}
       <Avatar
         alt={calls.name}
-        sx={{
-          width: 40,
-          height: 40,
-          bgcolor: '#d2d2dc',
-        }}
+        sx={{ width: 48, height: 48, bgcolor:'#dfdfdf', color:'#4A4A4A' }}
         className="text-newgray"
       >
         <GroupIcon />
