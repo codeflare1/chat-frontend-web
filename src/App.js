@@ -15,7 +15,7 @@ import Calls from './pages/Calls';
 import Group from './pages/Group';
 import Chat from './pages/Chat';
 import SetupPin from './pages/SetupPin';
-import LayoutContextToggleProvider from './context/LayotContextToggleProvider';
+import LayoutContextToggleProvider from './context/LayotContextToggleProvider'
 
 
 
