@@ -54,7 +54,6 @@ const Profile = () => {
               console.log(values);
               // Add submit logic
 
-              const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY5MzQ2Y2JiM2EyNTI5ZTZkODYzYzMiLCJpYXQiOjE3MTA4MzA3MDEsImV4cCI6MTcxMDgzMjUwMSwidHlwZSI6ImFjY2VzcyJ9.y5Rnth4s8r3BnOP0MRiMALPcS0dEJdiMn0wjcWR_iSo'; // Replace with your token
               const formData = new FormData();
               
               // Append form values to formData
