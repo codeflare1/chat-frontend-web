@@ -7,7 +7,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 const CallCard = ({ calls }) => {
   return (
     <Box
-      className="call_card px-2.5 py-2 rounded-none hover:bg-Chathover"
+      className="call_card px-3 py-2 rounded-none hover:bg-Chathover"
       sx={{
         display: 'flex',
         flexDirection: 'row',

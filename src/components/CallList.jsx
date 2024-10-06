@@ -122,7 +122,7 @@ const CallList = () => {
                     height: '100vh',
                 }}
             >
-                <div className="flex flex-col sticky bg-bgChat top-0 z-50 pt-2 px-2.5 pb-0">
+                <div className="flex flex-col sticky bg-bgChat top-0 z-50 pt-3 px-3 pb-0">
                     <Box className="flex justify-between">
                         <Box className="flex items-center">
                             {!isSidebarOpen && (

@@ -5,7 +5,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 const ChatCard = ({ chat }) => {
   return (
     <Box
-      className="chat_card px-2.5 py-2 rounded-none hover:bg-Chathover"
+      className="chat_card px-3 py-2 rounded-none hover:bg-Chathover"
       sx={{
         display: 'flex',
         flexDirection: 'row',
