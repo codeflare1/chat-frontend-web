@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { postData } from '../api/apiService';
 
 const Profile = () => {
   const [imagePreview, setImagePreview] = useState('../assets/img/user.png'); // Default image
@@ -64,12 +65,9 @@ const Profile = () => {
               }
           
               try {
-                const response = await axios.post('http://16.16.27.134:3000/v1/auth/register', formData, {
-                  headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                  }
-                });
+
+               
+                const response = await postData("/register",formData)
 
                 console.log(response.data); // Handle success response
                 navigate("/id-verify");
