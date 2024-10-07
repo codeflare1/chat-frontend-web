@@ -10,7 +10,7 @@ function About() {
                     <div className="about_section">
                         <div className="main-title inline-flex flex-col items-center justify-center mb-10 md:mb-78 w-full">
                             <h2 className='text-Newblack text-3xl lg:text-4xl font-extrabold uppercase border-b border-primary pb-5 mb-4'>About us</h2>
-                            <p className='text-newgray text-sm lg:text-xl lg:leading-200'>At Signal, we believe in the power of community and creativity</p>
+                            <p className='text-newgray text-sm lg:text-xl lg:leading-200'>At Gatsbychat, we believe in the power of community and creativity</p>
                         </div>
                         <div className="main_section grid grid-cols-1 md:grid-cols-2 md:gap-[108px]">
                             <div className="content text-center md:text-left order-2 sm:order-1">
