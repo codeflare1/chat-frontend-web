@@ -40,7 +40,7 @@ function TestimonialSlider() {
                             <p className='text-left text-grayc text-base leading-7 font-normal'>June 2024</p>
                          </div>
                          <div className="review">
-                            <p className='text-left text-lg leading-200 font-normal text-newgray'>I love being able to connect with like-minded individuals and even monetize my passion. Signal is a game-changer!</p>
+                            <p className='text-left text-lg leading-200 font-normal text-newgray'>I love being able to connect with like-minded individuals and even monetize my passion. Gatsbychat is a game-changer!</p>
                          </div>
                        </div>
                        <div className="bg-white review_testimonial shadow-cardShadow pt-35 ps-35 pe-27 pb-35  md:pb-87 h-full rounded-2xl">

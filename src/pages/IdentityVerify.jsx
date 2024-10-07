@@ -14,7 +14,7 @@ const IdentityVerify = () => {
             <div className="login md:h-screen flex justify-center items-center">
                 <div className="user_login max-w-xl w-full mx-auto text-left p-4 md:p-8 shadow-cardShad rounded-2xl">
                     <h2 className='text-Newblack text-2xl md:text-3xl font-extrabold capitalize mb-2'>Document Verification</h2>
-                    <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Signal INC. Requires a valid government issued ID (driver's license, passport, national ID)</p>
+                    <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Gatsbychat INC. Requires a valid government issued ID (driver's license, passport, national ID)</p>
                         {/* {showDocumentUpload && ( */}
                         <div className="document_upload mb-10">
                             <ChooseDocs />

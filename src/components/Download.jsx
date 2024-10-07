@@ -12,7 +12,7 @@ function Download() {
                                 <div className="download_col flex flex-col gap-4 mb-10">
                                     <h2 className='text-2xl md:text-40 text-Newblack font-bold'>Download our app and get most out of it</h2>
                                     <p className='text-sm md:text-xl md:leading-200 font-medium non-italic text-newgray'>
-                                        Get Muhiris: Your Gateway to a Vibrant Digital Ecosystem
+                                        Get Gatsbychat: Your Gateway to a Vibrant Digital Ecosystem
                                     </p>
                                 </div>
                                 <div className="group_btn flex gap-5 items-center justify-center md:justify-start">

@@ -15,7 +15,7 @@ const MainContent = () => {
       }}
     >
       <Typography variant="h6" className='text-Newblack font-semibold'>
-        Welcome to Signal
+        Welcome to Gatsbychat
       </Typography>
       <Typography variant="body2" sx={{ mt: 0.5 }} className='text-newgray'>
         See <Link href="" className='no-underline text-primary'>what's new</Link> in this update

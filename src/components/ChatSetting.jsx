@@ -79,7 +79,7 @@ const ChatSetting = () => {
                     <Box>
                       <Typography className="mb-0">Import contacts</Typography>
                       <Typography className="text-xs text-gray-500 mb-2">
-                        Import all Signal groups and contacts from your mobile device. Last import at 10/3/2024 6:58:05 PM
+                        Import all Gatsbychat groups and contacts from your mobile device. Last import at 10/3/2024 6:58:05 PM
                       </Typography>
                     </Box>
                     <Button variant="outlined" className='max-w-135 w-full'>Import now</Button>

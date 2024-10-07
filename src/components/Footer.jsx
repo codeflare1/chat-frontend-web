@@ -12,9 +12,9 @@ function Footer() {
             <div className="footer_widget footer-widget1">
               <div className="footer_logo flex flex-col gap-3">
                 <a href="/" className='inline-block'>
-                  <img src="../signal-white.png" alt="" width={'150'} />
+                  <img src="../logo-white.png" alt="" width={'250'} />
                 </a>
-                <p className='text-white text-left font-normal text-base max-w-27'>Our app offers secure, end-to-end encrypted messaging and calls, similar to Signal, ensuring your privacy and data protection with a user-friendly interface.</p>
+                <p className='text-white text-left font-normal text-base max-w-27'>Our app offers secure, end-to-end encrypted messaging and calls, similar to Gatsbychat, ensuring your privacy and data protection with a user-friendly interface.</p>
               </div>
               <div className="social_icon flex gap-4 mt-4">
                 <Link href="/">

@@ -10,10 +10,10 @@ function HeroSection() {
                     <div className="flex flex-col md:flex-row gap-6 items-center">
                         <div className="content md:text-left">
                             <h1 className='text-4xl md:text-64 font-bold text-white'>
-                                Signal, an Connection and Commerce App
+                            Gatsbychat, an Connection and Commerce App
                             </h1>
                             <p className='text-sm md:text-xl text-white leading-loose mb-30'>
-                                Welcome to muhiris, a revolutionary platform for social networking, instant messaging, e-commerce, and real-time communication. We empower users to connect, share, and thrive in a vibrant digital ecosystem.
+                                Welcome to Gatsbychat, a revolutionary platform for social networking, instant messaging, e-commerce, and real-time communication. We empower users to connect, share, and thrive in a vibrant digital ecosystem.
                             </p>
                             <Stack spacing={2} direction="row" className='btn flex gap-4 md:gap-2 items-center mb-30 justify-center md:justify-start'>
                                 <Button variant="contained" className='px-50 py-5 bg-white rounded-full text-Newblack font-semibold text-lg leading-4 border border-white'>Download</Button>

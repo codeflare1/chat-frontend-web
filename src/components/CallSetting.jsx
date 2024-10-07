@@ -80,7 +80,7 @@ const CallSetting = () => {
                       label="Allow access to the microphone"
                       className="text-sm text-gray-700"
                     />
-                    <FormHelperText className='m-0 ps-8'>Relay all calls through the Signal server to avoid revealing your IP address to your contact. Enabling will reduce call quality.</FormHelperText>
+                    <FormHelperText className='m-0 ps-8'>Relay all calls through the Gatsbychat server to avoid revealing your IP address to your contact. Enabling will reduce call quality.</FormHelperText>
                   </FormGroup>
 
                 </Box>

@@ -10,7 +10,7 @@ function header() {
           <nav className='navbar flex items-center justify-between pt-3 pb-1.5'>
             <div className="navbar-brand">
               <a href="">
-                <img src="../logo.png" alt="" width="150" />
+                <img src="../logo.png" alt="" width="200" />
               </a>
             </div>
             <div className="mobile_icon lg:hidden">

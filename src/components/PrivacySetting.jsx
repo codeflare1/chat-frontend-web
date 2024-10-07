@@ -36,7 +36,7 @@ const PrivacySetting = () => {
                     Phone Number
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Choose who can see your phone number and who can contact you on Signal with it.
+                    Choose who can see your phone number and who can contact you on Gatsbychat with it.
                   </Typography>
 
                 </Box>
@@ -63,7 +63,7 @@ const PrivacySetting = () => {
                   <FormControlLabel control={<Checkbox defaultChecked />} label="Typing indicators" />
                 </FormGroup>
                 {/* <Typography variant="body2" color="textSecondary">
-                  To change these settings, open the Signal app on your mobile device and navigate to Settings &gt; Privacy.
+                  To change these settings, open the Gatsbychat app on your mobile device and navigate to Settings &gt; Privacy.
                 </Typography> */}
               </Box>
 
