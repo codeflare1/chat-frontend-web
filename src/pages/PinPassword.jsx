@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Box, FormControl, InputLabel, TextField } from "@mui/material";
+import { Box, FormControl, InputLabel, Link, TextField } from "@mui/material";
 
 const SetupPin = () => {
   const [isConfirmPin, setIsConfirmPin] = useState(false); // state to track if we're in confirm pin stage
@@ -104,8 +104,13 @@ const SetupPin = () => {
                       }}
                     />
                   ))}
+
+                  
                 </Box>
               </FormControl>
+              <Box className='flex justify-end mt-2'>
+                <Link href='/forgot'>Forgot PIN?</Link>
+              </Box>
             </div>
           </div>
 
