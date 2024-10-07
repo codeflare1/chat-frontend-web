@@ -14,7 +14,6 @@ import Dashboard from './layout/dashboard/Dashboard';
 import Calls from './pages/Calls';
 import Group from './pages/Group';
 import Chat from './pages/Chat';
-import SetupPin from './pages/SetupPin';
 import LayoutContextToggleProvider from './context/LayotContextToggleProvider'
 
 
@@ -22,7 +21,7 @@ import LayoutContextToggleProvider from './context/LayotContextToggleProvider'
 function App() {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/login' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/set-pin' || location.pathname === '/group' || location.pathname === '/chat';
+  const hideHeaderFooter = location.pathname === '/login' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
 
   return (
     <div className="App">
@@ -34,7 +33,6 @@ function App() {
         <Route path="/id-verify" element={<IdentityVerify />} />
         <Route path="/password" element={<PinPassword />} />
         <Route path="/forgot" element={<ForgotPin />} />
-        <Route path="/set-pin" element={<SetupPin />} />
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/call" element={<Calls />} />

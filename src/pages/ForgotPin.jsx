@@ -35,7 +35,7 @@ const ForgotPin = () => {
                     </div>
 
                     <div className="continue_btn">
-                        <Link href='/set-pin' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline hover:bg-darkblue'>Next</Link>
+                        <Link href='/password' className='bg-primary text-white py-4 rounded-full w-full leading-4 text-base font-medium border border-primary transition-all inline-flex justify-center items-center no-underline hover:bg-darkblue'>Next</Link>
                     </div>
                 </div>
             </div>

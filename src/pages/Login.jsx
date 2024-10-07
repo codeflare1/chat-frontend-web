@@ -18,11 +18,15 @@ const Login = () => {
                     <h2 className='text-Newblack text-2xl md:text-3xl font-extrabold capitalize mb-2'>Phone Number</h2>
                     <p className='text-newgray text-sm md:text-lg leading-150 mb-6'>Enter your Phone number to get started.</p>
                     <div className="input_form mb-10">
-                        <PhoneInput
-                            className='border p-2.5 rounded-2xl h-12'
-                            placeholder="Enter phone number"
-                            value={value}
-                            onChange={setValue} />
+                    <PhoneInput
+                        className='border p-2.5 rounded-2xl h-12'
+                        placeholder="Enter phone number"
+                        value={value}
+                        onChange={setValue}
+                        defaultCountry="IN" 
+                        international 
+                        countryCallingCodeEditable={false} 
+                    />
                     </div>
 
                         <div className="continue_btn">
