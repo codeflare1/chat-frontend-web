@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 
 const GroupInvitation = () => {
   const style = {
@@ -62,7 +61,6 @@ const GroupInvitation = () => {
               Invitation sent
             </Typography>
 
-            {/* <Divider className="my-2" /> */}
 
             <Box className="modal-body mb-10">
               <Typography className="text-base mb-5 relative flex gap-2 before:bg-primary before:w-full before:max-w-1 before:h-10 before:inline-block text-Newblack">

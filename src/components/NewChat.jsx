@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-// import { LayoutContext } from '../context/LayotContextToggleProvider';
 import GroupIcon from '@mui/icons-material/Group';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import TagIcon from '@mui/icons-material/Tag';

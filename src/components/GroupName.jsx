@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { Avatar, Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useNavigate } from 'react-router-dom';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 const GroupName = () => {
-    const [imagePreview, setImagePreview] = useState(''); // Default to no image
-    const navigate = useNavigate();
+    const [imagePreview] = useState(''); // Default to no image
     const [age, setAge] = useState('');
     const [groupName, setGroupName] = useState(''); // State for group name
-    const [members, setMembers] = useState(['John Doe']); // Example initial member
+    const [members] = useState(['John Doe']); // Example initial member
 
     const handleChange = (event) => {
         setAge(event.target.value);

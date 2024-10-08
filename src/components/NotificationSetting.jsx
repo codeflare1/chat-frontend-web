@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, FormControlLabel, Select, MenuItem, FormGroup, Box, Button, Typography, FormControl, FormHelperText } from '@mui/material';
+import { Checkbox, FormControlLabel, Select, MenuItem, FormGroup, Box, Typography, FormControl, FormHelperText } from '@mui/material';
 
 const NotificationSetting = () => {
     const [age, setAge] = React.useState('');

@@ -1,9 +1,8 @@
 import React from 'react';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, } from 'formik';
 import * as Yup from 'yup';
-import Link from '@mui/material/Link';
 import { postData } from '../api/apiService';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -41,7 +40,7 @@ const Login = () => {
                 const response = await postData("/send-otp", formData)
                 console.log(response.data); // Handle success response
                 const phone = { phone: values.phoneNumber }
-                if (response?.code == 400) {
+                if (response?.code === 400) {
                   toast.error(`${response.code.message}`)
                 }
 

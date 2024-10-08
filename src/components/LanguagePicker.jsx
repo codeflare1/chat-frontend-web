@@ -2,13 +2,7 @@ import React from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
-// import { Button } from '@mui/material'
-// import TextField from '@mui/material/TextField';
-// import InputAdornment from '@mui/material/InputAdornment';
-// import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
-// import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
-// import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
+import { Box, Button, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 
 
 const LanguagePicker = () => {

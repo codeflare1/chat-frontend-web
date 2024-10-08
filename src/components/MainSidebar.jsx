@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, } from 'react';
 import { Link } from 'react-router-dom'; // Add this for linking
 import ChatIcon from '@mui/icons-material/Chat';
-import GroupIcon from '@mui/icons-material/Group';
 import CallIcon from '@mui/icons-material/Call';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';

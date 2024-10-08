@@ -1,9 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'; // Ensure you're importing useLocation
 import OtpInput from 'react-otp-input';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, } from 'formik';
 import * as Yup from 'yup';
-import Link from '@mui/material/Link';
 import { getData } from '../api/apiService';
 import { toast } from 'react-toastify';
 
@@ -36,7 +35,7 @@ const OtpVerify = () => {
               // Handle form submission (e.g., navigate to profile page)
               try {
                 const response = await getData(`/verify-otp?otp=${values?.otp}&phoneNumber=${phone.replace("+", "")}&method=register`)
-                if (response?.code == 400) {
+                if (response?.code === 400) {
                   toast.error(`${response.code.message}`)
                 }
                 if (response?.success === true) {

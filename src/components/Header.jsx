@@ -9,7 +9,7 @@ function header() {
         <div className="container mx-auto">
           <nav className='navbar flex items-center justify-between pt-3 pb-1.5'>
             <div className="navbar-brand">
-              <a href="">
+              <a href="/">
                 <img src="../logo.png" alt="" width="200" />
               </a>
             </div>

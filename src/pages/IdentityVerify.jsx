@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ChooseDocs from '../components/ChooseDocs';
 import Link from '@mui/material/Link';
 
 const IdentityVerify = () => {
-    // const [showDocumentUpload, setShowDocumentUpload] = useState(false);
-
-    // const handleButtonClick = () => {
-    //     setShowDocumentUpload(true);
-    // };
 
     return (
         <div>
