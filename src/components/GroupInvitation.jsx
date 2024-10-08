@@ -47,7 +47,7 @@ const GroupInvitation = () => {
         }}
       >
         <Fade in={open}>
-          <Box sx={style} className="relative">
+          <Box sx={style} className="relative p-6">
             {/* Close Button */}
             <IconButton
               onClick={handleClose}
@@ -64,16 +64,16 @@ const GroupInvitation = () => {
 
             {/* <Divider className="my-2" /> */}
 
-            <Box className="modal-body">
-              <Typography className="text-sm mb-2">
-                - New can’t be automatically added to this group by you.
+            <Box className="modal-body mb-10">
+              <Typography className="text-base mb-5 relative flex gap-2 before:bg-primary before:w-full before:max-w-1 before:h-10 before:inline-block text-Newblack">
+                New can't be automatically added to this group by you.
               </Typography>
-              <Typography className="text-sm mb-4">
-                - They’ve been invited to join and won’t see any group messages until they accept.
+              <Typography className="text-base relative flex gap-2 before:bg-primary before:w-full before:max-w-1 before:h-10 before:inline-block text-Newblack">
+                They've been invited to join and won't see any group messages until they accept.
               </Typography>
             </Box>
 
-            <Box className="modal-footer flex justify-end space-x-2 mt-4">
+            <Box className="modal-footer flex justify-between space-x-2 mt-4">
               <Button variant="outlined" onClick={handleClose}>
                 Learn more
               </Button>
