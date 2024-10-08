@@ -15,6 +15,8 @@ import Calls from './pages/Calls';
 import Group from './pages/Group';
 import Chat from './pages/Chat';
 import LayoutContextToggleProvider from './context/LayotContextToggleProvider'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -42,6 +44,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       {!hideHeaderFooter && <Footer />}
+      <ToastContainer />
     </div>
   );
 }
