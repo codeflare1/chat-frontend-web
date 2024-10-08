@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Link from '@mui/material/Link';
 import { postData } from '../api/apiService';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -15,7 +16,7 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   return (
     <div>
       <div className="login h-screen flex justify-center items-center">
@@ -28,23 +29,29 @@ const Login = () => {
           <Formik
             initialValues={{ phoneNumber: '' }}
             validationSchema={validationSchema}
-            onSubmit={async(values)  => {
+            onSubmit={async (values) => {
               console.log('Form data:', values);
               // Handle form submission here (e.g., navigate to OTP verification page)
               const formData = new FormData();
               // Append form values to formData
               formData.append('phoneNumber', values.phoneNumber);
               formData.append('method', "register");
-          
+
               try {
-                const response = await postData("/send-otp",formData)   
-                debugger
+                const response = await postData("/send-otp", formData)
                 console.log(response.data); // Handle success response
-                const phone ={phone:values.phoneNumber}
-                debugger
-                navigate("/otpverify",{state:phone });
-                
+                const phone = { phone: values.phoneNumber }
+                if (response?.code == 400) {
+                  toast.error(`${response.code.message}`)
+                }
+
+                if (response?.success === true) {
+                  toast.success(`${response?.response}`)
+                  console.log(response); // Handle success response
+                  navigate("/otpverify", { state: phone });
+                }
               } catch (error) {
+                toast.error(`${error?.response.data.message}`)
                 console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
               }
             }}

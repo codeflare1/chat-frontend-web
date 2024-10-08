@@ -5,6 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Link from '@mui/material/Link';
 import { getData } from '../api/apiService';
+import { toast } from 'react-toastify';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -14,7 +15,7 @@ const validationSchema = Yup.object({
 });
 
 const OtpVerify = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const location = useLocation();
 
   // Access the state passed through the navigate function
@@ -30,19 +31,24 @@ const OtpVerify = () => {
           <Formik
             initialValues={{ otp: '' }}
             validationSchema={validationSchema}
-            onSubmit={async(values) => {
+            onSubmit={async (values) => {
               console.log('OTP submitted:', values);
               // Handle form submission (e.g., navigate to profile page)
-          
               try {
-                debugger
-                const response = await getData(`/verify-otp?method=register&phoneNumber=${phone}&otp=${values?.otp}`)
-                debugger
-                console.log(response.data); // Handle success response
-            
-                navigate("/profile");
-                
+                const response = await getData(`/verify-otp?otp=${values?.otp}&phoneNumber=${phone.replace("+", "")}&method=register`)
+                if (response?.code == 400) {
+                  toast.error(`${response.code.message}`)
+                }
+                if (response?.success === true) {
+                  toast.success(`${response?.data}`)
+                  localStorage.setItem("token", response?.tokens?.access?.token)
+                  console.log(response.data); // Handle success response
+                  navigate("/profile");
+                }
+
+
               } catch (error) {
+                toast.error(`${error?.response.data.message}`)
                 console.error('Error:', error.response ? error.response.data : error?.message); // Handle error response
               }
 
