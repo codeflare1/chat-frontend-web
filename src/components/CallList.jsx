@@ -103,7 +103,7 @@ const CallList = () => {
     return (
         <Box
             sx={{
-                width: '350px',
+                width: '450px',
                 bgcolor: '#f9f9f9',
                 display: 'flex',
                 flexDirection: 'column',

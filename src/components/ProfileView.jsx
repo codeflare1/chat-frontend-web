@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Avatar, Button } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
@@ -15,9 +15,9 @@ const ProfileView = () => {
       </div>
       <div className="profile_img">
         <div className="img flex flex-col items-center justify-center w-full gap-4 mb-5 font-medium -tracking-wide">
-          <div className="first_last_name p-8 rounded-full bg-gray-200 max-w-20 h-20 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
+          <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-20 h-20 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
             JS
-          </div>
+          </Avatar>
           <Button variant='contained' className='font-semibold text-xs tracking-tight  capitalize bg-[#DDD] text-Newblack rounded-full leading-4 hover:bg-gray-400 shadow-none hover:shadow-none'>Edit photo</Button>
         </div>
       </div>
