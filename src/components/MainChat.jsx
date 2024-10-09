@@ -60,18 +60,18 @@ const MainChat = () => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Tooltip title="Video Call">
-                        <IconButton>
+                    <Tooltip>
+                        <IconButton className='h-10 w-10'>
                             <VideocamIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Voice Call">
-                        <IconButton>
+                    <Tooltip>
+                        <IconButton className='h-10 w-10'>
                             <CallIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="More">
-                        <IconButton>
+                    <Tooltip>
+                        <IconButton className='h-10 w-10'>
                             <MainChatMore />
                         </IconButton>
                     </Tooltip>

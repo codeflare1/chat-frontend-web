@@ -1,5 +1,4 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -7,10 +6,16 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Popper, Box } from '@mui/material';
 
 const options = [
-  { label: 'Planets', submenu: ['Earth', 'Mars', 'Venus'] },
-  { label: 'Moons', submenu: ['Titan', 'Europa', 'Ganymede'] },
-  { label: 'Stars', submenu: ['Sirius', 'Betelgeuse', 'Proxima Centauri'] },
-  { label: 'None', submenu: [] },
+  { label: 'Disappearing messages', submenu: ['✓ Off', '4 weeks', '1 week', '1 day', '8 hours', '1 hour', '5 minutes', '30 seconds'] },
+  { label: 'Mute notifications', submenu: ['Mute for one hour', 'Mute for eight hours', 'Mute for one day', 'Mute for one week', 'Mute always'] },
+  { label: 'Chat settings', submenu: [] },
+  { label: 'All media', submenu: [] },
+  { label: 'Select messages', submenu: [] },
+  { label: 'Mark as unread', submenu: [] },
+  { label: 'Pin chat', submenu: [] },
+  { label: 'Archive', submenu: [] },
+  { label: 'Block', submenu: [] },
+  { label: 'Delete messages', submenu: [] },
 ];
 
 const ITEM_HEIGHT = 48;
@@ -45,16 +50,12 @@ export default function LongMenu() {
 
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        id="long-button"
+   
+        <MoreVertIcon  id="long-button"
         aria-controls={open ? 'long-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
+        onClick={handleClick} />
       <Menu
         id="long-menu"
         MenuListProps={{
@@ -65,8 +66,8 @@ export default function LongMenu() {
         onClose={handleClose}
         PaperProps={{
           style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch',
+            width: '230px',
+            borderRadius:'6px'
           },
         }}
       >
@@ -88,7 +89,7 @@ export default function LongMenu() {
       <Popper
         open={submenuOpen}
         anchorEl={submenuAnchorEl}
-        placement="left-start" // Positioning the submenu to the left
+        placement="left-start" 
         disablePortal
       >
         <Box
