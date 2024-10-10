@@ -24,30 +24,32 @@ const IdentityVerify = () => {
         files: [],
     };
 
-    const handleSubmit = async(values) => {
+    const handleSubmit = async (values) => {
         console.log('Form Submitted', values);
-        // Submit form values to the API
+        // Create FormData object
         const formData = new FormData();
-        // Append form values to formData
-        formData.append('files', values.files);
-
+        // Append each file to the FormData
+        values.files.forEach((file, index) => {
+            
+          formData.append(`uploadDocument[]`, file); // Append each file individually
+        });
+      
         try {
-          const response = await putData(`/upload-document?documentType=${values?.document_type}`, formData)
-          console.log(response.data); 
+          // Submit formData via API call
+          const response = await putData(`/upload-document`, formData);
+          console.log(response.data);
           if (response?.code === 400) {
-            toast.error(`${response.code.message}`)
+            toast.error(`${response.code.message}`);
           }
-
           if (response?.success === true) {
-            debugger
-            toast.success(`${response?.response}`)
+            toast.success(`${response?.response}`);
           }
         } catch (error) {
-          toast.error(`${error?.response.data.message}`)
+          toast.error(`${error?.response?.data?.message}`);
           console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
         }
-
-    };
+      };
+      
 
     return (
         <Formik
