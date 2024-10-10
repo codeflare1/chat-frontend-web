@@ -42,6 +42,7 @@ const OtpVerify = () => {
                   toast.success(`${response?.data}`)
                   localStorage.setItem("token", response?.tokens?.access?.token)
                   console.log(response.data); // Handle success response
+                  localStorage.setItem("number",phone)
                   navigate("/profile");
                 }
 
