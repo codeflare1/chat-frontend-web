@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { postData } from '../api/apiService';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const [imagePreview, setImagePreview] = useState('../assets/img/user.png'); // Default image
@@ -13,6 +14,7 @@ const Profile = () => {
 
   // Handle image change
   const handleImageChange = (e, setFieldValue) => {
+    debugger
     const file = e.target.files[0];
     if (file) {
       setFieldValue("userProfileImage", file); // Set file in Formik
@@ -61,14 +63,23 @@ const Profile = () => {
               if (values.userProfileImage) {
                 formData.append('userProfileImage', values.userProfileImage);
               }
-          
+
+              console.log(values?.userProfileImage,"fsdfsdfsdfsdf")
               try {
 
                
                 const response = await postData("/register",formData)
+                // Handle success response
+                if (response?.success === true) {
+                  debugger
+                  toast.success(`${response.message}`); 
+                  console.log(response);
+                  
+                }
+              
 
                 console.log(response.data); // Handle success response
-                navigate("/id-verify");
+                navigate("/chat");
               } catch (error) {
                 console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
               }
