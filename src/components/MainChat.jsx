@@ -57,7 +57,7 @@ const MainChat = () => {
                     {/* <Avatar className="mr-2 text-Newblack w-6 h-6 text-sm font-semibold">N</Avatar> */}
                     <Avatar alt='' src='' sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', color: '#4A4A4A', marginRight: '8px', fontSize: '14px', fontWeight: 600 }} >J</Avatar>
                     <div>
-                        <Typography variant='h6' className="font-medium text-base flex "><ProfileDrawer /> <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' /> </Typography>
+                        <Typography variant='h6' className="font-medium text-base flex gap-2 capitalize cursor-pointer"><ProfileDrawer /> <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' /> </Typography>
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">

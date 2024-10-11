@@ -17,6 +17,7 @@ module.exports = {
         'Chathover':'#e9e9e9',
         'bgChat':'#f9f9f9',
         'grayn':'#888',
+        'profile':'#e6e6e6',
       },
       padding:{
         '51':'51px',

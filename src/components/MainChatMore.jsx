@@ -99,6 +99,8 @@ export default function LongMenu() {
             borderRadius: '4px',
             bgcolor: 'background.paper',
             boxShadow: 3,
+            width:'200px ',
+            zIndex:'9'
           }}
         >
           {selectedSubmenu &&
