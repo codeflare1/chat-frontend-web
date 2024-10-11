@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import Typography from '@mui/material/Typography';
 
-const GroupInvitation = () => {
+const GroupInvitation = ({isButtonDisabled }) => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -28,8 +28,8 @@ const GroupInvitation = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen} className='min-w-unset p-4 text-newgray'>
-        Open Modal
+      <Button onClick={handleOpen}  disabled={isButtonDisabled} className='create_group disabled:bg-gray-300 disabled:text-Newblack disabled:cursor-not-allowed bg-primary text-white font-semibold border-none max-w-24 w-full capitalize'>
+        Next
       </Button>
 
       <Modal

@@ -3,6 +3,7 @@ import { Avatar, Box, Button, FormControl, MenuItem, Select, TextField, Typograp
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import GroupInvitation from './GroupInvitation'
 
 const GroupName = ({handleNameGroup}) => {
     const [imagePreview] = useState(''); // Default to no image
@@ -140,12 +141,13 @@ const GroupName = ({handleNameGroup}) => {
                         </Box>
                     </Box>
                     <Box className='mb-2 flex justify-end'>
-                        <Button 
-                            disabled={isButtonDisabled} // Update button's disabled state
+                        {/* <Button 
+                            disabled={isButtonDisabled}
                             variant="outlined" 
-                            className='disabled:bg-gray-300 disabled:text-Newblack disabled:cursor-not-allowed bg-primary text-white font-semibold border-none max-w-24 w-full capitalize'>
+                            className='create_group disabled:bg-gray-300 disabled:text-Newblack disabled:cursor-not-allowed bg-primary text-white font-semibold border-none max-w-24 w-full capitalize'>
                             Next
-                        </Button>
+                        </Button> */}
+                         <GroupInvitation isButtonDisabled={isButtonDisabled} />
                     </Box>
                 </Box>
             </Box>
