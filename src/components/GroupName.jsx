@@ -4,7 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
-const GroupName = () => {
+const GroupName = ({handleNameGroup}) => {
     const [imagePreview] = useState(''); // Default to no image
     const [age, setAge] = useState('');
     const [groupName, setGroupName] = useState(''); // State for group name
@@ -43,7 +43,7 @@ const GroupName = () => {
                 <div className="flex flex-col sticky bg-bgChat top-0 z-50">
                     <Box className="flex justify-center relative pb-6">
                         <Box className="flex items-center">
-                            <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer' />
+                            <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer' onClick={handleNameGroup} />
                             <Typography variant="h6" className="p-0 font-semibold leading-none text-base text-center">
                                 Name this group
                             </Typography>
