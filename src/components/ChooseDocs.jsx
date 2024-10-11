@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material';
 
-const ChooseDocs = () => {
-    const [selectedDocument, setSelectedDocument] = useState('');
+const ChooseDocs = ({ selectedDocument, setFieldValue }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+        setFieldValue('files', [...uploadedFiles, ...files]); // Update Formik files field
     };
 
     const removeFile = (index) => {
-        setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        const newFiles = uploadedFiles.filter((_, i) => i !== index);
+        setUploadedFiles(newFiles);
+        setFieldValue('files', newFiles); // Update Formik files field
     };
 
     return (
@@ -27,25 +29,22 @@ const ChooseDocs = () => {
                         aria-label="document_type"
                         name="document_type"
                         value={selectedDocument}
-                        onChange={(e) => setSelectedDocument(e.target.value)}
+                        onChange={(e) => setFieldValue('document_type', e.target.value)}
                     >
                         <FormControlLabel
                             value="idcard"
                             control={<Radio />}
                             label="ID Card"
-                            className={selectedDocument === 'idcard' ? 'text-indigo-900 bg-indigo-50  px-4 rounded-lg m-0' : 'px-4'}
                         />
                         <FormControlLabel
                             value="passport"
                             control={<Radio />}
                             label="Passport"
-                            className={selectedDocument === 'passport' ? 'text-indigo-900 bg-indigo-50 px-4 rounded-lg m-0' : 'px-4'}
                         />
                         <FormControlLabel
                             value="driving"
                             control={<Radio />}
                             label="Driving License"
-                            className={selectedDocument === 'driving' ? 'text-indigo-900 bg-indigo-50 px-4 rounded-lg m-0' : 'px-4'}
                         />
                     </RadioGroup>
                 </FormControl>
@@ -101,9 +100,6 @@ const ChooseDocs = () => {
                 <ul className='ps-4 flex flex-col gap-1.5'>
                     <li className='list-disc text-sm text-grayc leading-200'>
                         Please take photos of both the <strong className='font-semibold'>front</strong> and <strong className='font-semibold'>back</strong> of your ID.
-                    </li>
-                    <li className='list-disc text-sm text-grayc leading-200'>
-                        Make sure the entire page is visible and the text is clear and easy to read.
                     </li>
                 </ul>
             </div>
