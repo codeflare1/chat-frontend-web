@@ -3,11 +3,9 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://16.16.27.134:3000/v1/auth',
+  baseURL: 'http://16.170.58.233:3000/v1/auth',
   // timeout: 1000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'multipart/form-data' },
 });
 
 // Add a request interceptor
