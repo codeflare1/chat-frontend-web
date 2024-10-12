@@ -155,10 +155,6 @@ const SetupPin = () => {
                 {formik.touched.confirmPin && formik.errors.confirmPin && isConfirmPin && (
                   <Box className="text-red-600 mt-2">{formik.errors.confirmPin}</Box>
                 )}
-
-                <Box className="flex justify-end mt-2">
-                  <Link href="/forgot">Forgot PIN?</Link>
-                </Box>
               </div>
             </div>
 

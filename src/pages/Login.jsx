@@ -4,8 +4,9 @@ import PhoneInput from 'react-phone-number-input';
 import { Formik, Form, } from 'formik';
 import * as Yup from 'yup';
 import { postData } from '../api/apiService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Box } from '@mui/material';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -83,6 +84,10 @@ const Login = () => {
               </Form>
             )}
           </Formik>
+              
+          <Box className="flex justify-end mt-2">
+                  <Link href="/forgot">Forgot PIN?</Link>
+                </Box>
         </div>
       </div>
     </div>
