@@ -77,7 +77,7 @@ const MainSidebar = () => {
             <ProfileModal />
           </ListItemIcon>
         </ListItem>
-        <ListItem button className="p-0" onClick={handleLogout}>
+        <ListItem button className="p-0 cursor-pointer" onClick={handleLogout}>
           <ListItemIcon className='justify-center'>
             <LogoutIcon className='h-12 flex justify-center items-center text-newgray' />
           </ListItemIcon>
