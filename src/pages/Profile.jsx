@@ -54,24 +54,20 @@ const Profile = () => {
             onSubmit={async(values) => {
               console.log(values);
               // Add submit logic
-
               const formData = new FormData();
               
               // Append form values to formData
               formData.append('firstName', values.firstName);
               formData.append('lastName', values.lastName);
-              if (values.userProfileImage) {
-                formData.append('userProfileImage', values.userProfileImage);
-              }
+              // if (values.userProfileImage) {
+              //   formData.append('userProfileImage', values.userProfileImage);
+              // }
 
-              console.log(values?.userProfileImage,"fsdfsdfsdfsdf")
+              // console.log(values?.userProfileImage,"fsdfsdfsdfsdf")
               try {
-
-               
                 const response = await postData("/register",formData)
                 // Handle success response
                 if (response?.success === true) {
-                  debugger
                   toast.success(`${response.message}`); 
                   console.log(response);
                   

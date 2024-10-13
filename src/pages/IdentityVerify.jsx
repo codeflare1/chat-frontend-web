@@ -5,7 +5,7 @@ import ChooseDocs from '../components/ChooseDocs';
 import Link from '@mui/material/Link';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
-import { postData, putData } from '../api/apiService';
+import axios from 'axios';
 
 const IdentityVerify = () => {
     // Validation schema using Yup
@@ -24,31 +24,43 @@ const IdentityVerify = () => {
         files: [],
     };
 
+    
     const handleSubmit = async (values) => {
-        console.log('Form Submitted', values);
-        // Create FormData object
-        const formData = new FormData();
-        // Append each file to the FormData
-        values.files.forEach((file, index) => {
-          formData.append(`uploadDocument`, file); // Append each file individually
-        });
-      
-        try {
-          // Submit formData via API call
-          const response = await putData(`/upload-document?documentType=${values?.document_type}`, formData);
-          console.log(response.data);
-          if (response?.code === 400) {
-            toast.error(`${response.code.message}`);
+      console.log('Form Submitted', values);
+    
+      const formData = new FormData();
+      values.files.forEach((file) => {
+        formData.append('uploadDocument', file); // Append each file individually
+      });
+      const token = localStorage.getItem('token');
+      try {
+        // Make an API call using axios with Bearer token in headers
+        const response = await axios.put(
+          `https://api.gatsbychat.com/v1/auth/upload-document?documentType=${values?.document_type}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`, // Bearer token in headers
+            },
           }
-          if (response?.success === true) {
-            toast.success(`Document upload successfully`);
-          }
-        } catch (error) {
-          toast.error(`${error?.response?.data?.message}`);
-          console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
+        );
+    
+        console.log(response.data);
+    
+        if (response?.data?.success) {
+          toast.success('Document uploaded successfully');
+        } else {
+          toast.error(response?.data?.message || 'Upload failed');
         }
-      };
-      
+      } catch (error) {
+        const errorMessage = error?.response?.data?.message || error.message;
+        toast.error(errorMessage);
+        console.error('Error:', errorMessage); // Handle error response
+      }
+    };
+    
+
 
     return (
         <Formik
