@@ -33,7 +33,7 @@ const EnterPin = () => {
           toast.error(response.code.message);
         } else if (response?.success) {
           toast.success("Login successfully");
-          navigate("/dashboard")
+          navigate("/chat")
         }
       } catch (error) {
         const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
