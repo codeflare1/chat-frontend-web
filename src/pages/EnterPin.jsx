@@ -121,9 +121,9 @@ const EnterPin = () => {
             </button>
           </div>
         </form>            
-          <Box className="flex justify-end mt-5">
+          {/* <Box className="flex justify-end mt-5">
                   <Link to="/forgot">Forgot PIN?</Link>
-                </Box>
+                </Box> */}
       </div>
     </div>
   );
