@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   // baseURL: 'http://16.170.132.218:3000/v1/auth',
   
   // timeout: 1000,
-  headers: { 'Content-Type': 'multipart/form-data' },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 console.log('chal gya');
