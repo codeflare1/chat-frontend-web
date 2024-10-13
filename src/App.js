@@ -25,7 +25,7 @@ import ResetPassword from './pages/ResetPassword';
 function App() {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/get-started' ||  location.pathname === '/reset-password' || location.pathname === '/enterPin' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
+  const hideHeaderFooter = location.pathname === '/get-started' ||  location.pathname === '/reset-password' || location.pathname === '/enterPin' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' ||  location.pathname === '/Dashboard'|| location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
 
   return (
     <div className="App">
