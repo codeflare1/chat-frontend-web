@@ -6,7 +6,7 @@ import { postData } from "../api/apiService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const SetupPin = () => {
+const ResetPassword = () => {
   const navigate = useNavigate()
   const [isConfirmPin, setIsConfirmPin] = useState(false); // state to track if we're in confirm pin stage
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -45,7 +45,7 @@ const SetupPin = () => {
         formData.append('method', "register"); // Ensure API expects 'method' field
         formData.append('phoneNumber', phone); // Assuming 'phoneNumber' is needed for PIN setup
         try {
-          const response = await postData(`/set-pin`, formData); // Assuming 'postData' is your API request function
+          const response = await postData(`/reset-pin`, formData); // Assuming 'postData' is your API request function
           // Check for the response code and display error if code is 400
           if (response?.code === 400) {
             toast.error(`${response.code.message}`); // Make sure `response.code.message` exists
@@ -57,8 +57,8 @@ const SetupPin = () => {
             toast.success('PIN set Successfully'); // Assuming `response.data` contains the success message
             console.log(response.data); // For debugging
             localStorage.setItem("token", response?.tokens?.access?.token)
-            navigate("/id-verify"); // Redirect to the profile page
-            // navigate("/profile"); // Redirect to the profile page
+            // navigate("/id-verify"); // Redirect to the profile page
+            navigate("/profile"); // Redirect to the profile page
           }
         
         } catch (error) {
@@ -108,7 +108,7 @@ const SetupPin = () => {
       <div className="login h-screen flex justify-center items-center">
         <div className="user_login max-w-xl w-full mx-auto text-left p-4 md:p-8 shadow-cardShad rounded-2xl">
           <h2 className="text-Newblack text-2xl md:text-3xl font-extrabold mb-2">
-            {isConfirmPin ? "Confirm your PIN" : "Create new PIN"}
+            {isConfirmPin ? "Confirm your PIN" : "Reset PIN"}
           </h2>
           <p className="text-newgray text-sm md:text-lg leading-150 mb-10">
             {isConfirmPin
@@ -174,4 +174,5 @@ const SetupPin = () => {
   );
 };
 
-export default SetupPin;
+export default ResetPassword;
+
