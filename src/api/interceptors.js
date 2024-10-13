@@ -7,10 +7,12 @@ const axiosInstance = axios.create({
   baseURL: 'https://api.gatsbychat.com/v1/auth',
   // Local URL
   // baseURL: 'http://16.170.132.218:3000/v1/auth',
+  
   // timeout: 1000,
   headers: { 'Content-Type': 'multipart/form-data' },
 });
 
+console.log('chal gya');
 // Add a request interceptor
 axiosInstance.interceptors.request.use(function (config) {
     // Do something before request is sent
