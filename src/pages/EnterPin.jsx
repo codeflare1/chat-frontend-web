@@ -3,6 +3,8 @@ import { Box, FormControl, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { postData } from "../api/apiService";
 
 const EnterPin = () => {
   const navigate = useNavigate();
@@ -21,10 +23,25 @@ const EnterPin = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if(values){
-        navigate("/dashboard")
-      }
+      try {
+        const phone = localStorage.getItem("number");
+        const formData = new FormData();
+        formData.append("pin", values.pin);
+        formData.append("method", "register");
+        formData.append("phoneNumber", phone);
+        const response = await postData("/loginWithPin", formData);
 
+        if (response?.code === 400) {
+          toast.error(response.code.message);
+        } else if (response?.success) {
+          toast.success("Login successfully");
+          navigate("/dashboard")
+        }
+      } catch (error) {
+        const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+        toast.error(errorMessage);
+        console.error("Error:", error?.response?.data || error.message);
+      }
     },
   });
 
