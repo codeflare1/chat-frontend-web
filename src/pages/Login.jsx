@@ -51,7 +51,10 @@ const Login = () => {
                   navigate("/otpverify", { state: phone });
                 }
               } catch (error) {
-                toast.error(`${error?.response.data.message}`)
+                localStorage.setItem("haveAccount",true)
+                navigate("/enterPin");
+                toast.success(`${error?.response.data.message}`)
+
                 console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
               }
             }}
