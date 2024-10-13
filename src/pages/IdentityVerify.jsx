@@ -30,19 +30,18 @@ const IdentityVerify = () => {
         const formData = new FormData();
         // Append each file to the FormData
         values.files.forEach((file, index) => {
-            
-          formData.append(`uploadDocument[]`, file); // Append each file individually
+          formData.append(`uploadDocument`, file); // Append each file individually
         });
       
         try {
           // Submit formData via API call
-          const response = await putData(`/upload-document`, formData);
+          const response = await putData(`/upload-document?documentType=${values?.document_type}`, formData);
           console.log(response.data);
           if (response?.code === 400) {
             toast.error(`${response.code.message}`);
           }
           if (response?.success === true) {
-            toast.success(`${response?.response}`);
+            toast.success(`Document upload successfully`);
           }
         } catch (error) {
           toast.error(`${error?.response?.data?.message}`);
