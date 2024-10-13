@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://16.16.27.134:3000/v1/auth',
+  baseURL: 'https://api.gatsbychat.com/v1/auth',
   // timeout: 1000,
   headers: {
     'Content-Type': 'application/json',
