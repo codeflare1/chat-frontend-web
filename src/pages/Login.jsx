@@ -84,10 +84,10 @@ const Login = () => {
               </Form>
             )}
           </Formik>
-              
+{/*               
           <Box className="flex justify-end mt-2">
                   <Link href="/forgot">Forgot PIN?</Link>
-                </Box>
+                </Box> */}
         </div>
       </div>
     </div>
