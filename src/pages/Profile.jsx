@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
-// import axios from 'axios';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { postData } from '../api/apiService';
 import { toast } from 'react-toastify';
@@ -66,7 +66,7 @@ const Profile = () => {
               try {
                 // const response = await postData("/register",formData)
                 const response = await axios.post(
-                  `register`,
+                  `https://api.gatsbychat.com/v1/auth/register`,
                   formData,
                   {
                     headers: {

@@ -6,8 +6,10 @@ import Link from '@mui/material/Link';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const IdentityVerify = () => {
+  const navigate = useNavigate()
     // Validation schema using Yup
     const validationSchema = Yup.object().shape({
         document_type: Yup.string()
@@ -47,9 +49,9 @@ const IdentityVerify = () => {
         );
     
         console.log(response.data);
-    
         if (response?.data?.success) {
           toast.success('Document uploaded successfully');
+          navigate("/profile");
         } else {
           toast.error(response?.data?.message || 'Upload failed');
         }
