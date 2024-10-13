@@ -16,8 +16,8 @@ console.log('chal gya');
 // Add a request interceptor
 axiosInstance.interceptors.request.use(function (config) {
     // Do something before request is sent
-    // const token = localStorage.getItem('token');
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzBiYWQ3MmVhMGFhZThiYWIxNGRjN2YiLCJpYXQiOjE3Mjg4MTg1NDYsImV4cCI6MTcyODkwNDk0NiwidHlwZSI6ImFjY2VzcyJ9.Avd4J6YEwWNA56g7LsvOvDRYPzjsEuq422ZYBFDHhNI";
+    const token = localStorage.getItem('token');
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzBiYWQ3MmVhMGFhZThiYWIxNGRjN2YiLCJpYXQiOjE3Mjg4MTg1NDYsImV4cCI6MTcyODkwNDk0NiwidHlwZSI6ImFjY2VzcyJ9.Avd4J6YEwWNA56g7LsvOvDRYPzjsEuq422ZYBFDHhNI";
 
     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY5MzQ2Y2JiM2EyNTI5ZTZkODYzYzMiLCJpYXQiOjE3MTA4MzA3MDEsImV4cCI6MTcxMDgzMjUwMSwidHlwZSI6ImFjY2VzcyJ9.y5Rnth4s8r3BnOP0MRiMALPcS0dEJdiMn0wjcWR_iSo"
     config.headers.Authorization =  token ? `Bearer ${token}` : '';

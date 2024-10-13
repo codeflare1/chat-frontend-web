@@ -57,8 +57,8 @@ const SetupPin = () => {
             toast.success('PIN set Successfully'); // Assuming `response.data` contains the success message
             console.log(response.data); // For debugging
             localStorage.setItem("token", response?.tokens?.access?.token)
-            // navigate("/id-verify"); // Redirect to the profile page
-            navigate("/profile"); // Redirect to the profile page
+            navigate("/id-verify"); // Redirect to the profile page
+            // navigate("/profile"); // Redirect to the profile page
           }
         
         } catch (error) {

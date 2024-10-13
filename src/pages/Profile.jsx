@@ -51,33 +51,44 @@ const Profile = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={async(values) => {
+            onSubmit={async (values) => {
               console.log(values);
               // Add submit logic
               const formData = new FormData();
-              
               // Append form values to formData
               formData.append('firstName', values.firstName);
               formData.append('lastName', values.lastName);
               if (values.userProfileImage) {
                 formData.append('userProfileImage', values.userProfileImage);
               }
-
+              const token = localStorage.getItem('token');
               // console.log(values?.userProfileImage,"fsdfsdfsdfsdf")
               try {
-                const response = await postData("/register",formData)
+                // const response = await postData("/register",formData)
+                const response = await axios.post(
+                  `register`,
+                  formData,
+                  {
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                      Authorization: `Bearer ${token}`, // Bearer token in headers
+                    },
+                  }
+                );
+
                 // Handle success response
-                if (response?.success === true) {
-                  toast.success(`${response.message}`); 
+                if (response?.data?.success === true) {
+                  toast.success(`${response?.data?.message}`);
                   console.log(response);
-                  
+
                 }
-              
 
                 console.log(response.data); // Handle success response
                 navigate("/chat");
               } catch (error) {
-                console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
+                const errorMessage = error?.response?.data?.message || error.message;
+                toast.error(errorMessage);
+                console.error('Error:', errorMessage); // Handle error response
               }
 
             }}
