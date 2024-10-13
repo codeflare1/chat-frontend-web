@@ -18,13 +18,14 @@ import LayoutContextToggleProvider from './context/LayotContextToggleProvider'
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import EnterPin from './pages/EnterPin';
+import ResetPassword from './pages/ResetPassword';
 
 
 
 function App() {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/get-started' || location.pathname === '/enterPin' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
+  const hideHeaderFooter = location.pathname === '/get-started' ||  location.pathname === '/reset-password' || location.pathname === '/enterPin' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
 
   return (
     <div className="App">
@@ -36,6 +37,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/id-verify" element={<IdentityVerify />} />
         <Route path="/password" element={<PinPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        
         <Route path="/forgot" element={<ForgotPin />} />
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
