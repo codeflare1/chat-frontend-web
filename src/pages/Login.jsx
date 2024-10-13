@@ -53,7 +53,7 @@ const Login = () => {
                     console.log(response); // Handle success response
                     navigate("/otpverify", { state: phone });
                   }else{
-                    toast.success(`Otp Sent successfully`)
+                    toast.success(`Enter Your Pin`)
                     localStorage.setItem("token", response?.response?.tokens.access?.token)
                     localStorage.setItem("number",values.phoneNumber)
                     localStorage.setItem("haveAccount",true)
