@@ -17,7 +17,7 @@ function HeroSection() {
                             </p>
                             <Stack spacing={2} direction="row" className='btn flex gap-4 md:gap-2 items-center mb-30 justify-center md:justify-start'>
                                 <Button variant="contained" className='px-50 py-5 bg-white rounded-full text-Newblack font-semibold text-lg leading-4 border border-white'>Download</Button>
-                                <Button href='/login' variant="text" className='px-50 py-5 text-white underline underline-offset-2 font-semibold text-lg rounded-full h-14' >Login</Button>
+                                <Button href='/get-started' variant="text" className='px-50 py-5 text-white underline underline-offset-2 font-semibold text-lg rounded-full h-14' >Login</Button>
                             </Stack>
                             <div className="App__download flex justify-center md:justify-start items-center gap-2.5">
                                 <a href="/">

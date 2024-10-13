@@ -23,13 +23,13 @@ import { ToastContainer, toast } from 'react-toastify';
 function App() {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/login' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
+  const hideHeaderFooter = location.pathname === '/get-started' || location.pathname === '/otpverify' || location.pathname === '/profile' || location.pathname === '/id-verify' || location.pathname === '/password' | location.pathname === '/dashboard' || location.pathname === '/call' || location.pathname === '/forgot' || location.pathname === '/group' || location.pathname === '/chat';
 
   return (
     <div className="App">
       {!hideHeaderFooter && <Header />}
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/get-started" element={<Login />} />
         <Route path="/otpverify" element={<OtpVerify />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/id-verify" element={<IdentityVerify />} />

@@ -39,7 +39,7 @@ function header() {
               <a href="/login" className='font-medium text-sm tracking-tight px-7 py-2.5 capitalize bg-primary text-white rounded-full'>Get started</a>
             </div> */}
             <Stack spacing={2} direction="row" className='login_btn gap-6 items-center hidden lg:flex'>
-            <Link href="/login" className='!font-medium text-sm tracking-tight px-7 py-2.5 capitalize bg-primary text-white rounded-full no-underline hover:bg-darkblue'>Get started</Link>
+            <Link href="/get-started" className='!font-medium text-sm tracking-tight px-7 py-2.5 capitalize bg-primary text-white rounded-full no-underline hover:bg-darkblue'>Get started</Link>
           </Stack>
           </nav>
         </div>
