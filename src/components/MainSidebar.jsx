@@ -1,5 +1,5 @@
-import React, { useContext, } from 'react';
-import { Link } from 'react-router-dom'; // Add this for linking
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ChatIcon from '@mui/icons-material/Chat';
 import CallIcon from '@mui/icons-material/Call';
 import Box from '@mui/material/Box';
@@ -9,35 +9,35 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingPopup from './SettingPopup';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ProfileModal from './ProfileModal';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 
 const NAVIGATION = [
   {
-    // title: 'Menu',
     icon: <MenuIcon />,
-    // link: '/menu',
   },
   {
-    // title: 'Chat',
     icon: <ChatIcon />,
     link: '/chat',
   },
-  // {
-  //   // title: 'Groups',
-  //   icon: <GroupIcon />,
-  //   link: '/group',
-  // },
   {
-    // title: 'Calls',
     icon: <CallIcon />,
     link: '/call',
   },
 ];
 
 const MainSidebar = () => {
+  const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
+  const navigate = useNavigate();
 
-  const {isSidebarOpen, toggleSidebar } = useContext(LayoutContext)
+  const handleLogout = () => {
+    // Clear all local storage
+    localStorage.clear();
+    // Redirect to the main home URL (adjust as needed)
+    navigate('/');
+  };
+
   return (
     <Box
       sx={{
@@ -57,8 +57,8 @@ const MainSidebar = () => {
             key={index}
             className="py-3 p-4"
             onClick={index === 0 ? toggleSidebar : null}
-            component={Link} // Use Link component to navigate
-            to={item.link} // Link destination
+            component={Link}
+            to={item.link}
           >
             <ListItemIcon className="text-newgray">{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
@@ -75,6 +75,11 @@ const MainSidebar = () => {
         <ListItem button className="p-0">
           <ListItemIcon>
             <ProfileModal />
+          </ListItemIcon>
+        </ListItem>
+        <ListItem button className="p-0" onClick={handleLogout}>
+          <ListItemIcon className='justify-center'>
+            <LogoutIcon className='h-12 flex justify-center items-center text-newgray' />
           </ListItemIcon>
         </ListItem>
       </List>
