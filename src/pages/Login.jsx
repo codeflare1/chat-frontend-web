@@ -46,15 +46,24 @@ const Login = () => {
                 }
 
                 if (response?.success === true) {
-                  toast.success(`${response?.response}`)
-                  console.log(response); // Handle success response
-                  navigate("/otpverify", { state: phone });
+                  debugger
+                  if(response?.response?.is_already_exist === 0){
+                    toast.success(`Otp Sent successfully`)
+                    localStorage.setItem("number",values.phoneNumber)
+                    console.log(response); // Handle success response
+                    navigate("/otpverify", { state: phone });
+                  }else{
+                    toast.success(`Otp Sent successfully`)
+                    localStorage.setItem("token", response?.response?.tokens.access?.token)
+                    localStorage.setItem("number",values.phoneNumber)
+                    localStorage.setItem("haveAccount",true)
+                    console.log(response); // Handle success response
+                    navigate("/enterPin", { state: phone });
+                  }
+              
                 }
               } catch (error) {
-                localStorage.setItem("haveAccount",true)
-                navigate("/enterPin");
-                toast.success(`${error?.response.data.message}`)
-
+                toast.error(`${error?.response.data.message}`)
                 console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
               }
             }}

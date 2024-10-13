@@ -27,8 +27,6 @@ const EnterPin = () => {
         const phone = localStorage.getItem("number");
         const formData = new FormData();
         formData.append("pin", values.pin);
-        formData.append("method", "register");
-        formData.append("phoneNumber", phone);
         const response = await postData("/loginWithPin", formData);
 
         if (response?.code === 400) {
