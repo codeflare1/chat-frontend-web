@@ -59,9 +59,9 @@ const Profile = () => {
               // Append form values to formData
               formData.append('firstName', values.firstName);
               formData.append('lastName', values.lastName);
-              // if (values.userProfileImage) {
-              //   formData.append('userProfileImage', values.userProfileImage);
-              // }
+              if (values.userProfileImage) {
+                formData.append('userProfileImage', values.userProfileImage);
+              }
 
               // console.log(values?.userProfileImage,"fsdfsdfsdfsdf")
               try {
