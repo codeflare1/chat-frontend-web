@@ -49,7 +49,7 @@ function Footer() {
                       <Link href="/" className='nav_item no-underline text-base text-white text-left py-2 inline-block hover:text-primary'>Term & Condition</Link>
                     </li>
                     <li className='nav_link'>
-                      <Link href="/" className='nav_item no-underline text-base text-white text-left py-2 inline-block hover:text-primary'>Privacy Policy</Link>
+                      <Link href="../privacy-policy.pdf" target='_blank' className='nav_item no-underline text-base text-white text-left py-2 inline-block hover:text-primary'>Privacy Policy</Link>
                     </li>
                   </ul>
                 </div>
