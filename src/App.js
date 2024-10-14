@@ -30,8 +30,13 @@ function App() {
   const location = useLocation();
   const [socket, setSocket] = useState(null);
 
+
+  useEffect(()=>{
+    localStorage.setItem("loginUserId" ,"")
+  },[])
   // Initialize Socket.IO connection when the component mounts
   useEffect(() => {
+
     const newSocket = io(SOCKET_SERVER_URL, { autoConnect: false });
 
     // Connect the socket
@@ -93,7 +98,6 @@ function App() {
         <Route path="/call" element={<Calls />} />
         <Route path="/group" element={<Group />} />
         <Route path="/chat" element={<Chat socket={socket} />} />
-
         {/* Dashboard Route */}
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>

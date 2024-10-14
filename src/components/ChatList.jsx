@@ -11,8 +11,9 @@ import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
 
-const ChatList = () => {
+const ChatList = ({socket,setSelectedReceiverId}) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
+  const loginUserId = localStorage.getItem("loginUserId")
   const [makeGroup, setMakeGroup] = useState(false);
   // Static chat data
   const chatList = [
@@ -21,65 +22,27 @@ const ChatList = () => {
       lastMessage: 'Hey, how are you?',
       time: '12:45 PM',
       isDelivered: true,
+      senderId:"6655b54710effd288d44f56d"
     },
     {
       name: 'Sandy Singh',
       lastMessage: 'Let’s catch up tomorrow!',
       time: '11:30 AM',
       isDelivered: false,
+      senderId:"66a774bf285c4f6663e61ba9"
     },
-    {
-      name: 'Alice Johnson',
-      lastMessage: 'Can you send me the file?',
-      time: '10:15 AM',
-      isDelivered: true,
-    },
-    {
-      name: 'Kinner Mandela',
-      lastMessage: 'Can you send me the file?',
-      time: '10:15 AM',
-      isDelivered: false,
-    },
-    {
-      name: 'Michael Smith',
-      lastMessage: 'I need the report ASAP.',
-      time: '9:30 AM',
-      isDelivered: true,
-    },
-    {
-      name: 'Jessica Lee',
-      lastMessage: 'Let’s catch up later.',
-      time: '11:45 AM',
-      isDelivered: false,
-    },
-    {
-      name: 'David Miller',
-      lastMessage: 'Meeting at 3 PM, right?',
-      time: '8:50 AM',
-      isDelivered: false,
-    },
-    {
-      name: 'Emily Brown',
-      lastMessage: 'Got it, thanks!',
-      time: '7:30 AM',
-      isDelivered: false,
-    },
-    {
-      name: 'Chris Wilson',
-      lastMessage: 'Please review the document.',
-      time: '6:10 PM',
-      isDelivered: true,
-    },
-    {
-      name: 'Sophia Davis',
-      lastMessage: 'Can we reschedule the call?',
-      time: '3:00 PM',
-      isDelivered: true,
-    },
+ 
   ];
   const handleGroupToggle = () => {
     setMakeGroup(!makeGroup);
   };
+
+
+
+const JoinChat = (receiverId,)=>{
+  socket.emit('joinChat', { senderId:loginUserId , receiverId });
+  setSelectedReceiverId(receiverId)
+}
 
   return (
     <>
@@ -140,7 +103,9 @@ const ChatList = () => {
             {chatList.length > 0 ? (
               <div className="chat_list flex flex-col gap-1">
                 {chatList.map((chat, index) => (
-                  <ChatCard key={index} chat={chat} />
+                  <div onClick={()=>JoinChat(chat?.senderId)} key={index} >
+                    <ChatCard chat={chat} />
+                    </div>
                 ))}
               </div>
             ) : (
