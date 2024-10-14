@@ -19,6 +19,7 @@ import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import EnterPin from './pages/EnterPin';
 import ResetPassword from './pages/ResetPassword';
+import About from './pages/About';
 
 
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/call" element={<Calls />} />
         <Route path="/group" element={<Group/>} />
         <Route path="/chat" element={<Chat/>} />
+        <Route path="/about" element={<About/>} />
 
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>

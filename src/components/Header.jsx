@@ -19,6 +19,9 @@ function header() {
             <div className="menu hidden lg:block">
               <ul className='flex gap-6 items-center'>
                 <li>
+                  <a href="/about" className='font-medium text-base text-Newblack'>About Us</a>
+                </li>
+                <li>
                   <a href="/" className='font-medium text-base text-Newblack'>Help</a>
                 </li>
                 <li>
