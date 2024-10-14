@@ -4,7 +4,10 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   // Live URL
-  baseURL: 'https://api.gatsbychat.com/v1/auth',
+  // baseURL: 'https://api.gatsbychat.com/v1/auth',
+  baseURL: 'http://localhost:3000/v1/auth',
+
+ 
   // Local URL
   // baseURL: 'http://16.170.132.218:3000/v1/auth',
   
