@@ -9,7 +9,6 @@ const Chat = () => {
     <div>
     <Layout>
     <ChatList/>
-    {/* <GroupInvitation /> */}
 
     {/* Chat */}
         <MainChat />

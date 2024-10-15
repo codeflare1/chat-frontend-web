@@ -38,11 +38,9 @@ const ProfileDrawer = () => {
     <Box
       sx={{ width: 982, padding: '20px 100px', display: 'flex', flexDirection: 'column', gap: '12px', position: 'relative' }}
       role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
     >
       <div className='absolute left-5 top-3'>
-        <ArrowBackIosIcon className='text-Newblack text-xl cursor-pointer' />
+        <ArrowBackIosIcon className='text-Newblack text-xl cursor-pointer' onClick={toggleDrawer(false)} />
       </div>
       <Box className="user_profile flex flex-col justify-center items-center gap-2 mb-4">
         <Avatar alt='' src='' sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', color: '#4A4A4A', marginRight: '8px', fontSize: '36px', fontWeight: 600 }} >J</Avatar>
@@ -86,6 +84,7 @@ const ProfileDrawer = () => {
               </Select>
             </FormControl>
           </Box>
+          
           <Box className='flex justify-between items-center w-full h-12 hover:bg-sidebar text-Newblack capitalize text-xs rounded-md px-8 cursor-pointer'>
             <div variant="text" className='hover:bg-none flex gap-6 items-center text-sm text-Newblack'>
               <CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />
