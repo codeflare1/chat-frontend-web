@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Login from './pages/Login';
 import OtpVerify from './pages/OtpVerify';
+import VerifyForgotOtp from './pages/VerifyForgotOtp';
 import Profile from './pages/Profile';
 import PinPassword from './pages/PinPassword';
 import ForgotPin from './pages/ForgotPin';
@@ -75,6 +76,7 @@ function App() {
     '/forgot',
     '/group',
     '/chat',
+    "/verify-otp"
   ];
 
   const hideHeaderFooter = noHeaderFooterRoutes.includes(location.pathname);
@@ -86,7 +88,10 @@ function App() {
         {/* Authentication Routes */}
         <Route path="/get-started" element={<Login />} />
         <Route path="/enterPin" element={<EnterPin />} />
-        <Route path="/otpverify" element={<OtpVerify />} />
+        <Route path="/otpverify" element={<OtpVerify />}/>
+        <Route path="/verify-otp" element={<VerifyForgotOtp />}/>
+
+
         <Route path="/profile" element={<Profile />} />
         <Route path="/id-verify" element={<IdentityVerify />} />
         <Route path="/password" element={<PinPassword />} />

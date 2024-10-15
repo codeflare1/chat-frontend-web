@@ -58,7 +58,7 @@ const ResetPassword = () => {
             console.log(response.data); // For debugging
             localStorage.setItem("token", response?.tokens?.access?.token)
             // navigate("/id-verify"); // Redirect to the profile page
-            navigate("/profile"); // Redirect to the profile page
+            navigate("/chat"); // Redirect to the profile page
           }
         
         } catch (error) {

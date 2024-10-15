@@ -42,7 +42,7 @@ const navigate = useNavigate()
       if (response?.success === true) {
         toast.success(`${response?.response}`)
         console.log(response); // Handle success response
-        navigate("/otpverify", { state: phone });
+        navigate("/verify-otp", { state: phone });
       }
     } catch (error) {
       toast.error(`${error?.response.data.message}`)
