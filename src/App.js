@@ -24,6 +24,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import About from './pages/About';
+import PrivateRoute from './components/common/PrivateRoute';
+import PublicRoute from './components/common/PublicRoute';
 
 // Socket.IO Server URL (Replace with your backend URL)
 const SOCKET_SERVER_URL = 'http://localhost:3000'; 
@@ -86,6 +88,7 @@ function App() {
       {!hideHeaderFooter && <Header />}
       <Routes>
         {/* Authentication Routes */}
+        <Route element={<PublicRoute />}>
         <Route path="/get-started" element={<Login />} />
         <Route path="/enterPin" element={<EnterPin />} />
         <Route path="/otpverify" element={<OtpVerify />}/>
@@ -100,6 +103,12 @@ function App() {
 
         {/* Main App Routes */}
         <Route path="/" element={<Home />} />
+        
+        </Route>
+        
+
+        <Route element={<PrivateRoute />}>
+        
         <Route path="/blog" element={<Blog />} />
         <Route path="/call" element={<Calls />} />
         <Route path="/group" element={<Group />} />
@@ -107,6 +116,9 @@ function App() {
         <Route path="/about" element={<About/>} />
         {/* Dashboard Route */}
         <Route path="/dashboard" element={<Dashboard />} />
+        
+        </Route>
+      
       </Routes>
       {!hideHeaderFooter && <Footer />}
       <ToastContainer />
