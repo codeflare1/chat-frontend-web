@@ -26,6 +26,7 @@ import { io } from 'socket.io-client';
 import About from './pages/About';
 import PrivateRoute from './components/common/PrivateRoute';
 import PublicRoute from './components/common/PublicRoute';
+import NotFound from './pages/NotFound';
 
 // Socket.IO Server URL (Replace with your backend URL)
 const SOCKET_SERVER_URL = 'http://localhost:3000'; 
@@ -93,31 +94,26 @@ function App() {
         <Route path="/enterPin" element={<EnterPin />} />
         <Route path="/otpverify" element={<OtpVerify />}/>
         <Route path="/verify-otp" element={<VerifyForgotOtp />}/>
-
-
         <Route path="/profile" element={<Profile />} />
         <Route path="/id-verify" element={<IdentityVerify />} />
         <Route path="/password" element={<PinPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgot" element={<ForgotPin />} />
-
-        {/* Main App Routes */}
         <Route path="/" element={<Home />} />
         
         </Route>
         
+          {/* Main App Routes */}
 
         <Route element={<PrivateRoute />}>
-        
         <Route path="/blog" element={<Blog />} />
         <Route path="/call" element={<Calls />} />
         <Route path="/group" element={<Group />} />
         <Route path="/chat" element={<Chat socket={socket} />} />
         <Route path="/about" element={<About/>} />
-        {/* Dashboard Route */}
         <Route path="/dashboard" element={<Dashboard />} />
-        
         </Route>
+        <Route path="*" element={<NotFound />} />
       
       </Routes>
       {!hideHeaderFooter && <Footer />}
