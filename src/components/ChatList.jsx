@@ -133,7 +133,7 @@ const ChatList = () => {
                 </ButtonGroup>
               </Box>
 
-              <SearchBar />
+              <SearchBar marginClass="mb-2"  />
             </div>
 
             {/* ChatCard */}

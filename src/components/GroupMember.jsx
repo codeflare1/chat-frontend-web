@@ -82,7 +82,7 @@ const GroupMember = ({handleGroup}) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar />
+                            <SearchBar marginClass="mb-2"  />
 
                         </div>
 

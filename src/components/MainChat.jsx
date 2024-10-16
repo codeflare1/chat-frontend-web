@@ -104,7 +104,7 @@ const MainChat = () => {
                                 <Avatar alt='' src='' sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', color: '#4A4A4A', marginRight: '8px', fontSize: '20px', fontWeight: 600 }} >J</Avatar>
                             )}
 
-                            <div className={`${message.sender === 'me' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'} p-3 rounded-xl flex items-end gap-2`}>
+                            <div className={`${message.sender === 'me' ? 'bg-blue-500 text-white' : 'bg-Chathover text-black'} p-3 rounded-xl flex items-end gap-2`}>
                                 <Typography variant='body2' className='text-sm'>{message.text}</Typography>
                                 <p className="text-right text-xs">{message.time}</p>
                                 {message.sender === 'me' && <DoneAllIcon className='w-4 h-4' />}

@@ -56,7 +56,7 @@ const NewChat = ({handleGroupToggle}) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar />
+                            <SearchBar marginClass="mb-2"  />
 
                         </div>
 
