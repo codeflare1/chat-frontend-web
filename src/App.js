@@ -29,16 +29,16 @@ import PublicRoute from './components/common/PublicRoute';
 import NotFound from './pages/NotFound';
 
 // Socket.IO Server URL (Replace with your backend URL)
-const SOCKET_SERVER_URL = 'http://localhost:3000'; 
+// const SOCKET_SERVER_URL = 'http://localhost:3000'; 
+
+const SOCKET_SERVER_URL = 'https://api.gatsbychat.com'; 
+
 
 function App() {
   const location = useLocation();
   const [socket, setSocket] = useState(null);
 
 
-  useEffect(()=>{
-    localStorage.setItem("loginUserId" ,"")
-  },[])
   // Initialize Socket.IO connection when the component mounts
   useEffect(() => {
 
@@ -89,7 +89,7 @@ function App() {
       {!hideHeaderFooter && <Header />}
       <Routes>
         {/* Authentication Routes */}
-        <Route element={<PublicRoute />}>
+        {/* <Route element={<PublicRoute />}> */}
         <Route path="/get-started" element={<Login />} />
         <Route path="/enterPin" element={<EnterPin />} />
         <Route path="/otpverify" element={<OtpVerify />}/>
@@ -101,18 +101,18 @@ function App() {
         <Route path="/forgot" element={<ForgotPin />} />
         <Route path="/" element={<Home />} />
         
-        </Route>
+        {/* </Route> */}
         
           {/* Main App Routes */}
 
-        <Route element={<PrivateRoute />}>
+        {/* <Route element={<PrivateRoute />}> */}
         <Route path="/blog" element={<Blog />} />
         <Route path="/call" element={<Calls />} />
         <Route path="/group" element={<Group />} />
         <Route path="/chat" element={<Chat socket={socket} />} />
         <Route path="/about" element={<About/>} />
         <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
+        {/* </Route> */}
         <Route path="*" element={<NotFound />} />
       
       </Routes>

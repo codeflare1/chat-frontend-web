@@ -35,10 +35,12 @@ const Login = () => {
               const formData = new FormData();
               // Append form values to formData
               formData.append('phoneNumber', values.phoneNumber);
-              formData.append('method', "register");
+              // formData.append('method', "register");
+              formData.append('pin', "1234");
+
 
               try {
-                const response = await postData("/send-otp", formData)
+                const response = await postData("/login", formData)
                 console.log(response.data); // Handle success response
                 const phone = { phone: values.phoneNumber }
                 if (response?.code === 400) {
@@ -46,20 +48,12 @@ const Login = () => {
                 }
 
                 if (response?.success === true) {
-                  debugger
-                  if(response?.response?.is_already_exist === 0){
-                    toast.success(`Otp Sent successfully`)
+                    localStorage.setItem("token", response?.tokens.access?.token)
                     localStorage.setItem("number",values.phoneNumber)
-                    console.log(response); // Handle success response
-                    navigate("/otpverify", { state: phone });
-                  }else{
-                    toast.success(`Enter Your Pin`)
-                    localStorage.setItem("token", response?.response?.tokens.access?.token)
-                    localStorage.setItem("number",values.phoneNumber)
+                    localStorage.setItem('loginUserId',response?.user?.id);
                     localStorage.setItem("haveAccount",true)
-                    console.log(response); // Handle success response
-                    navigate("/enterPin", { state: phone });
-                  }
+                    console.log(response); // Handle success respons
+                    navigate("/chat");
               
                 }
               } catch (error) {

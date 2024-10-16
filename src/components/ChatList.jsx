@@ -14,7 +14,16 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
-  const [chatList, setChatList] = useState([]);
+  const [chatList, setChatList] = useState([  {
+    id: "6710097c2923560263c31a76",
+    name: "User 1"
+  },
+  {
+    id: "671008bf2923560263c31a72",
+    name: "User 2"
+  }]);
+
+  // const [chatList, setChatList] = useState([]);
 
   // Fetch chat list from the server when the component mounts
   useEffect(() => {
@@ -24,7 +33,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
       // Listen for 'getChats' event from the server
       socket.on('getChats', (chats) => {
         console.log('Received chats:', chats);
-        setChatList(chats?.data);
+        // setChatList(chats?.data);
       });
 
       // Cleanup the socket listener on component unmount
@@ -97,8 +106,8 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
 
             {chatList.length > 0 ? (
               <div className="chat_list flex flex-col gap-1">
-                {chatList.map((chat, index) => (
-                  <div key={chat._id || index} onClick={() => joinChat(chat.senderId)}>
+                {chatList.filter(ele=>ele.id !== loginUserId).map((chat, index) => (
+                  <div key={chat._id || index} onClick={() => joinChat(chat.id)}>
                     <ChatCard chat={chat} />
                   </div>
                 ))}

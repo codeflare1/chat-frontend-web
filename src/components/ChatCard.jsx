@@ -22,17 +22,17 @@ const ChatCard = ({ chat }) => {
       {/* Chat Details */}
       <Box sx={{ flexGrow: 1, marginLeft: '12px' }}>
         <Typography variant="body1" className='text-Newblack text-sm font-semibold'>
-          {chat.name}
+          {chat.name} {chat.id}
         </Typography>
         <Typography variant="body2" sx={{ color: '#888' }}>
-          {chat.lastMessage}
+          {chat?.lastMessage}
         </Typography>
       </Box>
 
       {/* Time and Delivered Icon */}
       <Box className='flex flex-col justify-end items-end'>
         <Typography variant="caption" sx={{ color: '#888' }}>
-          {chat.time}
+          {chat?.time}
         </Typography>
         <DoneAllIcon sx={{ color: chat.isDelivered ? '#0d6efd' : '#b3b3b3', fontSize: 16, marginTop: '4px' }} />
       </Box>
