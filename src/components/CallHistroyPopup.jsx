@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import { styled } from '@mui/system';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 
 export default function SimplePopup() {
@@ -20,7 +21,7 @@ export default function SimplePopup() {
         <MoreHorizIcon />
       </div>
       <BasePopup className='z-50' id={id} open={open} anchor={anchor}>
-        <PopupBody>Clear call history</PopupBody>
+        <PopupBody> <DeleteOutlineOutlinedIcon/> Clear call history</PopupBody>
       </BasePopup>
     </div>
   );

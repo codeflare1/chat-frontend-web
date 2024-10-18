@@ -1,19 +1,15 @@
 import React, { useState, } from 'react';
-import { Avatar, Box, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GroupIcon from '@mui/icons-material/Group';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import TagIcon from '@mui/icons-material/Tag';
-import ContactDots from './ContactDots'
-import VerifiedIcon from '@mui/icons-material/Verified';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
+import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import VideocamIcon from '@mui/icons-material/Videocam';
 
 
-const NewChat = ({handleGroupToggle}) => {
+const NewCall = ({ handleGroupToggle }) => {
     const [chooseMember, setchooseMember] = useState(false)
     const [hoveredBox, setHoveredBox] = useState(null);
     // Static chat data
@@ -47,47 +43,24 @@ const NewChat = ({handleGroupToggle}) => {
                             padding: '12px'
                         }}
                     >
-                        <div className="flex flex-col sticky bg-bgChat top-0 z-50">
+                        <div className="flex flex-col sticky bg-bgChat top-0 z-50 mb-4">
                             <Box className="flex justify-center relative pb-3">
                                 <Box className="flex items-center">
-                                    <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer'  onClick={handleGroupToggle} />
+                                    <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer' onClick={handleGroupToggle} />
                                     <Typography variant="h6" className="p-0 font-semibold leading-none text-base text-center">
-                                        New Chat
+                                        New Call
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar marginClass="mb-2"  />
+                            <SearchBar />
 
                         </div>
 
-                        {/* NewChat */}
-                        <Box className='flex flex-col gap-1.5 mb-4'>
-                            <Button variant="text" className='w-full h-12 rounded-xl hover:bg-sidebar justify-start p-3 text-Newblack capitalize text-sm font-medium' startIcon={<GroupIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full' />} onClick={handleGroup}>
-                                New Group
-                            </Button>
-                            <Button variant="text" className='w-full h-12 rounded-xl hover:bg-sidebar justify-start p-3 text-Newblack capitalize text-sm font-medium' startIcon={<AlternateEmailIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full' />}>
-                                Find by username
-                            </Button>
-                            <Button variant="text" className='w-full h-12 rounded-xl hover:bg-sidebar justify-start p-3 text-Newblack capitalize text-sm font-medium' startIcon={<TagIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full' />}>
-                                Find by Phone number
-                            </Button>
-                        </Box>
+
 
                         {/* Contact */}
                         <Box className='mb-4'>
                             <Typography variant='h6' className='text-Newblack text-base font-semibold mb-2'>Contact</Typography>
-                            {/* This is showing default */}
-                            <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
-                                onMouseEnter={() => setHoveredBox(1)}
-                                onMouseLeave={() => setHoveredBox(null)}
-                            >
-                                <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
-                                    <ListAltIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full me-2' /> Note to self <VerifiedIcon className='w-4 h-6 p-0 text-primary' />
-                                </Box>
-                                {hoveredBox === 1 && (
-                                    <ContactDots sx={{ color: '#4A4A4A', }} />
-                                )}
-                            </Box>
                             {/* when any user in my contact */}
                             <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
                                 onMouseEnter={() => setHoveredBox(2)}
@@ -96,9 +69,14 @@ const NewChat = ({handleGroupToggle}) => {
                                 <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
                                     <Avatar alt='' src='' sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' /> John Doe <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
                                 </Box>
-                                {hoveredBox === 2 && (
-                                    <ContactDots sx={{ color: '#4A4A4A', }} />
-                                )}
+                                <Box className='flex gap-1'>
+                                    <IconButton size="small" className="text-newgray">
+                                        <CallOutlinedIcon className='w-6 h-6' />
+                                    </IconButton>
+                                    <IconButton size="small" className="text-newgray">
+                                        <VideocamIcon className='w-6 h-6' />
+                                    </IconButton>
+                                </Box>
                             </Box>
                         </Box>
 
@@ -114,8 +92,16 @@ const NewChat = ({handleGroupToggle}) => {
                                     <GroupIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full me-2' />
                                     <div className='flex flex-col gap-0.5'>
                                         The Chat Group
-                                        <Typography variant='body' className='text-xs text-gray-400'>14 members</Typography>
                                     </div>
+                                </Box>
+
+                                <Box className='flex gap-1'>
+                                    <IconButton size="small" className="text-newgray">
+                                        <CallOutlinedIcon className='w-6 h-6' />
+                                    </IconButton>
+                                    <IconButton size="small" className="text-newgray">
+                                        <VideocamIcon className='w-6 h-6' />
+                                    </IconButton>
                                 </Box>
 
                             </Box>
@@ -131,4 +117,4 @@ const NewChat = ({handleGroupToggle}) => {
     );
 };
 
-export default NewChat;
+export default NewCall;

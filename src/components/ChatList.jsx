@@ -101,7 +101,8 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
                   </Button>
                 </ButtonGroup>
               </Box>
-              <SearchBar />
+
+              <SearchBar marginClass="mb-2"  />
             </div>
 
             {chatList.length > 0 ? (

@@ -13,7 +13,6 @@ export default function SimplePopup() {
 
   const open = Boolean(anchor);
   const id = open ? 'simple-popup' : undefined;
-
   return (
     <div>
       <div aria-describedby={id} type="button" onClick={handleClick} className='' >
