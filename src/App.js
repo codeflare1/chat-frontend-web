@@ -27,7 +27,6 @@ import About from './pages/About';
 import PrivateRoute from './components/common/PrivateRoute';
 import PublicRoute from './components/common/PublicRoute';
 import NotFound from './pages/NotFound';
-
 // Socket.IO Server URL (Replace with your backend URL)
 // const SOCKET_SERVER_URL = 'http://localhost:3000'; 
 
