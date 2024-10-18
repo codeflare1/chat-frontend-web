@@ -14,7 +14,6 @@ const Profile = () => {
 
   // Handle image change
   const handleImageChange = (e, setFieldValue) => {
-    debugger
     const file = e.target.files[0];
     if (file) {
       setFieldValue("userProfileImage", file); // Set file in Formik
@@ -80,11 +79,11 @@ const Profile = () => {
                 if (response?.data?.success === true) {
                   toast.success(`${response?.data?.message}`);
                   console.log(response);
-
+                  localStorage.setItem("statusCode",4)
+                  console.log(response.data); // Handle success response
+                  navigate("/chat");
                 }
 
-                console.log(response.data); // Handle success response
-                navigate("/chat");
               } catch (error) {
                 const errorMessage = error?.response?.data?.message || error.message;
                 toast.error(errorMessage);

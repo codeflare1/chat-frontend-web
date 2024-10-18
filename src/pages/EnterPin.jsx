@@ -32,7 +32,8 @@ const EnterPin = () => {
         if (response?.code === 400) {
           toast.error(response.code.message);
         } else if (response?.success) {
-          toast.success("Login successfully");
+          toast.success(`${response?.message}`);
+          localStorage.setItem("statusCode",response?.statusCode)
           navigate("/chat")
         }
       } catch (error) {

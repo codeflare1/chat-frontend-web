@@ -31,34 +31,43 @@ const Login = () => {
             validationSchema={validationSchema}
             onSubmit={async (values) => {
               console.log('Form data:', values);
-              // Handle form submission here (e.g., navigate to OTP verification page)
               const formData = new FormData();
-              // Append form values to formData
               formData.append('phoneNumber', values.phoneNumber);
-              // formData.append('method', "register");
-              formData.append('pin', "1234");
-
-
+              formData.append('method', "register");
               try {
-                const response = await postData("/login", formData)
+                const response = await postData("/send-otp", formData)
                 console.log(response.data); // Handle success response
                 const phone = { phone: values.phoneNumber }
                 if (response?.code === 400) {
-                  toast.error(`${response.code.message}`)
+                  toast.error(`${response.message}`)
                 }
-
                 if (response?.success === true) {
-                    localStorage.setItem("token", response?.tokens.access?.token)
-                    localStorage.setItem("number",values.phoneNumber)
-                    localStorage.setItem('loginUserId',response?.user?.id);
-                    localStorage.setItem("haveAccount",true)
-                    console.log(response); // Handle success respons
-                    navigate("/chat");
-              
+                  localStorage.setItem("number", values.phoneNumber)
+                  if (response?.user?.statusCode === 1) {
+                    localStorage.setItem("token", response?.tokens?.access?.token)
+                    localStorage.setItem("statusCode", response?.user?.statusCode)
+                    toast.success(`${response?.response?.message}`)
+                    navigate('/id-verify');
+                  } else if (response?.user?.statusCode === 2) {
+                    localStorage.setItem("token", response?.tokens?.access?.token)
+                    localStorage.setItem("statusCode", response?.user?.statusCode)
+                    toast.success(`${response?.message}`)
+                    navigate('/profile');
+                  } else if (response?.user?.statusCode === 3) {
+                    localStorage.setItem("token", response?.tokens?.access?.token)
+                    localStorage.setItem("statusCode", response?.user?.statusCode)
+                    toast.success(`${response?.message}`)
+                    navigate('/enterPin');
+                  } else {
+                    toast.success(`${response?.response?.message}`)
+                    localStorage.setItem("statusCode", 0)
+                    localStorage.setItem("otp_id", response?.response?.data?.otp_id)
+                    navigate("/otpverify", { state: phone });
+                  }
                 }
               } catch (error) {
-                toast.error(`${error?.response.data.message}`)
-                console.error('Error:', error.response ? error.response.data : error.message); // Handle error response
+                toast.error(`${error?.response.message}`)
+                console.error('Error:', error.response ? error.response : error.message); // Handle error response
               }
             }}
           >
@@ -90,7 +99,7 @@ const Login = () => {
               </Form>
             )}
           </Formik>
-{/*               
+          {/*               
           <Box className="flex justify-end mt-2">
                   <Link href="/forgot">Forgot PIN?</Link>
                 </Box> */}

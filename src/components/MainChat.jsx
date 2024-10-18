@@ -36,7 +36,6 @@ const MainChat = ({ socket, selectedReceiverId }) => {
 
     // Listen for real-time incoming messages
     socket.on('receiveMessage', (msg) => {
-      debugger
       setMessages((prev) => [...prev, msg]);
     });
 

@@ -19,8 +19,8 @@ const ResetPassword = () => {
       .matches(/^[0-9]{4}$/, "PIN must be exactly 4 digits"),
     confirmPin: isConfirmPin
       ? Yup.string()
-          .required("Confirm PIN is required")
-          .oneOf([Yup.ref("pin"), null], "PINs must match")
+        .required("Confirm PIN is required")
+        .oneOf([Yup.ref("pin"), null], "PINs must match")
       : Yup.string().notRequired(),
   });
 
@@ -31,13 +31,13 @@ const ResetPassword = () => {
       confirmPin: "", // Store as string
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    onSubmit: async (values) => {
       if (!isConfirmPin) {
         setIsConfirmPin(true); // Move to confirm pin step
         formik.setFieldValue("confirmPin", ""); // Reset confirm pin field
       } else {
         console.log("PIN setup confirmed", values.confirmPin);
-        const phone =  localStorage.getItem("number")
+        const phone = localStorage.getItem("number")
         const formData = new FormData();
         // Append form values to formData
         formData.append('pin', values.pin);
@@ -50,26 +50,25 @@ const ResetPassword = () => {
           if (response?.code === 400) {
             toast.error(`${response.code.message}`); // Make sure `response.code.message` exists
           }
-        
+
           // Handle success response
           if (response?.success === true) {
-            debugger
             toast.success('PIN set Successfully'); // Assuming `response.data` contains the success message
             console.log(response.data); // For debugging
             localStorage.setItem("token", response?.tokens?.access?.token)
             // navigate("/id-verify"); // Redirect to the profile page
             navigate("/chat"); // Redirect to the profile page
           }
-        
+
         } catch (error) {
           // Handle error response from server
           const errorMessage = error?.response?.data?.message || error?.message || 'An unexpected error occurred';
           toast.error(errorMessage);
-          
+
           // For debugging purposes
           console.error('Error:', error?.response ? error.response.data : error?.message);
         }
-        
+
       }
     },
   });

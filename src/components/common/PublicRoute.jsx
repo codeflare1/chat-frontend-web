@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 const PublicRoute = () => {
-  const adminToken = window.localStorage.getItem("token");
+  // const adminToken = window.localStorage.getItem("token");
+  const statusCode = localStorage.getItem('statusCode'); // Get the status code from local storage
   return (
-    !adminToken ? <Outlet /> : <Navigate to='/chat' />
+    statusCode !== "4" ? <Outlet /> : <Navigate to='/chat' />
     )
 };
 export default PublicRoute;
