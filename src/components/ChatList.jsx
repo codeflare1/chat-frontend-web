@@ -45,7 +45,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
   return (
     <>
       {makeGroup ? (
-        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket}/>
+        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket} setSelectedReceiverId={setSelectedReceiverId}/>
       ) : (
         <Box
           sx={{
