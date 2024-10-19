@@ -43,6 +43,7 @@ const Login = () => {
                 }
                 if (response?.success === true) {
                   localStorage.setItem("number", values.phoneNumber)
+                  localStorage.getItem('loginUserId',response?.user?.id);
                   if (response?.user?.statusCode === 1) {
                     localStorage.setItem("token", response?.tokens?.access?.token)
                     localStorage.setItem("statusCode", response?.user?.statusCode)

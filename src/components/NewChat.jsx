@@ -13,13 +13,31 @@ import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
 
 
-const NewChat = ({handleGroupToggle}) => {
+const NewChat = ({ handleGroupToggle , socket }) => {
     const [chooseMember, setchooseMember] = useState(false)
     const [hoveredBox, setHoveredBox] = useState(null);
     // Static chat data
     const handleGroup = () => {
         setchooseMember(!chooseMember)
     }
+
+
+    const [Contacts, setContacts] = useState([{
+        id: "6710097c2923560263c31a76",
+        name: "User 1"
+    },
+    {
+        id: "671008bf2923560263c31a72",
+        name: "User 2"
+    }]);
+
+
+const addToContact =(userID)=>{
+    socket.emit("addContact",{id:userID})
+}
+
+
+
     return (
 
         <>
@@ -50,13 +68,13 @@ const NewChat = ({handleGroupToggle}) => {
                         <div className="flex flex-col sticky bg-bgChat top-0 z-50">
                             <Box className="flex justify-center relative pb-3">
                                 <Box className="flex items-center">
-                                    <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer'  onClick={handleGroupToggle} />
+                                    <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer' onClick={handleGroupToggle} />
                                     <Typography variant="h6" className="p-0 font-semibold leading-none text-base text-center">
                                         New Chat
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar marginClass="mb-2"  />
+                            <SearchBar marginClass="mb-2" />
 
                         </div>
 
@@ -89,17 +107,28 @@ const NewChat = ({handleGroupToggle}) => {
                                 )}
                             </Box>
                             {/* when any user in my contact */}
-                            <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
-                                onMouseEnter={() => setHoveredBox(2)}
-                                onMouseLeave={() => setHoveredBox(null)}
-                            >
-                                <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
-                                    <Avatar alt='' src='' sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' /> John Doe <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
-                                </Box>
-                                {hoveredBox === 2 && (
-                                    <ContactDots sx={{ color: '#4A4A4A', }} />
-                                )}
-                            </Box>
+
+                            {Contacts.map((ele) => {
+                                
+                                return (
+                                    <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
+                                        onMouseEnter={() => setHoveredBox(2)}
+                                        onMouseLeave={() => setHoveredBox(null)}
+                                        key={ele?.id}
+                                        onClick={()=>{addToContact(ele.id)}}
+                                    >
+                                        <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
+                                            <Avatar alt='' src='' sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' /> {ele?.name} <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
+                                        </Box>
+                                        {hoveredBox === 2 && (
+                                            <ContactDots sx={{ color: '#4A4A4A', }} />
+                                        )}
+                                    </Box>
+                                )
+                            })}
+
+
+
                         </Box>
 
                         {/* Group */}

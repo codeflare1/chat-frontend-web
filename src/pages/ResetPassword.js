@@ -39,33 +39,29 @@ const ResetPassword = () => {
         console.log("PIN setup confirmed", values.confirmPin);
         const phone = localStorage.getItem("number")
         const formData = new FormData();
-        // Append form values to formData
         formData.append('pin', values.pin);
         formData.append('confirmPin', values.confirmPin);
-        formData.append('method', "register"); // Ensure API expects 'method' field
+        formData.append('method', "reset"); // Ensure API expects 'method' field
         formData.append('phoneNumber', phone); // Assuming 'phoneNumber' is needed for PIN setup
         try {
-          const response = await postData(`/reset-pin`, formData); // Assuming 'postData' is your API request function
-          // Check for the response code and display error if code is 400
+          const response = await postData(`/set-pin`, formData); // Assuming 'postData' is your API request function
           if (response?.code === 400) {
             toast.error(`${response.code.message}`); // Make sure `response.code.message` exists
           }
 
-          // Handle success response
           if (response?.success === true) {
-            toast.success('PIN set Successfully'); // Assuming `response.data` contains the success message
-            console.log(response.data); // For debugging
-            localStorage.setItem("token", response?.tokens?.access?.token)
-            // navigate("/id-verify"); // Redirect to the profile page
-            navigate("/chat"); // Redirect to the profile page
+            if(response?.user?.statusCode == 3){
+              localStorage.getItem('loginUserId',response?.user?.id);
+              localStorage.setItem("token", response?.tokens)
+              toast.success('Pin Set Successfully');
+              localStorage.clear();
+              navigate("/"); // Redirect to the homr page
+            }
           }
-
         } catch (error) {
           // Handle error response from server
           const errorMessage = error?.response?.data?.message || error?.message || 'An unexpected error occurred';
           toast.error(errorMessage);
-
-          // For debugging purposes
           console.error('Error:', error?.response ? error.response.data : error?.message);
         }
 
