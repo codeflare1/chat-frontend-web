@@ -14,14 +14,6 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
-  // const [chatList, setChatList] = useState([  {
-  //   id: "6710097c2923560263c31a76",
-  //   name: "User 1"
-  // },
-  // {
-  //   id: "671008bf2923560263c31a72",
-  //   name: "User 2"
-  // }]);
 
   const [chatList, setChatList] = useState([]);
 
@@ -53,7 +45,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
   return (
     <>
       {makeGroup ? (
-        <NewChat handleGroupToggle={handleGroupToggle} />
+        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket}/>
       ) : (
         <Box
           sx={{
