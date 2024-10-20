@@ -42,7 +42,6 @@ const Login = () => {
                   toast.error(`${response.message}`)
                 }
                 if (response?.success === true) {
-                  debugger
                   localStorage.setItem("number", values.phoneNumber)
                   localStorage.setItem('loginUserId',response?.user?.id);
                   if (response?.user?.statusCode === 1) {

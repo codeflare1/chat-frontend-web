@@ -29,6 +29,7 @@ const NewChat = ({ handleGroupToggle , socket ,setSelectedReceiverId }) => {
 const addToContact =(receiverId)=>{
     socket.emit('joinChat', { senderId: loginUserId, receiverId });
     setSelectedReceiverId(receiverId)
+    handleGroupToggle()
 }
 
 
