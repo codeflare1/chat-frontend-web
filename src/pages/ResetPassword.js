@@ -51,7 +51,6 @@ const ResetPassword = () => {
 
           if (response?.success === true) {
             if(response?.user?.statusCode == 3){
-              localStorage.getItem('loginUserId',response?.user?.id);
               localStorage.setItem("token", response?.tokens)
               toast.success('Pin Set Successfully');
               localStorage.clear();

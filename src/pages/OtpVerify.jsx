@@ -17,7 +17,7 @@ const OtpVerify = () => {
   const navigate = useNavigate()
   const location = useLocation();
   const { phone } = location.state || {};
-  console.log("location.state?.phone", phone)
+  console.log("location.state?.ph one", phone)
 
   return (
     <div>

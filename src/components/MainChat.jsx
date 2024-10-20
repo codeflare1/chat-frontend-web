@@ -54,6 +54,7 @@ const MainChat = ({ socket, selectedReceiverId }) => {
   };
 
   const handleSendMessage = () => {
+    debugger
     if (message.trim()) {
       const msgData = {
         senderId: loginUserId,
