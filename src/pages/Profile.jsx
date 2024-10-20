@@ -78,6 +78,7 @@ const Profile = () => {
                 // Handle success response
                 if (response?.data?.success === true) {
                   toast.success(`${response?.data?.message}`);
+                  localStorage.setItem('loginUserId',response?.data?.user?.id);
                   console.log(response);
                   localStorage.setItem("statusCode",4)
                   console.log(response.data); // Handle success response

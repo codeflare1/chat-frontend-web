@@ -2,24 +2,32 @@ import React, { useState } from 'react'
 import Layout from '../layout/Layout'
 import ChatList from '../components/ChatList';
 import MainChat from '../components/MainChat';
-import ArchiveChat from '../components/ArchiveChat';
+// import ArchiveChat from '../components/ArchiveChat';
 
 
-const Chat = ({socket}) => {
-const [selectedReceiverId,setSelectedReceiverId] = useState("")
-console.log("selectedIdsselectedIds",selectedReceiverId)
+const Chat = ({ socket }) => {
+  const [selectedReceiverId, setSelectedReceiverId] = useState("")
+  const [selectedUser, setSelectedUser] = useState({})
+  const [chatList, setChatList] = useState([]);
+
 
   return (
     <div>
-    <Layout>
-    <ChatList socket={socket} setSelectedReceiverId ={setSelectedReceiverId}/>
-    <MainChat socket={socket} selectedReceiverId={selectedReceiverId} />
-    {/* <ChatList/> */}
-    {/* <ArchiveChat/> */}
+      <Layout>
+        <ChatList socket={socket} setSelectedReceiverId={setSelectedReceiverId}
+          selectedReceiverId={selectedReceiverId}
+          setSelectedUser={setSelectedUser}
+          setChatList={setChatList}
+          chatList={chatList}
 
-    {/* Chat */}
+        />
+        <MainChat socket={socket} selectedReceiverId={selectedReceiverId} setChatList={setChatList} selectedUser={selectedUser} />
+        {/* <ChatList/> */}
+        {/* <ArchiveChat/> */}
+
+        {/* Chat */}
         {/* <MainChat /> */}
-    </Layout>
+      </Layout>
     </div>
   )
 }

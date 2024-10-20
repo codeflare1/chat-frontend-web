@@ -43,7 +43,7 @@ const Login = () => {
                 }
                 if (response?.success === true) {
                   localStorage.setItem("number", values.phoneNumber)
-                  localStorage.getItem('loginUserId',response?.user?.id);
+                  localStorage.setItem('loginUserId',response?.user?.id);
                   if (response?.user?.statusCode === 1) {
                     localStorage.setItem("token", response?.tokens?.access?.token)
                     localStorage.setItem("statusCode", response?.user?.statusCode)
@@ -57,6 +57,7 @@ const Login = () => {
                   } else if (response?.user?.statusCode === 3) {
                     localStorage.setItem("token", response?.tokens?.access?.token)
                     localStorage.setItem("statusCode", response?.user?.statusCode)
+                    localStorage.setItem('loginUserId',response?.user?.id);
                     toast.success(`${response?.message}`)
                     navigate('/enterPin');
                   } else {

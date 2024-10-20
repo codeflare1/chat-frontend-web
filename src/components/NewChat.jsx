@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -13,29 +13,47 @@ import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
 
 
-const NewChat = ({ handleGroupToggle , socket }) => {
+const NewChat = ({ handleGroupToggle , socket ,setSelectedReceiverId }) => {
+    const loginUserId = localStorage.getItem('loginUserId');
+    const [searchValue, setSearchValue] = useState("");
     const [chooseMember, setchooseMember] = useState(false)
     const [hoveredBox, setHoveredBox] = useState(null);
+    const [Contacts, setContacts] = useState([]);
     // Static chat data
     const handleGroup = () => {
         setchooseMember(!chooseMember)
     }
 
 
-    const [Contacts, setContacts] = useState([{
-        id: "6710097c2923560263c31a76",
-        name: "User 1"
-    },
-    {
-        id: "671008bf2923560263c31a72",
-        name: "User 2"
-    }]);
 
-
-const addToContact =(userID)=>{
-    socket.emit("addContact",{id:userID})
+const addToContact =(receiverId)=>{
+    socket.emit('joinChat', { senderId: loginUserId, receiverId });
+    setSelectedReceiverId(receiverId)
+    handleGroupToggle()
 }
 
+
+const handleSearchResult = (query) => {
+    if (query) {
+      socket.emit('getAllUser', { limit: 10, page: 1, search: query });
+      setSearchValue(query);
+    }
+  };
+
+  useEffect(() => {
+    if (searchValue) {
+      // Listen for the response from the server
+      socket.on('getAllUserResponse', (data) => {
+        console.log('Received getAllUserResponse:', data);
+        setContacts(data?.users)
+      });
+
+      // Cleanup listener on unmount
+      return () => {
+        socket.off('getAllUserResponse');
+      };
+    }
+  }, [searchValue, socket]);
 
 
     return (
@@ -74,7 +92,8 @@ const addToContact =(userID)=>{
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar marginClass="mb-2" />
+                         
+                            <SearchBar marginClass="mb-2"  setSearchValue={handleSearchResult} type="findFriend" />
 
                         </div>
 
@@ -118,7 +137,9 @@ const addToContact =(userID)=>{
                                         onClick={()=>{addToContact(ele.id)}}
                                     >
                                         <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
-                                            <Avatar alt='' src='' sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' /> {ele?.name} <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
+                                            <Avatar alt='' src={ele?.image} sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' />
+                                             {ele?.firstName}
+                                              <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
                                         </Box>
                                         {hoveredBox === 2 && (
                                             <ContactDots sx={{ color: '#4A4A4A', }} />
@@ -154,9 +175,6 @@ const addToContact =(userID)=>{
                 </Box>
             }
         </>
-
-
-
     );
 };
 

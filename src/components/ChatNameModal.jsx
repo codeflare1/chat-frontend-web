@@ -13,7 +13,7 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 
-const ChatNameModal = () => {
+const ChatNameModal = ({ selectedUser }) => {
     const style = {
         position: 'absolute',
         top: '50%',
@@ -32,7 +32,7 @@ const ChatNameModal = () => {
     return (
         <div>
             <Typography onClick={handleOpen} className=' p-4 text-Newblack cursor-pointer font-medium text-2xl flex gap-2 items-center'>
-                John Doe  <ArrowForwardIosIcon className='text-sm font-bold' />
+                {selectedUser?.user?.firstName}  <ArrowForwardIosIcon className='text-sm font-bold' />
             </Typography>
             <Modal
                 aria-labelledby="transition-modal-title"

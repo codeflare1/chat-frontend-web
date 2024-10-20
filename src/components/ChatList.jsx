@@ -10,16 +10,14 @@ import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
 
-const ChatList = ({ socket, setSelectedReceiverId }) => {
+const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId  ,chatList, setChatList ,setSelectedUser}) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
 
-  const [chatList, setChatList] = useState([]);
-
   // Fetch chat list from the server when the component mounts
   useEffect(() => {
-    if (socket) {
+    if (socket || selectedReceiverId) {
       // Emit event to get all chats
       socket.emit('getAllChats', { senderId: loginUserId });
       // Listen for 'getChats' event from the server
@@ -33,19 +31,30 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
         socket.off('getChats');
       };
     }
-  }, [socket, loginUserId]);
+  }, [socket, loginUserId,selectedReceiverId]);
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
-  const joinChat = (receiverId) => {
-    socket.emit('joinChat', { senderId: loginUserId, receiverId });
+  const joinChat = (chat) => {
+    const receiverId = chat?._id
+    console.log("receiverIdreceiverId",receiverId)
+    setSelectedUser(chat)
+    socket.emit('joinChat', {loginUserId, receiverId });
     setSelectedReceiverId(receiverId);
-  };
+    socket.emit('getAllChats', { senderId: loginUserId });
+    socket.on('getChats', (chats) => {
+      console.log('Received chats:', chats);
+      setChatList(chats?.data);
+    })
+    
+  }
 
+
+  console.log("chatListchatListchatList",chatList)
   return (
     <>
       {makeGroup ? (
-        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket}/>
+        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket} setSelectedReceiverId={setSelectedReceiverId}/>
       ) : (
         <Box
           sx={{
@@ -100,7 +109,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
             {chatList.length > 0 ? (
               <div className="chat_list flex flex-col gap-1">
                 {chatList.filter(ele=>ele.id !== loginUserId).map((chat, index) => (
-                  <div key={chat?._id || index} onClick={() => joinChat(chat?._id)}>
+                  <div key={chat?._id || index} onClick={() => joinChat(chat)}>
                     <ChatCard chat={chat} />
                   </div>
                 ))}
