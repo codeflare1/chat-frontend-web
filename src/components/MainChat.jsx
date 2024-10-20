@@ -14,6 +14,7 @@ import ProfileDrawer from './ProfileDrawer';
 import MainContent from './MainContent';
 
 const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => {
+  console.log(selectedUser, 'dbsdadndnsmdnas')
   const loginUserId = localStorage.getItem("loginUserId")
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState('');
@@ -76,75 +77,88 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
       {selectedReceiverId ?
         <>
 
-          <div className="flex flex-col w-full h-screen bg-white">
-            {/* Header */}
-            <div className="flex items-center justify-between bg-white p-4">
-              <div className="flex items-center">
-                <Avatar sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 600 }}>{selectedUser?.user?.firstName?.charAt(0) || 'J'}</Avatar>
-                <Typography variant="h6" className="font-medium text-base flex gap-2 capitalize cursor-pointer">
-                  {/* <ProfileDrawer /> */}
-
-                  {selectedUser?.user?.firstName}
-                  <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
-                </Typography>
-              </div>
-              <div className="flex items-center space-x-2">
-                <IconButton>
-                  <VideocamIcon />
-                </IconButton>
-                <IconButton>
-                  <CallIcon />
-                </IconButton>
-                <IconButton>
-                  <MainChatMore />
-                </IconButton>
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div className="main_chat overflow-auto">
-              <Box className="mt-6 mb-6">
-                <Box className="user_profile flex flex-col items-center gap-2">
-                  <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 600 }}>{selectedUser?.user?.firstName?.charAt(0) || 'J'}</Avatar>
-                  <ChatNameModal selectedUser={selectedUser} />
-                </Box>
-              </Box>
-              <Box className="date text-center">
-                <Typography variant="body2" className="text-gray-400">Thu, 3 Oct</Typography>
-              </Box>
-              <div className="flex-1 p-4 overflow-auto">
-                {messages.map((msg) => {
-                  return (
-                    <div
-                      key={msg._id}
-                      className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4`}
+          <div className="flex flex-col justify-between w-full h-screen bg-white">
+            <Box className='overflow-auto'>
+                {/* Header */}
+                <div className="flex items-center justify-between shadow p-4">
+                  <div className="flex items-center gap-2">
+                    <Avatar 
+                      sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 800, color:'#1E1E1E', fontSize:'12px' }}
+                      src={selectedUser?.user?.image}
                     >
-                      {msg.senderId !== loginUserId && (
-                        <Avatar sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 600 }}>J</Avatar>
-                      )}
-                      <div
-                        className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
-                          } p-3 rounded-xl flex items-end gap-2`}
-                      >
-                        <Typography variant="body2">{msg.message}</Typography>
-                        {msg.senderId === loginUserId &&
+                      {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                    </Avatar>
+                    <Typography variant="h6" className="font-medium text-base flex gap-2 capitalize cursor-pointer">
+                      {/* <ProfileDrawer /> */}
+                      {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}
+                      <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
+                    </Typography>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <IconButton>
+                      <VideocamIcon />
+                    </IconButton>
+                    <IconButton>
+                      <CallIcon />
+                    </IconButton>
+                    <IconButton>
+                      <MainChatMore />
+                    </IconButton>
+                  </div>
+                </div>
 
-                          <>
-                            {msg?.isSeen ?
-                              <DoneAllIcon sx={{ color: 'red' }} /> :
-                              <DoneAllIcon className="w-4 h-4" />
+                {/* Messages */}
+                <div className="main_chat overflow-auto">
+                  <Box className="mt-6 mb-6">
+                    <Box className="user_profile flex flex-col items-center">
+                      <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 800, color:'#1E1E1E'}} src={selectedUser?.user?.image}>
+                      {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                      </Avatar>
+                      <ChatNameModal selectedUser={selectedUser} />
+                    </Box>
+                  </Box>
+                  <Box className="date text-center">
+                    <Typography variant="body2" className="text-gray-400">Thu, 3 Oct</Typography>
+                  </Box>
+                  <div className="flex-1 p-4 overflow-auto">
+                    {messages.map((msg) => {
+                      return (
+                        <div
+                          key={msg._id}
+                          className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4 gap-2`}
+                        >
+                        {msg.senderId !== loginUserId && (
+                            <Avatar 
+                              sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color:'#1E1E1E' }}
+                              src={selectedUser?.user?.image}
+                            >
+                              {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                            </Avatar>
+                          )}
+                          <div
+                            className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
+                              } p-3 rounded-md flex items-end gap-2`}
+                          >
+                            <Typography variant="body2">{msg.message}</Typography>
+                            {msg.senderId === loginUserId &&
+
+                              <>
+                                {msg?.isSeen ?
+                                  <DoneAllIcon sx={{ color: '#FFF' }} /> :
+                                  <DoneAllIcon className="w-4 h-4" />
+
+                                }
+                              </>
 
                             }
-                          </>
+                          </div>
+                        </div>
 
-                        }
-                      </div>
-                    </div>
-
-                  )
-                })}
-              </div>
-            </div>
+                      )
+                    })}
+                  </div>
+                </div>
+            </Box>
 
             {/* Input */}
             <div className="flex items-center p-4 py-3 bg-white relative">

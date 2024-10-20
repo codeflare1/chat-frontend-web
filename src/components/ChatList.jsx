@@ -10,55 +10,60 @@ import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
 
-const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId  ,chatList, setChatList ,setSelectedUser}) => {
+const ChatList = ({ socket, setSelectedReceiverId, selectedReceiverId, chatList, setChatList, setSelectedUser }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
+  const [messageSendingState, setMessageSendingState] = useState(false);
 
-  // Fetch chat list from the server when the component mounts
   useEffect(() => {
     if (socket || selectedReceiverId) {
-      // Emit event to get all chats
       socket.emit('getAllChats', { senderId: loginUserId });
-      // Listen for 'getChats' event from the server
       socket.on('getChats', (chats) => {
         console.log('Received chats:', chats);
         setChatList(chats?.data);
       });
 
-      // Cleanup the socket listener on component unmount
       return () => {
         socket.off('getChats');
       };
     }
-  }, [socket, loginUserId,selectedReceiverId]);
+  }, [socket, loginUserId, selectedReceiverId]);
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
   const joinChat = (chat) => {
-    const receiverId = chat?._id
-    console.log("receiverIdreceiverId",receiverId)
-    setSelectedUser(chat)
-    socket.emit('joinChat', {loginUserId, receiverId });
+    const receiverId = chat?._id;
+    console.log("receiverIdreceiverId", receiverId);
+    setSelectedUser(chat);
+    socket.emit('joinChat', { loginUserId, receiverId });
     setSelectedReceiverId(receiverId);
     socket.emit('getAllChats', { senderId: loginUserId });
     socket.on('getChats', (chats) => {
       console.log('Received chats:', chats);
       setChatList(chats?.data);
-    })
-    
-  }
+    });
+  };
 
+  console.log("chatListchatListchatList", chatList);
 
-  console.log("chatListchatListchatList",chatList)
+  const handleSendMessage = (message) => {
+    setMessageSendingState(true);
+
+    setTimeout(() => {
+      setMessageSendingState(false);
+    }, 2000);
+  };
+
   return (
     <>
       {makeGroup ? (
-        <NewChat handleGroupToggle={handleGroupToggle}  socket={socket} setSelectedReceiverId={setSelectedReceiverId}/>
+        <NewChat handleGroupToggle={handleGroupToggle} socket={socket} setSelectedReceiverId={setSelectedReceiverId} />
       ) : (
         <Box
           sx={{
-            width: '450px',
+            width: '100%',
+            maxWidth: '350px',
             bgcolor: '#f9f9f9',
             display: 'flex',
             flexDirection: 'column',
@@ -103,14 +108,14 @@ const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId  ,chatList
                 </ButtonGroup>
               </Box>
 
-              <SearchBar marginClass="mb-2"  />
+              <SearchBar marginClass="mb-2" />
             </div>
 
             {chatList.length > 0 ? (
               <div className="chat_list flex flex-col gap-1">
-                {chatList.filter(ele=>ele.id !== loginUserId).map((chat, index) => (
+                {chatList.filter(ele => ele.id !== loginUserId).map((chat, index) => (
                   <div key={chat?._id || index} onClick={() => joinChat(chat)}>
-                    <ChatCard chat={chat} />
+                    <ChatCard chat={chat} isSendingMessage={messageSendingState} />
                   </div>
                 ))}
               </div>

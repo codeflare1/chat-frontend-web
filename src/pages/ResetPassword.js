@@ -102,7 +102,7 @@ const ResetPassword = () => {
       <div className="login h-screen flex justify-center items-center">
         <div className="user_login max-w-xl w-full mx-auto text-left p-4 md:p-8 shadow-cardShad rounded-2xl">
           <h2 className="text-Newblack text-2xl md:text-3xl font-extrabold mb-2">
-            {isConfirmPin ? "Confirm your PIN" : "Reset PIN"}
+            {isConfirmPin ? "Confirm your PIN" : "Set new PIN"}
           </h2>
           <p className="text-newgray text-sm md:text-lg leading-150 mb-10">
             {isConfirmPin

@@ -42,6 +42,7 @@ module.exports = {
       fontSize: {
         '64': ['64px', '150%'],
         '40': ['40px', '150%'],
+        'xxs': ['10px', '14px '],
       },
       lineHeight:{
         '200':'200%',

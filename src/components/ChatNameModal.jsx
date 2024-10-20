@@ -14,6 +14,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 
 
 const ChatNameModal = ({ selectedUser }) => {
+    console.log(selectedUser);
+    
     const style = {
         position: 'absolute',
         top: '50%',
@@ -32,7 +34,8 @@ const ChatNameModal = ({ selectedUser }) => {
     return (
         <div>
             <Typography onClick={handleOpen} className=' p-4 text-Newblack cursor-pointer font-medium text-2xl flex gap-2 items-center'>
-                {selectedUser?.user?.firstName}  <ArrowForwardIosIcon className='text-sm font-bold' />
+            {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}
+            <ArrowForwardIosIcon className='text-sm font-bold' />
             </Typography>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -57,7 +60,7 @@ const ChatNameModal = ({ selectedUser }) => {
                         </IconButton>
                         <Box className='flex justify-center w-full'>
                             <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-24 h-24 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
-                                JS
+                            {selectedUser?.user?.firstName?.charAt(0) || 'J'}
                             </Avatar>
                         </Box>
                         <Box className='flex flex-col gap-6'>

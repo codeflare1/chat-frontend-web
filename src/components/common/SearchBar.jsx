@@ -81,11 +81,11 @@ const SearchBar = ({ setSearchValue ,type }) => {
   };
 
   return (
-    <div>
+    <div className='w-full mb-2'>
       <input
         type="search"
         placeholder="Search"
-        className="form-control w-100"
+        className="form-control w-100 py-1 px-2 text-sm w-full rounded-lg border border-gray-300 border-solid focus:border-primary focus:outline-none"
         value={searchText}
         onChange={handleSearchChange}
       />

@@ -17,7 +17,8 @@ const ArchiveChat = ({ handleGroupToggle }) => {
         <>
             <Box
                 sx={{
-                    width: '450px',
+                    width: '100%',
+                    maxWidth: '350px',
                     bgcolor: '#f9f9f9',
                     display: 'flex',
                     flexDirection: 'column',
