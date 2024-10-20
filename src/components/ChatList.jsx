@@ -10,7 +10,7 @@ import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
 
-const ChatList = ({ socket, setSelectedReceiverId }) => {
+const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
@@ -19,7 +19,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
 
   // Fetch chat list from the server when the component mounts
   useEffect(() => {
-    if (socket) {
+    if (socket || selectedReceiverId) {
       // Emit event to get all chats
       socket.emit('getAllChats', { senderId: loginUserId });
       // Listen for 'getChats' event from the server
@@ -33,7 +33,7 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
         socket.off('getChats');
       };
     }
-  }, [socket, loginUserId]);
+  }, [socket, loginUserId,selectedReceiverId]);
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
@@ -42,6 +42,8 @@ const ChatList = ({ socket, setSelectedReceiverId }) => {
     setSelectedReceiverId(receiverId);
   };
 
+
+  console.log("chatListchatListchatList",chatList)
   return (
     <>
       {makeGroup ? (

@@ -103,23 +103,39 @@ const MainChat = ({ socket, selectedReceiverId }) => {
           <Typography variant="body2" className="text-gray-400">Thu, 3 Oct</Typography>
         </Box>
         <div className="flex-1 p-4 overflow-auto">
-          {messages.map((msg) => (
-            <div
-              key={msg._id}
-              className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4`}
-            >
-              {msg.senderId !== loginUserId && (
-                <Avatar sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 600 }}>J</Avatar>
-              )}
+
+
+          {messages.map((msg) => {
+
+            return (
               <div
-                className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
-                  } p-3 rounded-xl flex items-end gap-2`}
+                key={msg._id}
+                className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4`}
               >
-                <Typography variant="body2">{msg.message}</Typography>
-                {msg.senderId === loginUserId && <DoneAllIcon className="w-4 h-4" />}
+                {msg.senderId !== loginUserId && (
+                  <Avatar sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 600 }}>J</Avatar>
+                )}
+                <div
+                  className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
+                    } p-3 rounded-xl flex items-end gap-2`}
+                >
+                  <Typography variant="body2">{msg.message}</Typography>
+                  {msg.senderId === loginUserId &&
+
+                    <>
+                      {msg?.isSeen ?
+                        <DoneAllIcon sx={{ color: 'red' }} /> :
+                        <DoneAllIcon className="w-4 h-4" />
+
+                      }
+                    </>
+
+                  }
+                </div>
               </div>
-            </div>
-          ))}
+
+            )
+          })}
         </div>
       </div>
 

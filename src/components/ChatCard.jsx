@@ -5,7 +5,7 @@ import moment from 'moment';
 
 
 const ChatCard = ({ chat }) => {
-  
+
   return (
     <Box
       className="chat_card px-3 py-2 rounded-none hover:bg-Chathover"
@@ -20,7 +20,7 @@ const ChatCard = ({ chat }) => {
       }}
     >
       {/* User Avatar */}
-      <Avatar alt={chat.name} src={chat.name} sx={{ width: 48, height: 48, bgcolor:'#dfdfdf', color:'#4A4A4A' }} />
+      <Avatar alt={chat.name} src={chat.name} sx={{ width: 48, height: 48, bgcolor: '#dfdfdf', color: '#4A4A4A' }} />
 
       {/* Chat Details */}
       <Box sx={{ flexGrow: 1, marginLeft: '12px' }}>
@@ -37,7 +37,12 @@ const ChatCard = ({ chat }) => {
         <Typography variant="caption" sx={{ color: '#888' }}>
           {moment(chat?.createdAt).format('YYYY-MM-DD HH:mm:ss')}
         </Typography>
-        <DoneAllIcon sx={{ color: chat.isDelivered ? '#0d6efd' : '#b3b3b3', fontSize: 16, marginTop: '4px' }} />
+        <>
+          {chat?.isSeen ?
+            <DoneAllIcon sx={{ color: chat.isDelivered ? '#0d6efd' : '#b3b3b3', fontSize: 16, marginTop: '4px' }} />:
+            <DoneAllIcon sx={{ color: 'red' }} /> 
+          }
+        </>
       </Box>
     </Box>
   );

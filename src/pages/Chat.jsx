@@ -12,7 +12,7 @@ console.log("selectedIdsselectedIds",selectedReceiverId)
   return (
     <div>
     <Layout>
-    <ChatList socket={socket} setSelectedReceiverId ={setSelectedReceiverId}/>
+    <ChatList socket={socket} setSelectedReceiverId ={setSelectedReceiverId} selectedReceiverId={selectedReceiverId}/>
     <MainChat socket={socket} selectedReceiverId={selectedReceiverId} />
     {/* <ChatList/> */}
     {/* <ArchiveChat/> */}
