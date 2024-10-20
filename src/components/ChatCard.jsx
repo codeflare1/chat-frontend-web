@@ -38,9 +38,14 @@ const ChatCard = ({ chat }) => {
           {moment(chat?.createdAt).format('YYYY-MM-DD HH:mm:ss')}
         </Typography>
         <>
-          {chat?.isSeen ?
-            <DoneAllIcon sx={{ color: chat.isDelivered ? '#0d6efd' : '#b3b3b3', fontSize: 16, marginTop: '4px' }} />:
-            <DoneAllIcon sx={{ color: 'red' }} /> 
+          {chat?.unseenCount == 0 ?
+            <DoneAllIcon sx={{ color: 'red' }} /> :
+            <DoneAllIcon sx={{ color: chat.isDelivered ? '#0d6efd' : '#b3b3b3', fontSize: 16, marginTop: '4px' }} />
+          }
+
+          {chat?.unseenCount == 0 ?
+            null :
+            <p>{chat?.unseenCount}</p>
           }
         </>
       </Box>

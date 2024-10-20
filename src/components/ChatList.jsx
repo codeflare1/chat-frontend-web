@@ -38,9 +38,16 @@ const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId }) => {
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
   const joinChat = (receiverId) => {
-    socket.emit('joinChat', { senderId: loginUserId, receiverId });
+    console.log("receiverIdreceiverId",receiverId)
+    socket.emit('joinChat', {loginUserId, receiverId });
     setSelectedReceiverId(receiverId);
-  };
+    socket.emit('getAllChats', { senderId: loginUserId });
+    socket.on('getChats', (chats) => {
+      console.log('Received chats:', chats);
+      setChatList(chats?.data);
+    })
+    
+  }
 
 
   console.log("chatListchatListchatList",chatList)

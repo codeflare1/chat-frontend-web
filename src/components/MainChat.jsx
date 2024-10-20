@@ -23,11 +23,10 @@ const MainChat = ({ socket, selectedReceiverId }) => {
   useEffect(() => {
     if (!socket || !selectedReceiverId || !loginUserId) return;
 
-    // Join the chat room
-    const roomId = `${Math.min(loginUserId, selectedReceiverId)}-${Math.max(loginUserId, selectedReceiverId)}`;
-    socket.emit('joinChat', { roomId });
 
-    console.log("Joined Room:", roomId);
+    socket.emit('joinChat', {  senderId: loginUserId,
+      receiverId: selectedReceiverId, });
+
 
     // Listen for message history
     socket.on('messageHistory', (history) => {
@@ -54,13 +53,11 @@ const MainChat = ({ socket, selectedReceiverId }) => {
   };
 
   const handleSendMessage = () => {
-    debugger
     if (message.trim()) {
       const msgData = {
         senderId: loginUserId,
         receiverId: selectedReceiverId,
         message,
-        roomId: `${Math.min(loginUserId, selectedReceiverId)}-${Math.max(loginUserId, selectedReceiverId)}`,
       };
       socket.emit('sendMessage', msgData);
       setMessage('');
@@ -74,7 +71,9 @@ const MainChat = ({ socket, selectedReceiverId }) => {
         <div className="flex items-center">
           <Avatar sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 600 }}>J</Avatar>
           <Typography variant="h6" className="font-medium text-base flex gap-2 capitalize cursor-pointer">
-            <ProfileDrawer />
+            {/* <ProfileDrawer /> */}
+
+            {selectedReceiverId}
             <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
           </Typography>
         </div>
