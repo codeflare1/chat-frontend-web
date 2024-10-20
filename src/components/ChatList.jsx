@@ -10,12 +10,10 @@ import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
 
-const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId }) => {
+const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId  ,chatList, setChatList ,setSelectedUser}) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
-
-  const [chatList, setChatList] = useState([]);
 
   // Fetch chat list from the server when the component mounts
   useEffect(() => {
@@ -37,8 +35,10 @@ const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId }) => {
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
-  const joinChat = (receiverId) => {
+  const joinChat = (chat) => {
+    const receiverId = chat?._id
     console.log("receiverIdreceiverId",receiverId)
+    setSelectedUser(chat)
     socket.emit('joinChat', {loginUserId, receiverId });
     setSelectedReceiverId(receiverId);
     socket.emit('getAllChats', { senderId: loginUserId });
@@ -109,7 +109,7 @@ const ChatList = ({ socket, setSelectedReceiverId ,selectedReceiverId }) => {
             {chatList.length > 0 ? (
               <div className="chat_list flex flex-col gap-1">
                 {chatList.filter(ele=>ele.id !== loginUserId).map((chat, index) => (
-                  <div key={chat?._id || index} onClick={() => joinChat(chat?._id)}>
+                  <div key={chat?._id || index} onClick={() => joinChat(chat)}>
                     <ChatCard chat={chat} />
                   </div>
                 ))}

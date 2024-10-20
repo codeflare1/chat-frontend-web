@@ -12,7 +12,8 @@ import ChatNameModal from './ChatNameModal';
 import MainChatMore from './MainChatMore';
 import ProfileDrawer from './ProfileDrawer';
 
-const MainChat = ({ socket, selectedReceiverId }) => {
+const MainChat = ({ socket, selectedReceiverId ,setChatList ,selectedUser }) => {
+  debugger
   const loginUserId = localStorage.getItem("loginUserId")
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState('');
@@ -30,12 +31,24 @@ const MainChat = ({ socket, selectedReceiverId }) => {
 
     // Listen for message history
     socket.on('messageHistory', (history) => {
+      debugger
       setMessages(history);
+      socket.emit('getAllChats', { senderId: loginUserId });
+      socket.on('getChats', (chats) => {
+        console.log('Received chats:', chats);
+        setChatList(chats?.data);
+      })
     });
 
     // Listen for real-time incoming messages
     socket.on('receiveMessage', (msg) => {
+      debugger
       setMessages((prev) => [...prev, msg]);
+      socket.emit('getAllChats', { senderId: loginUserId });
+      socket.on('getChats', (chats) => {
+        console.log('Received chats:', chats);
+        setChatList(chats?.data);
+      })
     });
 
     return () => {
@@ -69,11 +82,11 @@ const MainChat = ({ socket, selectedReceiverId }) => {
       {/* Header */}
       <div className="flex items-center justify-between bg-white p-4">
         <div className="flex items-center">
-          <Avatar sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 600 }}>J</Avatar>
+          <Avatar sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 600 }}>{selectedUser?.user?.firstName?.charAt(0) || 'J'}</Avatar>
           <Typography variant="h6" className="font-medium text-base flex gap-2 capitalize cursor-pointer">
             {/* <ProfileDrawer /> */}
 
-            {selectedReceiverId}
+            {selectedUser?.user?.firstName}
             <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
           </Typography>
         </div>
