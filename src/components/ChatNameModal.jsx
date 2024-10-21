@@ -14,7 +14,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 
 
 const ChatNameModal = ({ selectedUser }) => {
-    console.log(selectedUser);
+    console.log(selectedUser, 'this is chatname');
     
     const style = {
         position: 'absolute',
@@ -59,8 +59,8 @@ const ChatNameModal = ({ selectedUser }) => {
                         ><CloseOutlinedIcon className='justify-end' />
                         </IconButton>
                         <Box className='flex justify-center w-full'>
-                            <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-24 h-24 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
-                            {selectedUser?.user?.firstName?.charAt(0) || 'J'}
+                            <Avatar src={selectedUser?.user?.image} className="first_last_name rounded-full bg-gray-200 max-w-24 h-24 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
+                            {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
                             </Avatar>
                         </Box>
                         <Box className='flex flex-col gap-6'>
@@ -68,15 +68,17 @@ const ChatNameModal = ({ selectedUser }) => {
                             <Box className='flex flex-col gap-4'>
                                 <Box className='flex gap-2'>
                                     <PersonOutlineOutlinedIcon className='text-newgray text-lg' />
-                                    <Typography className='name text-sm' variant='body'>John doe</Typography>
+                                    <Typography className='name text-sm' variant='body'>{selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}</Typography>
                                 </Box>
                                 <Box className='flex gap-2'>
                                     <AccountCircleOutlinedIcon className='text-newgray text-lg' />
-                                    <Typography className='name text-sm' variant='body'>John doe is in your system contacts</Typography>
+                                    <Typography className='name text-sm' variant='body'>{selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''} is in your system contacts</Typography>
                                 </Box>
                                 <Box className='flex gap-2'>
                                     <CallOutlinedIcon className='text-newgray text-lg' />
-                                    <Typography className='name text-sm' variant='body'>917657812422</Typography>
+                                    <Typography className='name text-sm' variant='body'>
+                                        +917807142363
+                                    </Typography>
                                 </Box>
                                 <Box className='flex gap-2'>
                                     <GroupOutlinedIcon className='text-newgray text-lg' />

@@ -55,10 +55,12 @@ module.exports = {
       boxShadow: {
         'cardShad': '0 2px 13px 2px rgb(0 0 0 / 10%)',
         'cardShadow': '0 2px 13px 2px #157efd1f',
+        'chatWrite': '0px -10px 20px 0px #c7c7c75c',
       },
       width:{
         '95':'95%',
         '400':'400px',
+        'newW':'-webkit-fill-available',
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'], 

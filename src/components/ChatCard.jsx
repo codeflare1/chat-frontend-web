@@ -13,12 +13,13 @@ const ChatCard = ({ chat, isSendingMessage }) => {
     if (messageDate.isSame(today, 'day')) {
       return messageDate.format('HH:mm'); 
     } else if (messageDate.isSame(today.subtract(1, 'days'), 'day')) {
-      return 'Yesterday ' + messageDate.format('HH:mm'); 
+      return 'Yesterday '; 
     } else {
-      return messageDate.format('MMM DD, HH:mm'); 
+      return messageDate.format('MMM DD'); 
     }
   };
 
+  
   const renderDeliveryIcon = () => {
     if (chat?.unseenCount > 0) {
       return null;
