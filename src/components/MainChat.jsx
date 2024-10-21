@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, IconButton, Tooltip, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -14,14 +14,25 @@ import ProfileDrawer from './ProfileDrawer';
 import MainContent from './MainContent';
 import KeyboardVoiceOutlinedIcon from '@mui/icons-material/KeyboardVoiceOutlined';
 import { ChatContext } from '../context/ChatContext';
-import { getData } from '../api/apiService';
+import { getData, postData } from '../api/apiService';
+import axios from 'axios';
 
-const MainChat = ({ socket}) => {
+const MainChat = ({ socket }) => {
   const loginUserId = localStorage.getItem("loginUserId");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
+  const fileInputRef = useRef(null);
+
+
+
+  const handleIconClick = () => {
+    // Trigger the file input click
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const {
     selectedReceiverId,
@@ -88,21 +99,54 @@ const MainChat = ({ socket}) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserData()
-  },[selectedReceiverId])
-  const getUserData =async()=>{
-    
+  }, [selectedReceiverId])
+  const getUserData = async () => {
     try {
       const response = await getData(`/fetchOtherUser/${selectedReceiverId}`)
       if (response?.success === true) {
-    setUserDate(response)
+        setUserDate(response)
       }
     } catch (error) {
       console.log(error?.response.message)
       setUserDate([])
     }
   }
+
+  const handleSelectFile = async (event) => {
+    const token = localStorage.getItem('token');
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) return; // Exit if no file is selected
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('uploadDocument', selectedFile);
+    }
+
+    try {
+      const response = await axios.post(
+        `https://api.gatsbychat.com/v1/auth/uploadFiles`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response?.data?.success) {
+        setMessage(response?.data?.imageURI[0]?.imageURI)
+      } else {
+        setMessage("Upload failed"); // Handle case where success is false
+      }
+    } catch (error) {
+      console.error(error?.response?.data?.message || error.message);
+      setMessage("An error occurred while uploading the file"); // User-friendly error message
+    } finally {
+    }
+  };
+
+
 
 
   return (
@@ -115,7 +159,7 @@ const MainChat = ({ socket}) => {
               <div className="flex items-center justify-between shadow p-4 fixed bg-white h-20 w-newW z-50 ">
                 <div className="flex items-center gap-2">
                   <Avatar
-                    sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 700, color:'#1E1E1E', fontSize:'10px' }}
+                    sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 700, color: '#1E1E1E', fontSize: '10px' }}
                     src={userData?.user?.image}
                   >
                     {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
@@ -142,7 +186,7 @@ const MainChat = ({ socket}) => {
               <div className="main_chat overflow-auto pt-20 pb-16">
                 <Box className="mt-6 mb-6">
                   <Box className="user_profile flex flex-col items-center">
-                    <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 700, color:'#1E1E1E',fontSize:'32px', }} src={userData?.user?.image}>
+                    <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 700, color: '#1E1E1E', fontSize: '32px', }} src={userData?.user?.image}>
                       {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
                     </Avatar>
                     <ChatNameModal selectedUser={userData} />
@@ -164,7 +208,7 @@ const MainChat = ({ socket}) => {
                     >
                       {msg.senderId !== loginUserId && (
                         <Avatar
-                          sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color:'#1E1E1E' }}
+                          sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color: '#1E1E1E' }}
                           src={userData?.user?.image}
                         >
                           {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
@@ -180,7 +224,7 @@ const MainChat = ({ socket}) => {
                         </Typography>
                         {msg.senderId === loginUserId && (
                           <>
-                            {msg?.isSeen ? <DoneAllIcon sx={{ color: '#FFF', fontSize:'13px' }} /> : <DoneAllIcon sx={{fontSize:'13px' }} />}
+                            {msg?.isSeen ? <DoneAllIcon sx={{ color: '#FFF', fontSize: '13px' }} /> : <DoneAllIcon sx={{ fontSize: '13px' }} />}
                           </>
                         )}
                       </div>
@@ -217,7 +261,16 @@ const MainChat = ({ socket}) => {
               />
               <Box className='ms-1.5 flex gap-2'>
                 <KeyboardVoiceOutlinedIcon />
-                <AttachFileOutlinedIcon/>
+
+
+                <AttachFileOutlinedIcon onClick={handleIconClick} style={{ cursor: 'pointer' }} />
+                <input
+                  type='file'
+                  ref={fileInputRef}
+                  onChange={handleSelectFile}
+                  style={{ display: 'none' }} // Hide the input
+                />
+
               </Box>
 
               <IconButton className="ml-2 text-blue-500" onClick={handleSendMessage}>
