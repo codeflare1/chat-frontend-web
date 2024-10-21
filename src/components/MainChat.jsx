@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Avatar, Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, CircularProgress, IconButton, Tooltip, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import SendIcon from '@mui/icons-material/Send';
@@ -16,11 +16,13 @@ import KeyboardVoiceOutlinedIcon from '@mui/icons-material/KeyboardVoiceOutlined
 import { ChatContext } from '../context/ChatContext';
 import { getData, postData } from '../api/apiService';
 import axios from 'axios';
+import moment from 'moment';
 
 const MainChat = ({ socket }) => {
   const loginUserId = localStorage.getItem("loginUserId");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false); 
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
   const fileInputRef = useRef(null);
@@ -99,20 +101,24 @@ const MainChat = ({ socket }) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+ 
   useEffect(() => {
     getUserData()
   }, [selectedReceiverId])
   const getUserData = async () => {
+    setLoading(true); // Start loading
     try {
-      const response = await getData(`/fetchOtherUser/${selectedReceiverId}`)
+      const response = await getData(`/fetchOtherUser/${selectedReceiverId}`);
       if (response?.success === true) {
-        setUserDate(response)
+        setUserDate(response);
       }
     } catch (error) {
-      console.log(error?.response.message)
-      setUserDate([])
+      console.log(error?.response?.message);
+      setUserDate([]);
+    } finally {
+      setLoading(false); // End loading
     }
-  }
+  };
 
   const handleSelectFile = async (event) => {
     const token = localStorage.getItem('token');
@@ -150,9 +156,18 @@ const MainChat = ({ socket }) => {
 
 
   return (
+
+
+
     <>
       {selectedReceiverId ? (
         <>
+
+{loading && (
+      <Box className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-50 z-40">
+        <CircularProgress /> {/* Loader */}
+      </Box>
+    )}
           <div className="flex flex-col justify-between w-full h-screen bg-white">
             <Box className='overflow-auto'>
               {/* Header */}
@@ -192,11 +207,11 @@ const MainChat = ({ socket }) => {
                     <ChatNameModal selectedUser={userData} />
                   </Box>
                 </Box>
-
                 {/* Chat Date */}
                 <Box className="date text-center">
                   <Typography variant="body2" className="text-Newblack bg-gray-200 inline-flex justify-center items-center text-xxs p-1 rounded hover:bg-gray-300 cursor-default">
-                    {formatDate(userData?.createdAt)}
+                    {moment(userData?.createdAt).format('MM-DD-YYYY')}
+
                   </Typography>
                 </Box>
 
