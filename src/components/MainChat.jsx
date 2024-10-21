@@ -218,7 +218,12 @@ const MainChat = ({ socket }) => {
                         className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
                           } p-3 rounded-md flex items-end gap-2`}
                       >
-                        <Typography variant="body2">{msg.message}</Typography>
+                        {msg?.message && msg?.message.includes("https") ?
+                          <img src={msg?.message} alt="Uploaded" height={50} width={50} /> // Use message as the src
+                          :
+                          <Typography variant="body2">{msg.message}</Typography>
+
+                        }
                         <Typography variant="caption" className='msg_sent time text-xxs'>
                           {formatTime(msg.createdAt)} {/* Display time here */}
                         </Typography>
@@ -246,19 +251,24 @@ const MainChat = ({ socket }) => {
                 <EmojiEmotionsOutlinedIcon />
               </IconButton>
 
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Message"
-                className="flex-1 border text-sm border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage();
-                  }
-                }}
-              />
+                {message && message.includes("https") ?
+                  <img src={message} alt="Uploaded" height={20} width={20} className=" border text-sm border-gray-300 " /> // Use message as the src
+                  :
+
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Message"
+                    className="flex-1 border text-sm border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                }
               <Box className='ms-1.5 flex gap-2'>
                 <KeyboardVoiceOutlinedIcon />
 

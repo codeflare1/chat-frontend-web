@@ -1,32 +1,32 @@
 import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import DoneIcon from '@mui/icons-material/Done'; 
+import DoneIcon from '@mui/icons-material/Done';
 import moment from 'moment';
 
-const ChatCard = ({ chat, isSendingMessage }) => { 
+const ChatCard = ({ chat, isSendingMessage }) => {
 
   const formatChatTimestamp = (date) => {
     const today = moment().startOf('day');
     const messageDate = moment(date);
 
     if (messageDate.isSame(today, 'day')) {
-      return messageDate.format('HH:mm'); 
+      return messageDate.format('HH:mm');
     } else if (messageDate.isSame(today.subtract(1, 'days'), 'day')) {
-      return 'Yesterday '; 
+      return 'Yesterday ';
     } else {
-      return messageDate.format('MMM DD'); 
+      return messageDate.format('MMM DD');
     }
   };
 
-  
+
   const renderDeliveryIcon = () => {
     if (chat?.unseenCount > 0) {
       return null;
     }
 
     if (isSendingMessage) {
-      return null; 
+      return null;
     } else if (!chat.isDelivered) {
       return <DoneIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
     } else if (chat.isDelivered && !chat.isSeen) {
@@ -50,7 +50,7 @@ const ChatCard = ({ chat, isSendingMessage }) => {
     >
       <Avatar
         alt={`${chat?.user?.firstName} ${chat?.user?.lastName}`}
-        src={chat?.user?.image || ''} 
+        src={chat?.user?.image || ''}
         sx={{ width: 48, height: 48, bgcolor: '#dfdfdf', color: '#4A4A4A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         {!chat?.user?.image && (
@@ -62,23 +62,27 @@ const ChatCard = ({ chat, isSendingMessage }) => {
 
       <Box sx={{ flexGrow: 1, marginLeft: '12px' }}>
         <Typography variant="body1" className='text-Newblack text-sm font-semibold'>
-          {chat?.user?.firstName} {chat?.user?.lastName} 
+          {chat?.user?.firstName} {chat?.user?.lastName}
         </Typography>
         <Typography variant="body2" sx={{ color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {chat?.lastMessage}
+          {chat?.lastMessage && chat?.lastMessage.includes("https") ?
+            <img src={chat?.lastMessage} alt="Uploaded" height={50} width={50} /> // Use message as the src
+            :
+            chat?.lastMessage
+          }
         </Typography>
       </Box>
 
       <Box className='flex flex-col justify-end items-end'>
         <Typography variant="caption" sx={{ color: '#888' }}>
-          {formatChatTimestamp(chat?.createdAt)} 
+          {formatChatTimestamp(chat?.createdAt)}
         </Typography>
 
         {renderDeliveryIcon()}
-        
+
         {chat?.unseenCount > 0 && (
           <Typography variant="caption" sx={{ color: '#fff', fontWeight: 'bold' }} className='bg-primary rounded-full max-w-4 h-4 w-full flex justify-center items-center text-xxs'>
-            {chat?.unseenCount} 
+            {chat?.unseenCount}
           </Typography>
         )}
       </Box>
