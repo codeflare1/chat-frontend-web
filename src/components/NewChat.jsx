@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useContext, useEffect, useState, } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -11,49 +11,52 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
+import { ChatContext } from '../context/ChatContext';
 
 
-const NewChat = ({ handleGroupToggle , socket ,setSelectedReceiverId }) => {
+const NewChat = ({ handleGroupToggle, socket }) => {
     const loginUserId = localStorage.getItem('loginUserId');
     const [searchValue, setSearchValue] = useState("");
     const [chooseMember, setchooseMember] = useState(false)
     const [hoveredBox, setHoveredBox] = useState(null);
     const [Contacts, setContacts] = useState([]);
+
+    const {
+        setSelectedReceiverId,
+    } = useContext(ChatContext);  // Access context values
     // Static chat data
     const handleGroup = () => {
         setchooseMember(!chooseMember)
     }
 
-
-
-const addToContact =(receiverId)=>{
-    socket.emit('joinChat', { senderId: loginUserId, receiverId });
-    setSelectedReceiverId(receiverId)
-    handleGroupToggle()
-}
-
-
-const handleSearchResult = (query) => {
-    if (query) {
-      socket.emit('getAllUser', { limit: 10, page: 1, search: query });
-      setSearchValue(query);
+    const addToContact = (receiverId) => {
+        socket.emit('joinChat', { senderId: loginUserId, receiverId });
+        setSelectedReceiverId(receiverId)
+        handleGroupToggle()
     }
-  };
 
-  useEffect(() => {
-    if (searchValue) {
-      // Listen for the response from the server
-      socket.on('getAllUserResponse', (data) => {
-        console.log('Received getAllUserResponse:', data);
-        setContacts(data?.users)
-      });
 
-      // Cleanup listener on unmount
-      return () => {
-        socket.off('getAllUserResponse');
-      };
-    }
-  }, [searchValue, socket]);
+    const handleSearchResult = (query) => {
+        if (query) {
+            socket.emit('getAllUser', { limit: 10, page: 1, search: query });
+            setSearchValue(query);
+        }
+    };
+
+    useEffect(() => {
+        if (searchValue) {
+            // Listen for the response from the server
+            socket.on('getAllUserResponse', (data) => {
+                console.log('Received getAllUserResponse:', data);
+                setContacts(data?.users)
+            });
+
+            // Cleanup listener on unmount
+            return () => {
+                socket.off('getAllUserResponse');
+            };
+        }
+    }, [searchValue, socket]);
 
 
     return (
@@ -93,8 +96,8 @@ const handleSearchResult = (query) => {
                                     </Typography>
                                 </Box>
                             </Box>
-                         
-                            <SearchBar marginClass="mb-2"  setSearchValue={handleSearchResult} type="findFriend" />
+
+                            <SearchBar marginClass="mb-2" setSearchValue={handleSearchResult} type="findFriend" />
 
                         </div>
 
@@ -129,18 +132,18 @@ const handleSearchResult = (query) => {
                             {/* when any user in my contact */}
 
                             {Contacts.map((ele) => {
-                                
+
                                 return (
                                     <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
                                         onMouseEnter={() => setHoveredBox(2)}
                                         onMouseLeave={() => setHoveredBox(null)}
                                         key={ele?.id}
-                                        onClick={()=>{addToContact(ele.id)}}
+                                        onClick={() => { addToContact(ele.id) }}
                                     >
                                         <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
                                             <Avatar alt='' src={ele?.image} sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' />
-                                             {ele?.firstName}
-                                              <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
+                                            {ele?.firstName}
+                                            <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
                                         </Box>
                                         {hoveredBox === 2 && (
                                             <ContactDots sx={{ color: '#4A4A4A', }} />

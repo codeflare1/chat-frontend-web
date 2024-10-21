@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, Box, IconButton, Tooltip, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -13,12 +13,20 @@ import MainChatMore from './MainChatMore';
 import ProfileDrawer from './ProfileDrawer';
 import MainContent from './MainContent';
 import KeyboardVoiceOutlinedIcon from '@mui/icons-material/KeyboardVoiceOutlined';
+import { ChatContext } from '../context/ChatContext';
+import { getData } from '../api/apiService';
 
-const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => {
+const MainChat = ({ socket}) => {
   const loginUserId = localStorage.getItem("loginUserId");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [userData, setUserDate] = useState([]);
+
+  const {
+    selectedReceiverId,
+    setChatList,
+  } = useContext(ChatContext);  // Access context values
 
   useEffect(() => {
     if (!socket || !selectedReceiverId || !loginUserId) return;
@@ -80,6 +88,23 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+  useEffect(()=>{
+    getUserData()
+  },[selectedReceiverId])
+  const getUserData =async()=>{
+    
+    try {
+      const response = await getData(`/fetchOtherUser/${selectedReceiverId}`)
+      if (response?.success === true) {
+    setUserDate(response)
+      }
+    } catch (error) {
+      console.log(error?.response.message)
+      setUserDate([])
+    }
+  }
+
+
   return (
     <>
       {selectedReceiverId ? (
@@ -91,12 +116,12 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
                 <div className="flex items-center gap-2">
                   <Avatar
                     sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', fontWeight: 700, color:'#1E1E1E', fontSize:'10px' }}
-                    src={selectedUser?.user?.image}
+                    src={userData?.user?.image}
                   >
-                    {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                    {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
                   </Avatar>
                   <Typography variant="h6" className="font-medium text-base flex gap-2 capitalize cursor-pointer">
-                    {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}
+                    {userData?.user?.firstName} {userData?.user?.lastName || ''}
                     <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
                   </Typography>
                 </div>
@@ -117,17 +142,17 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
               <div className="main_chat overflow-auto pt-20 pb-16">
                 <Box className="mt-6 mb-6">
                   <Box className="user_profile flex flex-col items-center">
-                    <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 700, color:'#1E1E1E',fontSize:'32px', }} src={selectedUser?.user?.image}>
-                      {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                    <Avatar sx={{ width: 80, height: 80, bgcolor: '#dfdfdf', fontWeight: 700, color:'#1E1E1E',fontSize:'32px', }} src={userData?.user?.image}>
+                      {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
                     </Avatar>
-                    <ChatNameModal selectedUser={selectedUser} />
+                    <ChatNameModal selectedUser={userData} />
                   </Box>
                 </Box>
 
                 {/* Chat Date */}
                 <Box className="date text-center">
                   <Typography variant="body2" className="text-Newblack bg-gray-200 inline-flex justify-center items-center text-xxs p-1 rounded hover:bg-gray-300 cursor-default">
-                    {formatDate(selectedUser?.createdAt)}
+                    {formatDate(userData?.createdAt)}
                   </Typography>
                 </Box>
 
@@ -140,9 +165,9 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
                       {msg.senderId !== loginUserId && (
                         <Avatar
                           sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color:'#1E1E1E' }}
-                          src={selectedUser?.user?.image}
+                          src={userData?.user?.image}
                         >
-                          {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                          {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
                         </Avatar>
                       )}
                       <div
@@ -192,7 +217,7 @@ const MainChat = ({ socket, selectedReceiverId, setChatList, selectedUser }) => 
               />
               <Box className='ms-1.5 flex gap-2'>
                 <KeyboardVoiceOutlinedIcon />
-                <AttachFileOutlinedIcon />
+                <AttachFileOutlinedIcon/>
               </Box>
 
               <IconButton className="ml-2 text-blue-500" onClick={handleSendMessage}>

@@ -9,15 +9,23 @@ import ChatCard from './ChatCard';
 import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
+import { ChatContext } from '../context/ChatContext';  // Import ChatContext
 
-const ChatList = ({ socket, setSelectedReceiverId, selectedReceiverId, chatList, setChatList, setSelectedUser }) => {
+const ChatList = ({ socket }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
+  const {
+    setSelectedReceiverId,
+    setSelectedUser,
+    chatList, 
+    setChatList,
+  } = useContext(ChatContext);  // Access context values
+
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
   const [messageSendingState, setMessageSendingState] = useState(false);
 
   useEffect(() => {
-    if (socket || selectedReceiverId) {
+    if (socket) {
       socket.emit('getAllChats', { senderId: loginUserId });
       socket.on('getChats', (chats) => {
         console.log('Received chats:', chats);
@@ -28,7 +36,7 @@ const ChatList = ({ socket, setSelectedReceiverId, selectedReceiverId, chatList,
         socket.off('getChats');
       };
     }
-  }, [socket, loginUserId, selectedReceiverId]);
+  }, [socket, loginUserId ,setSelectedReceiverId]);
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
@@ -45,20 +53,10 @@ const ChatList = ({ socket, setSelectedReceiverId, selectedReceiverId, chatList,
     });
   };
 
-  console.log("chatListchatListchatList", chatList);
-
-  const handleSendMessage = (message) => {
-    setMessageSendingState(true);
-
-    setTimeout(() => {
-      setMessageSendingState(false);
-    }, 2000);
-  };
-
   return (
     <>
       {makeGroup ? (
-        <NewChat handleGroupToggle={handleGroupToggle} socket={socket} setSelectedReceiverId={setSelectedReceiverId} />
+        <NewChat handleGroupToggle={handleGroupToggle} socket={socket} />
       ) : (
         <Box
           sx={{

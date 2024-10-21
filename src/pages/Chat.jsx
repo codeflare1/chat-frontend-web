@@ -1,35 +1,19 @@
-import React, { useState } from 'react'
-import Layout from '../layout/Layout'
+// Chat.js
+import React from 'react';
+import Layout from '../layout/Layout';
 import ChatList from '../components/ChatList';
 import MainChat from '../components/MainChat';
-// import ArchiveChat from '../components/ArchiveChat';
-
+import { ChatProvider } from '../context/ChatContext';  // Import ChatProvider
 
 const Chat = ({ socket }) => {
-  const [selectedReceiverId, setSelectedReceiverId] = useState("")
-  const [selectedUser, setSelectedUser] = useState({})
-  const [chatList, setChatList] = useState([]);
-
-
   return (
-    <div>
+    <ChatProvider>
       <Layout>
-        <ChatList socket={socket} setSelectedReceiverId={setSelectedReceiverId}
-          selectedReceiverId={selectedReceiverId}
-          setSelectedUser={setSelectedUser}
-          setChatList={setChatList}
-          chatList={chatList}
-
-        />
-        <MainChat socket={socket} selectedReceiverId={selectedReceiverId} setChatList={setChatList} selectedUser={selectedUser} />
-        {/* <ChatList/> */}
-        {/* <ArchiveChat/> */}
-
-        {/* Chat */}
-        {/* <MainChat /> */}
+        <ChatList socket={socket} />
+        <MainChat socket={socket} />
       </Layout>
-    </div>
-  )
-}
+    </ChatProvider>
+  );
+};
 
-export default Chat
+export default Chat;
