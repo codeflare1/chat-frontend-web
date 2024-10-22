@@ -77,7 +77,7 @@ const ChatNameModal = ({ selectedUser }) => {
                                 <Box className='flex gap-2'>
                                     <CallOutlinedIcon className='text-newgray text-lg' />
                                     <Typography className='name text-sm' variant='body'>
-                                        +917807142363
+                                       {selectedUser?.user?.phoneNumber} 
                                     </Typography>
                                 </Box>
                                 <Box className='flex gap-2'>

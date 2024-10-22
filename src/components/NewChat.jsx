@@ -123,7 +123,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                                 onMouseEnter={() => setHoveredBox(1)}
                                 onMouseLeave={() => setHoveredBox(null)}
                             >
-                                <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' >
+                                <Box variant="text" className=' text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1' onClick={() => { addToContact(loginUserId) }} >
                                     <ListAltIcon sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className=' p-2 rounded-full me-2' /> Note to self <VerifiedIcon className='w-4 h-6 p-0 text-primary' />
                                 </Box>
                                 {hoveredBox === 1 && (

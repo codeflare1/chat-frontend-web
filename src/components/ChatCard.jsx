@@ -9,7 +9,7 @@ const ChatCard = ({ chat, isSendingMessage }) => {
   const {
     selectedReceiverId,
   } = useContext(ChatContext);  // Access context values
-
+  const loginUserId = localStorage.getItem("loginUserId");
   const formatChatTimestamp = (date) => {
     const today = moment().startOf('day');
     const messageDate = moment(date);
@@ -65,9 +65,14 @@ const ChatCard = ({ chat, isSendingMessage }) => {
       </Avatar>
 
       <Box sx={{ flexGrow: 1, marginLeft: '12px' }}>
-        <Typography variant="body1" className='text-Newblack text-sm font-semibold'>
-          {chat?.user?.firstName} {chat?.user?.lastName}
-        </Typography>
+          {chat?._id === loginUserId?
+            <Typography variant="body1" className='text-Newblack text-sm font-semibold'>
+            {chat?.user?.firstName} {chat?.user?.lastName} (you)
+            </Typography>:
+              <Typography variant="body1" className='text-Newblack text-sm font-semibold'>
+              {chat?.user?.firstName} {chat?.user?.lastName} 
+              </Typography>
+               }
         <Typography variant="body2" sx={{ color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {chat?.lastMessage && chat?.lastMessage.includes("https") ?
             <img src={chat?.lastMessage} alt="Uploaded" height={50} width={50} /> // Use message as the src
