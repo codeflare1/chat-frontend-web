@@ -39,6 +39,8 @@ const MainChat = ({ socket }) => {
   const {
     selectedReceiverId,
     setChatList,
+    refreshMsg,
+    setRefreshMsg
   } = useContext(ChatContext);  // Access context values
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const MainChat = ({ socket }) => {
       socket.off('messageHistory');
       socket.off('receiveMessage');
     };
-  }, [socket, loginUserId, selectedReceiverId]);
+  }, [socket, loginUserId, selectedReceiverId ,refreshMsg]);
 
   const handleEmojiClick = (emojiObject) => {
     setMessage(prevMessage => prevMessage + emojiObject.emoji);

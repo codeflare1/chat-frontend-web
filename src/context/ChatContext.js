@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 export const ChatContext = createContext();
 
 // Initialize socket connection
-const socket = io('YOUR_SOCKET_SERVER_URL'); // Replace with your socket server URL
+const socket = io('https://api.gatsbychat.com'); // Replace with your socket server URL
 
 socket.on('connect', () => {
   console.log('Socket connected:', socket.id);
@@ -15,6 +15,7 @@ export const ChatProvider = ({ children }) => {
   const [selectedReceiverId, setSelectedReceiverId] = useState("");
   const [selectedUser, setSelectedUser] = useState({});
   const [chatList, setChatList] = useState([]);
+  const [refreshMsg, setRefreshMsg] = useState(false);
 
   useEffect(() => {
     const loginUserId = localStorage.getItem('loginUserId');
@@ -52,6 +53,7 @@ export const ChatProvider = ({ children }) => {
       setSelectedUser,
       chatList,
       setChatList,
+      refreshMsg, setRefreshMsg
     }}>
       {children}
     </ChatContext.Provider>

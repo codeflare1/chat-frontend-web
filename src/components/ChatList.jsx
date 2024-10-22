@@ -18,6 +18,8 @@ const ChatList = ({ socket }) => {
     setSelectedUser,
     chatList, 
     setChatList,
+    refreshMsg,
+    setRefreshMsg
   } = useContext(ChatContext);  // Access context values
 
   const loginUserId = localStorage.getItem('loginUserId');
@@ -41,11 +43,13 @@ const ChatList = ({ socket }) => {
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
   const joinChat = (chat) => {
+  
     const receiverId = chat?._id;
     console.log("receiverIdreceiverId", receiverId);
     setSelectedUser(chat);
     socket.emit('joinChat', { loginUserId, receiverId });
     setSelectedReceiverId(receiverId);
+    setRefreshMsg(!refreshMsg)
     socket.emit('getAllChats', { senderId: loginUserId });
     socket.on('getChats', (chats) => {
       console.log('Received chats:', chats);
