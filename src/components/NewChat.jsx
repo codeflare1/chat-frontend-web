@@ -12,6 +12,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
 import { ChatContext } from '../context/ChatContext';
+import { getData } from '../api/apiService';
 
 
 const NewChat = ({ handleGroupToggle, socket }) => {
@@ -37,27 +38,27 @@ const NewChat = ({ handleGroupToggle, socket }) => {
 
 
     const handleSearchResult = (query) => {
-        if (query) {
-            socket.emit('getAllUser', { limit: 10, page: 1, search: query });
-            setSearchValue(query);
-        }
+        setSearchValue(query);
+
     };
 
+
     useEffect(() => {
-        if (searchValue) {
-            // Listen for the response from the server
-            socket.on('getAllUserResponse', (data) => {
-                console.log('Received getAllUserResponse:', data);
-                setContacts(data?.users)
-            });
+        getUserData()
+    }, [searchValue])
 
-            // Cleanup listener on unmount
-            return () => {
-                socket.off('getAllUserResponse');
-            };
+    const getUserData = async () => {
+        try {
+            const response = await getData(`/getAllUsers?search=${searchValue}`);
+            if (response?.status === true) {
+                setContacts(response?.data?.users);
+            }
+        } catch (error) {
+            console.log(error?.response?.message);
+            setContacts([]);
+        } finally {
         }
-    }, [searchValue, socket]);
-
+    };
 
     return (
 
@@ -131,8 +132,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             </Box>
                             {/* when any user in my contact */}
 
-                            {Contacts.map((ele) => {
-
+                            {Contacts && Contacts.length > 0 && Contacts.map((ele) => {
                                 return (
                                     <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
                                         onMouseEnter={() => setHoveredBox(2)}
