@@ -132,7 +132,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             </Box>
                             {/* when any user in my contact */}
 
-                            {Contacts && Contacts.length > 0 && Contacts.map((ele) => {
+                            {Contacts && Contacts.length > 0 && Contacts.filter((ele)=>ele.id !== loginUserId).map((ele) => {
                                 return (
                                     <Box className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'
                                         onMouseEnter={() => setHoveredBox(2)}
