@@ -49,17 +49,28 @@ const MainChat = ({ socket }) => {
       receiverId: selectedReceiverId,
     });
 
+
+    socket.emit('markAsSeen', {
+      senderId: loginUserId,
+      receiverId: selectedReceiverId,
+    });
+
+
     // Listen for message history
     socket.on('messageHistory', (history) => {
       setMessages(history);
     });
-
+    
     // Listen for real-time incoming messages
     socket.on('receiveMessage', (msg) => {
       setMessages((prev) => [...prev, msg]);
       socket.emit('getAllChats', { senderId: loginUserId });
       socket.on('getChats', (chats) => {
         setChatList(chats?.data);
+      });
+      socket.emit('markAsSeen', {
+        senderId: loginUserId,
+        receiverId: selectedReceiverId,
       });
     });
 
