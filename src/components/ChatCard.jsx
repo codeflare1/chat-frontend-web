@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import DoneIcon from '@mui/icons-material/Done';
 import moment from 'moment';
+import { ChatContext } from '../context/ChatContext';
 
 const ChatCard = ({ chat, isSendingMessage }) => {
+  const {
+    selectedReceiverId,
+  } = useContext(ChatContext);  // Access context values
 
   const formatChatTimestamp = (date) => {
     const today = moment().startOf('day');
@@ -80,11 +84,15 @@ const ChatCard = ({ chat, isSendingMessage }) => {
 
         {renderDeliveryIcon()}
 
-        {chat?.unseenCount > 0 && (
-          <Typography variant="caption" sx={{ color: '#fff', fontWeight: 'bold' }} className='bg-primary rounded-full max-w-4 h-4 w-full flex justify-center items-center text-xxs'>
-            {chat?.unseenCount}
-          </Typography>
-        )}
+        {selectedReceiverId !== chat?._id &&
+          <>
+            {chat?.unseenCount > 0 && (
+              <Typography variant="caption" sx={{ color: '#fff', fontWeight: 'bold' }} className='bg-primary rounded-full max-w-4 h-4 w-full flex justify-center items-center text-xxs'>
+                {chat?.unseenCount}
+              </Typography>
+            )}
+          </>}
+
       </Box>
     </Box>
   );

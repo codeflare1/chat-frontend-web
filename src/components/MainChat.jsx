@@ -27,8 +27,6 @@ const MainChat = ({ socket }) => {
   const [userData, setUserDate] = useState([]);
   const fileInputRef = useRef(null);
 
-
-
   const handleIconClick = () => {
     // Trigger the file input click
     if (fileInputRef.current) {
@@ -84,6 +82,7 @@ const MainChat = ({ socket }) => {
       const msgData = {
         senderId: loginUserId,
         receiverId: selectedReceiverId,
+        fileType:null,
         message,
       };
       socket.emit('sendMessage', msgData);
@@ -124,11 +123,13 @@ const MainChat = ({ socket }) => {
 
   const handleSelectFile = async (event) => {
     const token = localStorage.getItem('token');
+    debugger
     const selectedFile = event.target.files[0];
     if (!selectedFile) return; // Exit if no file is selected
     const formData = new FormData();
     if (selectedFile) {
       formData.append('uploadDocument', selectedFile);
+      formData.append('fileType', selectedFile?.type);
     }
 
     try {
@@ -155,12 +156,7 @@ const MainChat = ({ socket }) => {
   };
 
 
-
-
   return (
-
-
-
     <>
       {selectedReceiverId ? (
         <>
