@@ -17,7 +17,6 @@ const ChatList = ({ socket }) => {
     setSelectedReceiverId,
     setSelectedUser,
     chatList, 
-    setChatList,
     refreshMsg,
     setRefreshMsg
   } = useContext(ChatContext);  // Access context values
@@ -25,20 +24,6 @@ const ChatList = ({ socket }) => {
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
   const [messageSendingState, setMessageSendingState] = useState(false);
-
-  useEffect(() => {
-    if (socket) {
-      socket.emit('getAllChats', { senderId: loginUserId });
-      socket.on('getChats', (chats) => {
-        console.log('Received chats:', chats);
-        setChatList(chats?.data);
-      });
-
-      return () => {
-        socket.off('getChats');
-      };
-    }
-  }, [socket, loginUserId ,setSelectedReceiverId]);
 
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
@@ -51,10 +36,6 @@ const ChatList = ({ socket }) => {
     setSelectedReceiverId(receiverId);
     setRefreshMsg(!refreshMsg)
     socket.emit('getAllChats', { senderId: loginUserId });
-    socket.on('getChats', (chats) => {
-      console.log('Received chats:', chats);
-      setChatList(chats?.data);
-    });
   };
 
   return (

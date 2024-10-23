@@ -85,11 +85,6 @@ const MainChat = () => {
       if (msg.senderId === selectedReceiverId) {
         setMessages((prev) => [...prev, msg]);
         socket.emit('getAllChats', { senderId: loginUserId });
-  
-        socket.once('getChats', (chats) => {
-          setChatList(chats?.data);
-        });
-  
         socket.emit('markAsSeen', {
           senderId: loginUserId,
           receiverId: selectedReceiverId,
@@ -97,13 +92,7 @@ const MainChat = () => {
       } else if (msg.senderId === loginUserId) {
         console.log("chla");
         setMessages((prev) => [...prev, msg]);
-  
         socket.emit('getAllChats', { senderId: loginUserId });
-  
-        socket.once('getChats', (chats) => {
-          setChatList(chats?.data);
-        });
-  
         socket.emit('markAsSeen', {
           senderId: loginUserId,
           receiverId: selectedReceiverId,
