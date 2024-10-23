@@ -35,6 +35,7 @@ const MainChat = () => {
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
   const fileInputRef = useRef(null);
+  const lastMessageRef = useRef(null); // Reference to the last message for auto-scroll
 
   const handleIconClick = () => {
     // Trigger the file input click
@@ -45,9 +46,7 @@ const MainChat = () => {
 
   const {
     selectedReceiverId,
-    setChatList,
     refreshMsg,
-    setRefreshMsg
   } = useContext(ChatContext); // Access context values
 
   useEffect(() => {
@@ -74,12 +73,12 @@ const MainChat = () => {
 
   useEffect(() => {
     if (!socket) return;
-  
+
     // Handler for message history
     const handleMessageHistory = (history) => {
       setMessages(history);
     };
-  
+
     // Handler for real-time messages
     const handleReceiveMessage = (msg) => {
       if (msg.senderId === selectedReceiverId) {
@@ -99,18 +98,18 @@ const MainChat = () => {
         });
       }
     };
-  
+
     // Register socket listeners
     socket.on('messageHistory', handleMessageHistory);
     socket.on('receiveMessage', handleReceiveMessage);
-  
+
     // Cleanup listeners when dependencies change or component unmounts
     return () => {
       socket.off('messageHistory', handleMessageHistory);
       socket.off('receiveMessage', handleReceiveMessage);
     };
   }, [socket, selectedReceiverId, refreshMsg]);
-  
+
 
   const handleEmojiClick = (emojiObject) => {
     setMessage(prevMessage => prevMessage + emojiObject.emoji);
@@ -197,7 +196,21 @@ const MainChat = () => {
   };
 
 
+  useEffect(() => {
+    checkLastScroll()
+  }, [messages,socket, loginUserId, selectedReceiverId, refreshMsg]); // Trigger auto-scroll when messages change
   console.log("messages66", messages)
+
+
+  const checkLastScroll = () => {
+    if (lastMessageRef.current) {
+      socket.emit('markAsSeen', {
+        senderId: loginUserId,
+        receiverId: selectedReceiverId,
+      });
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' }); // Auto-scroll to the last message
+    }
+  }
 
   return (
     <>
@@ -256,43 +269,42 @@ const MainChat = () => {
                   </Typography>
                 </Box>
 
-                <div className="flex-1 p-4 overflow-auto">
-                  {messages.map((msg) => (
-                    <div
-                      key={msg._id}
-                      className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4 gap-2`}
-                    >
-                      {msg.senderId !== loginUserId && (
-                        <Avatar
-                          sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color: '#1E1E1E' }}
-                          src={userData?.user?.image}
-                        >
-                          {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
-                        </Avatar>
-                      )}
+                <div className="flex-1 p-4 overflow-auto"  ref={lastMessageRef}>
+                  {messages.map((msg, index) => { // Added index as a parameter to map
+                    const isLastMessage = index === messages.length - 1; // Check if it's the last message
+                    return ( // Added return statement for JSX
                       <div
-                        className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
-                          } p-3 rounded-md flex items-end gap-2 relative `}
+                        key={msg._id}
+                        className={`flex ${msg.senderId === loginUserId ? 'justify-end' : 'justify-start'} mb-4 gap-2`}
                       >
-                        {msg?.message && msg?.message.includes("https") ?
-                          <img src={msg?.message} alt="Uploaded" height={50} width={50} /> // Use message as the src
-                          :
-                          <Typography variant="body2" className='max-w-64 break-words'>{msg.message}</Typography>
-
-                        }
-                        <div className='time_seen flex gap-1'>
-                        <Typography variant="caption" className='msg_sent time text-xxs'>
-                              {formatTime(msg.createdAt)} 
-                        </Typography>
-                        {msg.senderId === loginUserId && (
-                          <>
-                            {msg?.isSeen ? <DoneAllIcon sx={{ color: '#FFF', fontSize: '13px' }} /> : <DoneAllIcon sx={{ fontSize: '13px' }} />}
-                          </>
+                        {msg.senderId !== loginUserId && (
+                          <Avatar
+                            sx={{ width: 45, height: 45, bgcolor: '#dfdfdf', fontWeight: 800, color: '#1E1E1E' }}
+                            src={userData?.user?.image}
+                          >
+                            {(!userData?.user?.image) && `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                          </Avatar>
                         )}
+                        <div
+                          className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'} p-3 rounded-md flex items-end gap-2 relative`}
+                        >
+                          {msg?.message && msg?.message.includes("https") ? (
+                            <img src={msg?.message} alt="Uploaded" height={50} width={50} /> // Use message as the src
+                          ) : (
+                            <Typography variant="body2" className='max-w-64 break-words'>{msg.message}</Typography>
+                          )}
+                          <div className='time_seen flex gap-1'>
+                            <Typography variant="caption" className='msg_sent time text-xxs'>
+                              {formatTime(msg.createdAt)}
+                            </Typography>
+                            {msg.senderId === loginUserId && isLastMessage && (
+                              <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image} />
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </Box>
