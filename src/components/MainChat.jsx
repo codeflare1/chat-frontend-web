@@ -240,22 +240,24 @@ const MainChat = ({ socket }) => {
                       )}
                       <div
                         className={`${msg.senderId === loginUserId ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
-                          } p-3 rounded-md flex items-end gap-2`}
+                          } p-3 rounded-md flex items-end gap-2 relative `}
                       >
                         {msg?.message && msg?.message.includes("https") ?
                           <img src={msg?.message} alt="Uploaded" height={50} width={50} /> // Use message as the src
                           :
-                          <Typography variant="body2">{msg.message}</Typography>
+                          <Typography variant="body2" className='max-w-64 break-words'>{msg.message}</Typography>
 
                         }
-                        <Typography variant="caption" className='msg_sent time text-xxs'>
-                          {formatTime(msg.createdAt)} {/* Display time here */}
-                        </Typography>
-                        {msg.senderId === loginUserId && (
-                          <>
-                            {msg?.isSeen ? <DoneAllIcon sx={{ color: '#FFF', fontSize: '13px' }} /> : <DoneAllIcon sx={{ fontSize: '13px' }} />}
-                          </>
-                        )}
+                        <div className='time_seen flex gap-1'>
+                            <Typography variant="caption" className='msg_sent time text-xxs'>
+                              {formatTime(msg.createdAt)} 
+                            </Typography>
+                            {msg.senderId === loginUserId && (
+                              <>
+                                {msg?.isSeen ? <DoneAllIcon sx={{ color: '#FFF', fontSize: '13px' }} /> : <DoneAllIcon sx={{ fontSize: '13px' }} />}
+                              </>
+                            )}
+                        </div>
                       </div>
                     </div>
                   ))}
