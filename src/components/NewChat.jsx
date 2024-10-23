@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Typography, Skeleton } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GroupIcon from '@mui/icons-material/Group';
@@ -20,6 +20,8 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     const [chooseMember, setchooseMember] = useState(false);
     const [hoveredBox, setHoveredBox] = useState(null);
     const [Contacts, setContacts] = useState([]);
+    const [loading, setLoading] = useState(true); // State to track loading
+    const skeletonCount = Contacts.length > 0 ? Contacts.length : 4;
 
     const { setSelectedReceiverId } = useContext(ChatContext); // Access context values
 
@@ -28,10 +30,10 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     };
 
     const addToContact = (receiverId) => {    
-    socket.emit('joinChat', {
-        senderId: loginUserId,
-        receiverId: receiverId,
-      });
+        socket.emit('joinChat', {
+            senderId: loginUserId,
+            receiverId: receiverId,
+        });
   
         setSelectedReceiverId(receiverId);
         handleGroupToggle();
@@ -46,6 +48,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     }, [searchValue]);
 
     const getUserData = async () => {
+        setLoading(true);  // Set loading to true when fetching starts
         try {
             const response = await getData(`/getAllUsers?search=${searchValue}`);
             if (response?.status === true) {
@@ -54,6 +57,8 @@ const NewChat = ({ handleGroupToggle, socket }) => {
         } catch (error) {
             console.log(error?.response?.message);
             setContacts([]);
+        } finally {
+            setLoading(false);  // Set loading to false when fetching completes
         }
     };
 
@@ -204,7 +209,32 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             </Box>
 
                             {/* Users list */}
-                            {Contacts &&
+                            {loading ? (
+                                // Show skeleton while loading
+                                // <>
+                                    Array.from({ length: skeletonCount }).map((_, index) =>  (
+                                        <Box
+                                            key={index}
+                                            className="w-full h-12 rounded-xl justify-between flex items-center p-3"
+                                        >
+                                            <Skeleton
+                                                variant="circular"
+                                                width={36}
+                                                height={36}
+                                                className="me-2"
+                                            />
+                                            <Box sx={{ flexGrow: 1 }}>
+                                                <Skeleton
+                                                    variant="text"
+                                                    width="60%"
+                                                    height={24}
+                                                />
+                                            </Box>
+                                        </Box>
+                                    ))
+                                // </>
+                            ) : (
+                                Contacts &&
                                 Contacts.length > 0 &&
                                 Contacts.filter((ele) => ele.id !== loginUserId).map((ele) => {
                                     return (
@@ -240,7 +270,8 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                                             )}
                                         </Box>
                                     );
-                                })}
+                                })
+                            )}
                         </Box>
 
                         {/* Group */}
@@ -251,10 +282,10 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             >
                                 Group
                             </Typography>
-                            {/* This is showing default */}
+
                             <Box
                                 className="w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer"
-                                onMouseEnter={() => setHoveredBox(3)}
+                                onMouseEnter={() => setHoveredBox('team')}
                                 onMouseLeave={() => setHoveredBox(null)}
                             >
                                 <Box
@@ -270,16 +301,11 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                                         }}
                                         className=" p-2 rounded-full me-2"
                                     />
-                                    <div className="flex flex-col gap-0.5">
-                                        The Chat Group
-                                        <Typography
-                                            variant="body"
-                                            className="text-xs text-gray-400"
-                                        >
-                                            14 members
-                                        </Typography>
-                                    </div>
+                                    Team chat
                                 </Box>
+                                {hoveredBox === 'team' && (
+                                    <ContactDots sx={{ color: '#4A4A4A' }} />
+                                )}
                             </Box>
                         </Box>
                     </Box>
