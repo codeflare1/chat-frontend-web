@@ -14,7 +14,8 @@ const MainContent = () => {
         bgcolor: '#ffffff',
       }}
     >
-      <Typography variant="h6" className='text-Newblack font-semibold'>
+      <Typography variant="h6" className='text-Newblack font-semibold flex flex-col justify-center items-center'>
+        <img src="./loader.png" alt="" />
         Welcome to Gatsbychat
       </Typography>
       <Typography variant="body2" sx={{ mt: 0.5 }} className='text-newgray'>

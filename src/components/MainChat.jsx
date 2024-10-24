@@ -4,7 +4,7 @@ import {
   Box,
   CircularProgress,
   IconButton,
-  Tooltip,
+  TextField,
   Typography,
 } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
@@ -13,18 +13,15 @@ import { io } from "socket.io-client";
 import SendIcon from "@mui/icons-material/Send";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import EmojiPicker from "emoji-picker-react";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatNameModal from "./ChatNameModal";
 import MainChatMore from "./MainChatMore";
-import ProfileDrawer from "./ProfileDrawer";
 import MainContent from "./MainContent";
 import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
 import { ChatContext } from "../context/ChatContext";
 import { getData, postData } from "../api/apiService";
 import axios from "axios";
-import moment from "moment";
 
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
@@ -43,6 +40,18 @@ const MainChat = () => {
   const lastMessageRef = useRef(null); // Reference to the last message for auto-scroll
 
   const { selectedReceiverId, refreshMsg } = useContext(ChatContext); // Access context values
+
+  const [textareaHeightClass, setTextareaHeightClass] = useState("pb-16");
+  const textFieldRef = useRef(null);
+
+  useEffect(() => {
+    const textFieldHeight = textFieldRef.current?.getBoundingClientRect().height;
+    if (textFieldHeight > 80) { // Adjust the threshold as needed
+        setTextareaHeightClass("pb-24");
+    } else {
+        setTextareaHeightClass("pb-16");
+    }
+}, [message]);
 
   useEffect(() => {
     if (!socket || !selectedReceiverId || !loginUserId) return;
@@ -110,6 +119,7 @@ const MainChat = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
+  
   const handleSendMessage = () => {
     if (message.trim()) {
       const msgData = {
@@ -239,7 +249,7 @@ const MainChat = () => {
                 </div>
               </div>
 
-              <div className="main_chat overflow-auto pt-20 pb-16">
+              <div className={`main_chat overflow-auto pt-20 ${textareaHeightClass}`}>
                 <Box className="mt-6 mb-6">
                   <Box className="user_profile flex flex-col items-center">
                     <Avatar
@@ -359,19 +369,50 @@ const MainChat = () => {
                   className=" border text-sm border-gray-300 "
                 />
               ) : (
-                <input
-                  type="text"
+                <TextField
                   value={message}
+                  ref={textFieldRef}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Message"
-                  className="flex-1 border text-sm border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
+                  placeholder="Type a message"
+                  multiline
+                  minRows={1} 
+                  maxRows={4} 
+                  fullWidth
+                  variant="outlined"
+                  className="flex-1 break-words text-sm"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
                       handleSendMessage();
                     }
                   }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      padding: '12px', 
+                      '& textarea': {
+                        padding: '0', 
+                        lineHeight: '1', 
+                        
+                      },
+                    },
+                    '& .MuiInputBase-input': {
+                      height: '1.2em',
+                    },
+                    '& fieldset': {
+                      borderColor: '#d1d5db',
+                      borderRadius: '12px', 
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#0d6efd',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#0d6efd',
+                    },
+                  }}
                 />
+                
+                
+                
               )}
 
               <Box className="ms-1.5 flex gap-2">
