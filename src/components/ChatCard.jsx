@@ -30,15 +30,15 @@ const ChatCard = ({ chat, isSendingMessage }) => {
       return null;
     }
 
-    if (isSendingMessage) {
-      return null;
-    } else if (!chat.isDelivered) {
-      return <DoneIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
-    } else if (chat.isDelivered && !chat.isSeen) {
-      return <DoneAllIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
-    } else if (chat.isSeen) {
-      return <DoneAllIcon sx={{ color: '#0d6efd', fontSize: 16, marginTop: '4px' }} />;
-    }
+    // if (isSendingMessage) {
+    //   return null;
+    // } else if (!chat.isDelivered) {
+    //   return <DoneIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
+    // } else if (chat.isDelivered && !chat.isSeen) {
+    //   return <DoneAllIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
+    // } else if (chat.isSeen) {
+    //   return <DoneAllIcon sx={{ color: '#0d6efd', fontSize: 16, marginTop: '4px' }} />;
+    // }
   };
 
   const extractFileName = (message) => {
