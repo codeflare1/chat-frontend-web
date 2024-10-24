@@ -15,6 +15,8 @@ export const ChatProvider = ({ children }) => {
   const [selectedReceiverId, setSelectedReceiverId] = useState("");
   const [selectedUser, setSelectedUser] = useState({});
   const [chatList, setChatList] = useState([]);
+  const [selectedMedia, setSelectedMedia] = useState([]);
+  const [isMediaShow, setIsMediaShow] = useState(false);
   const [refreshMsg, setRefreshMsg] = useState(false);
 
   useEffect(() => {
@@ -53,7 +55,9 @@ export const ChatProvider = ({ children }) => {
       setSelectedUser,
       chatList,
       setChatList,
-      refreshMsg, setRefreshMsg
+      refreshMsg, setRefreshMsg,
+      isMediaShow, setIsMediaShow,
+      selectedMedia, setSelectedMedia
     }}>
       {children}
     </ChatContext.Provider>

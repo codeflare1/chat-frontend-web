@@ -13,15 +13,14 @@ import { io } from "socket.io-client";
 import SendIcon from "@mui/icons-material/Send";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import EmojiPicker from "emoji-picker-react";
-import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChatNameModal from "./ChatNameModal";
 import MainChatMore from "./MainChatMore";
 import MainContent from "./MainContent";
-import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
 import { ChatContext } from "../context/ChatContext";
 import { getData, postData } from "../api/apiService";
 import axios from "axios";
+import MediaFile from "./common/MediaFile";
 
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
@@ -36,22 +35,19 @@ const MainChat = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
-  const fileInputRef = useRef(null);
   const lastMessageRef = useRef(null); // Reference to the last message for auto-scroll
-
   const { selectedReceiverId, refreshMsg } = useContext(ChatContext); // Access context values
-
   const [textareaHeightClass, setTextareaHeightClass] = useState("pb-16");
   const textFieldRef = useRef(null);
 
   useEffect(() => {
     const textFieldHeight = textFieldRef.current?.getBoundingClientRect().height;
     if (textFieldHeight > 80) { // Adjust the threshold as needed
-        setTextareaHeightClass("pb-24");
+      setTextareaHeightClass("pb-24");
     } else {
-        setTextareaHeightClass("pb-16");
+      setTextareaHeightClass("pb-16");
     }
-}, [message]);
+  }, [message]);
 
   useEffect(() => {
     if (!socket || !selectedReceiverId || !loginUserId) return;
@@ -119,7 +115,7 @@ const MainChat = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  
+
   const handleSendMessage = () => {
     if (message.trim()) {
       const msgData = {
@@ -281,60 +277,60 @@ const MainChat = () => {
                         className={`flex ${msg.senderId === loginUserId ? "justify-end flex-col" : "justify-between"} mb-3 gap-1 items-end`}
                       >
                         <div className="flex items-end gap-2">
-                              {msg.senderId !== loginUserId && (
-                                <Avatar
-                                  sx={{
-                                    width: 32,
-                                    height: 32,
-                                    bgcolor: "#dfdfdf",
-                                    fontWeight: 800,
-                                    color: "#1E1E1E",
-                                  }}
-                                  src={userData?.user?.image}
-                                >
-                                  {!userData?.user?.image &&
-                                    `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
-                                </Avatar>
-                              )}
-                              {msg.senderId === loginUserId && (
+                          {msg.senderId !== loginUserId && (
+                            <Avatar
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: "#dfdfdf",
+                                fontWeight: 800,
+                                color: "#1E1E1E",
+                              }}
+                              src={userData?.user?.image}
+                            >
+                              {!userData?.user?.image &&
+                                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                            </Avatar>
+                          )}
+                          {msg.senderId === loginUserId && (
+                            <Typography
+                              variant="caption"
+                              className="msg_sent time text-xxs text-gray-500"
+                            >
+                              {formatTime(msg.createdAt)}{" "}
+                              {/* Sent messages show time before */}
+                            </Typography>
+                          )}
+                          <div className="flex items-end gap-2">
+                            <div
+                              className={`${msg.senderId === loginUserId ? "bg-blue-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-md flex items-end gap-2 relative`}
+                            >
+                              {msg?.message && msg?.message.includes("https") ? (
+                                <img
+                                  src={msg?.message}
+                                  alt="Uploaded"
+                                  height={50}
+                                  width={50}
+                                /> // Use message as the src
+                              ) : (
                                 <Typography
-                                  variant="caption"
-                                  className="msg_sent time text-xxs text-gray-500"
+                                  variant="body2"
+                                  className="max-w-md break-words"
                                 >
-                                  {formatTime(msg.createdAt)}{" "}
-                                  {/* Sent messages show time before */}
+                                  {msg.message}
                                 </Typography>
                               )}
-                              <div className="flex items-end gap-2">
-                                <div
-                                  className={`${msg.senderId === loginUserId ? "bg-blue-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-md flex items-end gap-2 relative`}
-                                >
-                                  {msg?.message && msg?.message.includes("https") ? (
-                                    <img
-                                      src={msg?.message}
-                                      alt="Uploaded"
-                                      height={50}
-                                      width={50}
-                                    /> // Use message as the src
-                                  ) : (
-                                    <Typography
-                                      variant="body2"
-                                      className="max-w-md break-words"
-                                    >
-                                      {msg.message}
-                                    </Typography>
-                                  )}
-                                </div>
-                                {msg.senderId !== loginUserId && (
-                                  <Typography
-                                    variant="caption"
-                                    className="msg_received time text-xxs text-gray-500"
-                                  >
-                                    {formatTime(msg.createdAt)}{" "}
-                                    {/* Received messages show time after */}
-                                  </Typography>
-                                )}
-                              </div>
+                            </div>
+                            {msg.senderId !== loginUserId && (
+                              <Typography
+                                variant="caption"
+                                className="msg_received time text-xxs text-gray-500"
+                              >
+                                {formatTime(msg.createdAt)}{" "}
+                                {/* Received messages show time after */}
+                              </Typography>
+                            )}
+                          </div>
 
                         </div>
 
@@ -379,8 +375,8 @@ const MainChat = () => {
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type a message"
                   multiline
-                  minRows={1} 
-                  maxRows={4} 
+                  minRows={1}
+                  maxRows={4}
                   fullWidth
                   variant="outlined"
                   className="flex-1 break-words text-sm"
@@ -392,11 +388,11 @@ const MainChat = () => {
                   }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
-                      padding: '12px', 
+                      padding: '12px',
                       '& textarea': {
-                        padding: '0', 
-                        lineHeight: '1', 
-                        
+                        padding: '0',
+                        lineHeight: '1',
+
                       },
                     },
                     '& .MuiInputBase-input': {
@@ -404,7 +400,7 @@ const MainChat = () => {
                     },
                     '& fieldset': {
                       borderColor: '#d1d5db',
-                      borderRadius: '12px', 
+                      borderRadius: '12px',
                     },
                     '&:hover fieldset': {
                       borderColor: '#0d6efd',
@@ -414,25 +410,10 @@ const MainChat = () => {
                     },
                   }}
                 />
-                
-                
-                
+
               )}
 
-              <Box className="ms-1.5 flex gap-2">
-                <KeyboardVoiceOutlinedIcon />
-                <AttachFileOutlinedIcon
-                  onClick={handleSelectFile}
-                  style={{ cursor: "pointer" }}
-                />
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleSelectFile}
-                  style={{ display: "none" }}
-                />
-              </Box>
-
+              <MediaFile />
               <IconButton
                 className="ml-2 text-blue-500"
                 onClick={handleSendMessage}

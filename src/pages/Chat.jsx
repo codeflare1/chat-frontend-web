@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import ChatList from '../components/ChatList';
-import MainChat from '../components/MainChat';
 import { ChatProvider } from '../context/ChatContext';
 import ProgressLoader from '../components/ProgressLoader';
-
+import Main from '../components/Main';
 const Chat = ({ socket }) => {
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -18,7 +17,7 @@ const Chat = ({ socket }) => {
         }
         return prev + 10;
       });
-    }, 400); 
+    }, 400);
 
     const timeoutId = setTimeout(() => {
       setLoading(false);
@@ -26,8 +25,8 @@ const Chat = ({ socket }) => {
     }, 4500);
 
     return () => {
-      clearTimeout(timeoutId); 
-      clearInterval(intervalId); 
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -38,13 +37,13 @@ const Chat = ({ socket }) => {
           <div className='mb-4'>
             <img src="./loader.png" alt="Loading..." className='animate-pulse' />
           </div>
-              <ProgressLoader progress={progress} />
-            <p style={{ textAlign: 'center', marginTop: '10px', color: '#555' }}>Loading...</p>
+          <ProgressLoader progress={progress} />
+          <p style={{ textAlign: 'center', marginTop: '10px', color: '#555' }}>Loading...</p>
         </div>
       ) : (
         <Layout>
           <ChatList socket={socket} />
-          <MainChat socket={socket} />
+          <Main socket={socket}/>
         </Layout>
       )}
     </ChatProvider>
