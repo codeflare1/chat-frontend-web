@@ -278,64 +278,68 @@ const MainChat = () => {
                       // Added return statement for JSX
                       <div
                         key={msg._id}
-                        className={`flex ${msg.senderId === loginUserId ? "justify-end flex-col" : "justify-start"} mb-2 gap-1 items-end`}
+                        className={`flex ${msg.senderId === loginUserId ? "justify-end flex-col" : "justify-between"} mb-3 gap-1 items-end`}
                       >
-                        {msg.senderId !== loginUserId && (
-                          <Avatar
-                            sx={{
-                              width: 45,
-                              height: 45,
-                              bgcolor: "#dfdfdf",
-                              fontWeight: 800,
-                              color: "#1E1E1E",
-                            }}
-                            src={userData?.user?.image}
-                          >
-                            {!userData?.user?.image &&
-                              `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
-                          </Avatar>
-                        )}
-                        {msg.senderId === loginUserId && (
-                          <Typography
-                            variant="caption"
-                            className="msg_sent time text-xxs text-gray-500"
-                          >
-                            {formatTime(msg.createdAt)}{" "}
-                            {/* Sent messages show time before */}
-                          </Typography>
-                        )}
-                        <div className="flex flex-col-reverse">
-                          <div
-                            className={`${msg.senderId === loginUserId ? "bg-blue-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-md flex items-end gap-2 relative`}
-                          >
-                            {msg?.message && msg?.message.includes("https") ? (
-                              <img
-                                src={msg?.message}
-                                alt="Uploaded"
-                                height={50}
-                                width={50}
-                              /> // Use message as the src
-                            ) : (
-                              <Typography
-                                variant="body2"
-                                className="max-w-md break-words"
-                              >
-                                {msg.message}
-                              </Typography>
-                            )}
-                          </div>
-                          {msg.senderId !== loginUserId && (
-                            <Typography
-                              variant="caption"
-                              className="msg_received time text-xxs text-gray-500"
-                            >
-                              {formatTime(msg.createdAt)}{" "}
-                              {/* Received messages show time after */}
-                            </Typography>
-                          )}
+                        <div className="flex items-end gap-2">
+                              {msg.senderId !== loginUserId && (
+                                <Avatar
+                                  sx={{
+                                    width: 32,
+                                    height: 32,
+                                    bgcolor: "#dfdfdf",
+                                    fontWeight: 800,
+                                    color: "#1E1E1E",
+                                  }}
+                                  src={userData?.user?.image}
+                                >
+                                  {!userData?.user?.image &&
+                                    `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                                </Avatar>
+                              )}
+                              {msg.senderId === loginUserId && (
+                                <Typography
+                                  variant="caption"
+                                  className="msg_sent time text-xxs text-gray-500"
+                                >
+                                  {formatTime(msg.createdAt)}{" "}
+                                  {/* Sent messages show time before */}
+                                </Typography>
+                              )}
+                              <div className="flex items-end gap-2">
+                                <div
+                                  className={`${msg.senderId === loginUserId ? "bg-blue-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-md flex items-end gap-2 relative`}
+                                >
+                                  {msg?.message && msg?.message.includes("https") ? (
+                                    <img
+                                      src={msg?.message}
+                                      alt="Uploaded"
+                                      height={50}
+                                      width={50}
+                                    /> // Use message as the src
+                                  ) : (
+                                    <Typography
+                                      variant="body2"
+                                      className="max-w-md break-words"
+                                    >
+                                      {msg.message}
+                                    </Typography>
+                                  )}
+                                </div>
+                                {msg.senderId !== loginUserId && (
+                                  <Typography
+                                    variant="caption"
+                                    className="msg_received time text-xxs text-gray-500"
+                                  >
+                                    {formatTime(msg.createdAt)}{" "}
+                                    {/* Received messages show time after */}
+                                  </Typography>
+                                )}
+                              </div>
+
                         </div>
+
                         <div className="time_seen flex gap-1">
-                          {msg.senderId === loginUserId && isLastMessage && (
+                          {isLastMessage && (
                             <Avatar
                               sx={{ width: 16, height: 16 }}
                               src={userData?.user?.image}
