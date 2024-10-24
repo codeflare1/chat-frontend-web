@@ -7,6 +7,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import DownloadIcon from "@mui/icons-material/Download";
 import CallIcon from "@mui/icons-material/Call";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import { io } from "socket.io-client";
@@ -197,6 +199,45 @@ const MainChat = () => {
     }
   };
 
+  // Helper function to format file sizes
+const formatFileSize = (bytes) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+};
+
+
+  const renderMessageContent = (msg) => {
+    const { message, fileType } = msg;
+    if (fileType?.startsWith("image/")) {
+      return (
+        <img
+          src={message}
+          alt={"Uploaded Image"}
+          height={100}
+          width={100}
+          className="rounded"
+        />
+      );
+    }
+  
+    // For other files: Show name, size, and a download icon
+    return (
+      <div className="flex items-center gap-2">
+        <DescriptionIcon style={{ color: "#fff" }} />
+        <Typography variant="body2" className="text-white-500">
+          {fileType}
+        </Typography>
+        <a href={message} download>
+          <IconButton>
+            <DownloadIcon style={{ color: "#fff" }} />
+          </IconButton>
+        </a>
+      </div>
+    );
+  };
+  
+
   return (
     <>
       {selectedReceiverId ? (
@@ -267,85 +308,80 @@ const MainChat = () => {
                 </Box>
 
                 <div className="flex-1 p-4 overflow-auto" ref={lastMessageRef}>
-                  {messages.map((msg, index) => {
-                    // Added index as a parameter to map
-                    const isLastMessage = index === messages.length - 1; // Check if it's the last message
-                    return (
-                      // Added return statement for JSX
-                      <div
-                        key={msg._id}
-                        className={`flex ${msg.senderId === loginUserId ? "justify-end flex-col" : "justify-between"} mb-3 gap-1 items-end`}
-                      >
-                        <div className="flex items-end gap-2">
-                          {msg.senderId !== loginUserId && (
-                            <Avatar
-                              sx={{
-                                width: 32,
-                                height: 32,
-                                bgcolor: "#dfdfdf",
-                                fontWeight: 800,
-                                color: "#1E1E1E",
-                              }}
-                              src={userData?.user?.image}
-                            >
-                              {!userData?.user?.image &&
-                                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
-                            </Avatar>
-                          )}
-                          {msg.senderId === loginUserId && (
-                            <Typography
-                              variant="caption"
-                              className="msg_sent time text-xxs text-gray-500"
-                            >
-                              {formatTime(msg.createdAt)}{" "}
-                              {/* Sent messages show time before */}
-                            </Typography>
-                          )}
-                          <div className="flex items-end gap-2">
-                            <div
-                              className={`${msg.senderId === loginUserId ? "bg-blue-500 text-white" : "bg-gray-300 text-black"} p-3 rounded-md flex items-end gap-2 relative`}
-                            >
-                              {msg?.message && msg?.message.includes("https") ? (
-                                <img
-                                  src={msg?.message}
-                                  alt="Uploaded"
-                                  height={50}
-                                  width={50}
-                                /> // Use message as the src
-                              ) : (
-                                <Typography
-                                  variant="body2"
-                                  className="max-w-md break-words"
-                                >
-                                  {msg.message}
-                                </Typography>
-                              )}
-                            </div>
-                            {msg.senderId !== loginUserId && (
-                              <Typography
-                                variant="caption"
-                                className="msg_received time text-xxs text-gray-500"
-                              >
-                                {formatTime(msg.createdAt)}{" "}
-                                {/* Received messages show time after */}
-                              </Typography>
-                            )}
-                          </div>
+  {messages.map((msg, index) => {
+    const isLastMessage = index === messages.length - 1;
+    const isCurrentUser = msg.senderId === loginUserId;
 
-                        </div>
+    return (
+      <div
+        key={msg._id}
+        className={`flex ${
+          isCurrentUser ? "justify-end flex-col" : "justify-between"
+        } mb-3 gap-1 items-end`}
+      >
+        <div className="flex items-end gap-2">
+          {/* Avatar for received messages */}
+          {!isCurrentUser && (
+            <Avatar
+              sx={{
+                width: 32,
+                height: 32,
+                bgcolor: "#dfdfdf",
+                fontWeight: 800,
+                color: "#1E1E1E",
+              }}
+              src={userData?.user?.image}
+            >
+              {!userData?.user?.image &&
+                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+            </Avatar>
+          )}
 
-                        <div className="time_seen flex gap-1">
-                          {isLastMessage && (
-                            <Avatar
-                              sx={{ width: 16, height: 16 }}
-                              src={userData?.user?.image}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+          {/* Time for sent messages */}
+          {isCurrentUser && (
+            <Typography
+              variant="caption"
+              className="msg_sent time text-xxs text-gray-500"
+            >
+              {formatTime(msg.createdAt)}
+            </Typography>
+          )}
+
+          <div className="flex items-end gap-2">
+            {/* Message bubble with conditional content */}
+            <div
+              className={`${
+                isCurrentUser
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-black"
+              } p-3 rounded-md flex items-end gap-2 relative`}
+            >
+              {renderMessageContent(msg)}
+            </div>
+
+            {/* Time for received messages */}
+            {!isCurrentUser && (
+              <Typography
+                variant="caption"
+                className="msg_received time text-xxs text-gray-500"
+              >
+                {formatTime(msg.createdAt)}
+              </Typography>
+            )}
+          </div>
+        </div>
+
+        {/* Seen indicator for the last message */}
+        <div className="time_seen flex gap-1">
+          {isLastMessage && (
+            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image} />
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>
+
               </div>
             </Box>
 

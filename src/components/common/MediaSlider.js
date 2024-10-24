@@ -3,13 +3,14 @@ import Slider from "react-slick";
 import { ChatContext } from "../../context/ChatContext";
 import { Box, Typography, Button, IconButton, Grid } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 
 const MediaSlider = ({ socket }) => {
   const loginUserId = localStorage.getItem("loginUserId");
   const token = localStorage.getItem("token");
-  const { selectedMedia, setSelectedMedia, selectedReceiverId ,setIsMediaShow } = useContext(ChatContext);
+  const { selectedMedia, setSelectedMedia, selectedReceiverId, setIsMediaShow } = useContext(ChatContext);
 
   const [mediaURLs, setMediaURLs] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -18,10 +19,14 @@ const MediaSlider = ({ socket }) => {
     const generatePreviews = async () => {
       const promises = selectedMedia.map((file) =>
         new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
+          if (file.type.startsWith("image")) {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+          } else {
+            resolve(null); // Skip preview for non-image files.
+          }
         })
       );
 
@@ -38,7 +43,7 @@ const MediaSlider = ({ socket }) => {
     }
   }, [selectedMedia]);
 
-  const handleAddMoreImages = (event) => {
+  const handleAddMoreFiles = (event) => {
     const files = Array.from(event.target.files);
     setSelectedMedia((prevMedia) => [...prevMedia, ...files]);
   };
@@ -61,7 +66,7 @@ const MediaSlider = ({ socket }) => {
       );
 
       if (response?.data?.success) {
-        return response.data.imageURI[0]?.imageURI; // Assuming API returns an array with a single URI
+        return response.data.imageURI[0]?.imageURI;
       } else {
         throw new Error("Upload failed");
       }
@@ -88,7 +93,7 @@ const MediaSlider = ({ socket }) => {
     }
 
     console.log("All messages sent successfully");
-    setSelectedMedia([]); // Clear selected media after sending
+    setSelectedMedia([]);
     setIsMediaShow(false);
   };
 
@@ -101,19 +106,30 @@ const MediaSlider = ({ socket }) => {
     arrows: false,
   };
 
+  const formatSize = (bytes) => {
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    if (bytes === 0) return "0 Bytes";
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+    return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+  };
+
+  const getFileExtension = (filename) => {
+    return filename.split(".").pop().toUpperCase();
+  };
+
   return (
     <Box sx={{ width: "50%", margin: "0 auto", mt: 4 }}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item>
           <input
-            accept="image/*"
-            id="upload-image"
+            accept="image/*,video/*,.pdf,.doc,.docx"
+            id="upload-media"
             type="file"
             multiple
             style={{ display: "none" }}
-            onChange={handleAddMoreImages}
+            onChange={handleAddMoreFiles}
           />
-          <label htmlFor="upload-image">
+          <label htmlFor="upload-media">
             <IconButton component="span" color="primary">
               <AddPhotoAlternateIcon />
             </IconButton>
@@ -123,19 +139,41 @@ const MediaSlider = ({ socket }) => {
 
       {mediaURLs.length > 0 ? (
         <Slider {...settings}>
-          {mediaURLs.map((url, index) => (
-            <Box key={index} sx={{ textAlign: "center" }}>
-              <img
-                src={url}
-                alt={`Media ${index + 1}`}
-                height={150}
-                style={{ borderRadius: 8 }}
-              />
-              <Typography variant="caption" display="block" align="center">
-                {selectedMedia[index]?.name || `Media ${index + 1}`}
-              </Typography>
-            </Box>
-          ))}
+          {selectedMedia.map((file, index) => {
+            const isImage = file.type.startsWith("image");
+            const fileExtension = getFileExtension(file.name);
+
+            return (
+              <Box key={index} sx={{ textAlign: "center" }}>
+                {isImage ? (
+                  <img
+                    src={mediaURLs[index]}
+                    alt={`Media ${index + 1}`}
+                    height={150}
+                    style={{ borderRadius: 8 }}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      border: "1px solid #ccc",
+                      borderRadius: 8,
+                      padding: 2,
+                      height: 150,
+                    }}
+                  >
+                    <InsertDriveFileIcon fontSize="large" color="action" />
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      {file.name} ({fileExtension}) - {formatSize(file.size)}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            );
+          })}
         </Slider>
       ) : (
         <Typography variant="h6" align="center">
