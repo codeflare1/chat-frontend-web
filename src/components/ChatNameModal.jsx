@@ -14,7 +14,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 
 
 const ChatNameModal = ({ selectedUser }) => {
-    console.log(selectedUser, 'this is chatname');
+    // console.log(selectedUser, 'this is chatname');
     
     const style = {
         position: 'absolute',

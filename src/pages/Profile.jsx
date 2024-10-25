@@ -16,10 +16,10 @@ const Profile = () => {
   const handleImageChange = (e, setFieldValue) => {
     const file = e.target.files[0];
     if (file) {
-      setFieldValue("userProfileImage", file); // Set file in Formik
+      setFieldValue("userProfileImage", file); 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result); // Set preview to the uploaded image
+        setImagePreview(reader.result); 
       };
       reader.readAsDataURL(file);
     }

@@ -32,9 +32,7 @@ const MainSidebar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear all local storage
     localStorage.clear();
-    // Redirect to the main home URL (adjust as needed)
     navigate('/');
   };
 
