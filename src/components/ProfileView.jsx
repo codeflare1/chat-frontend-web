@@ -6,6 +6,10 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
+
+
 
 const ProfileView = () => {
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
@@ -19,6 +23,18 @@ const ProfileView = () => {
   const handleCancelAvatarEdit = () => {
     setIsEditingAvatar(false); // Go back to the profile content
   };
+  
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
     <div className='p-5 w-full'>
@@ -104,22 +120,36 @@ const ProfileView = () => {
                 <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-20 h-20 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
                   JS
                 </Avatar>
-                <Button 
+                {/* <Button 
                 variant='contained' 
-                className='font-semibold text-xxs tracking-tight  capitalize bg-[#DDD] text-Newblack rounded-md leading-4 hover:bg-gray-400 shadow-none hover:shadow-none flex gap-1'
+                className='font-semibold text-xxs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-md leading-4 hover:bg-gray-400 shadow-none hover:shadow-none flex gap-1'
                 onClick={handleEditAvatar}
                 >
                   <InsertPhotoOutlinedIcon className='w-5 h-5'/>
                   photo
-                </Button>
+                </Button> */}
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    className='font-semibold text-xxs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-md leading-4 hover:bg-gray-400 shadow-none hover:shadow-none flex gap-1'
+                    tabIndex={-1}
+                    startIcon={<InsertPhotoOutlinedIcon />}
+                  >
+                    Photo
+                    <VisuallyHiddenInput
+                      type="file"
+                      onChange={(event) => console.log(event.target.files)}
+                      multiple
+                    />
+                  </Button>
             </Box>
         </Box>
         <Box className='pt-5'>
             <div className="avatar_selection_header mb-3">
               <h2>Select an Avatar</h2>
             </div>
-            <div className="avatar_selection grid grid-cols-4 gap-4 mb-5 items py-2">
-              {/* Placeholder avatar images/icons */}
+            <div className="avatar_selection grid grid-cols-6 place-items-center gap-4 mb-5 items py-2">
               <Avatar alt="Avatar 1" className="cursor-pointer" src="../assets/img/avatar-1.png" />
               <Avatar alt="Avatar 2" className="cursor-pointer" src="../assets/img/avatar-2.png" />
               <Avatar alt="Avatar 3" className="cursor-pointer" src="../assets/img/avatar-3.png" />
@@ -129,6 +159,18 @@ const ProfileView = () => {
               <Avatar alt="Avatar 7" className="cursor-pointer" src="../assets/img/avatar-7.png" />
               <Avatar alt="Avatar 8" className="cursor-pointer" src="../assets/img/avatar-8.png" />
               <Avatar alt="Avatar 9" className="cursor-pointer" src="../assets/img/avatar-9.png" />
+              <Avatar alt="Avatar 10" className="cursor-pointer" src="../assets/img/avatar-10.png" />
+              <Avatar alt="Avatar 11" className="cursor-pointer" src="../assets/img/avatar-11.png" />
+              <Avatar alt="Avatar 12" className="cursor-pointer" src="../assets/img/avatar-12.png" />
+              <Avatar alt="Avatar 13" className="cursor-pointer" src="../assets/img/avatar-13.png" />
+              <Avatar alt="Avatar 14" className="cursor-pointer" src="../assets/img/avatar-14.png" />
+              <Avatar alt="Avatar 15" className="cursor-pointer" src="../assets/img/avatar-15.png" />
+              <Avatar alt="Avatar 16" className="cursor-pointer" src="../assets/img/avatar-16.png" />
+              <Avatar alt="Avatar 17" className="cursor-pointer" src="../assets/img/avatar-17.png" />
+              <Avatar alt="Avatar 18" className="cursor-pointer" src="../assets/img/avatar-18.png" />
+              <Avatar alt="Avatar 19" className="cursor-pointer" src="../assets/img/avatar-19.png" />
+              <Avatar alt="Avatar 20" className="cursor-pointer" src="../assets/img/avatar-20.png" />
+              <Avatar alt="Avatar 21" className="cursor-pointer" src="../assets/img/avatar-21.png" />
             </div>
             <div className="avatar_actions flex justify-end gap-3">
               <Button 

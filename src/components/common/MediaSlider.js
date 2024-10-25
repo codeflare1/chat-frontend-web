@@ -118,7 +118,7 @@ const MediaSlider = ({ socket }) => {
   };
 
   return (
-    <Box sx={{ width: "50%", margin: "0 auto", mt: 4 }}>
+    <Box className='media_modal' sx={{ width: "50%", margin: "0 auto", mt: 4 }}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item>
           <input

@@ -200,11 +200,11 @@ const MainChat = () => {
   };
 
   // Helper function to format file sizes
-const formatFileSize = (bytes) => {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-};
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  };
 
 
   const renderMessageContent = (msg) => {
@@ -220,7 +220,7 @@ const formatFileSize = (bytes) => {
         />
       );
     }
-  
+
     // For other files: Show name, size, and a download icon
     return (
       <div className="flex items-center gap-2">
@@ -236,7 +236,7 @@ const formatFileSize = (bytes) => {
       </div>
     );
   };
-  
+
 
   return (
     <>
@@ -308,79 +308,77 @@ const formatFileSize = (bytes) => {
                 </Box>
 
                 <div className="flex-1 p-4 overflow-auto" ref={lastMessageRef}>
-  {messages.map((msg, index) => {
-    const isLastMessage = index === messages.length - 1;
-    const isCurrentUser = msg.senderId === loginUserId;
+                  {messages.map((msg, index) => {
+                    const isLastMessage = index === messages.length - 1;
+                    const isCurrentUser = msg.senderId === loginUserId;
 
-    return (
-      <div
-        key={msg._id}
-        className={`flex ${
-          isCurrentUser ? "justify-end flex-col" : "justify-between"
-        } mb-3 gap-1 items-end`}
-      >
-        <div className="flex items-end gap-2">
-          {/* Avatar for received messages */}
-          {!isCurrentUser && (
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                bgcolor: "#dfdfdf",
-                fontWeight: 800,
-                color: "#1E1E1E",
-              }}
-              src={userData?.user?.image}
-            >
-              {!userData?.user?.image &&
-                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
-            </Avatar>
-          )}
+                    return (
+                      <div
+                        key={msg._id}
+                        className={`flex ${isCurrentUser ? "justify-end flex-col" : "justify-between"
+                          } mb-3 gap-1 items-end`}
+                      >
+                        <div className="flex items-end gap-2">
+                          {/* Avatar for received messages */}
+                          {!isCurrentUser && (
+                            <Avatar
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: "#dfdfdf",
+                                fontWeight: 800,
+                                color: "#1E1E1E",
+                              }}
+                              src={userData?.user?.image}
+                            >
+                              {!userData?.user?.image &&
+                                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                            </Avatar>
+                          )}
 
-          {/* Time for sent messages */}
-          {isCurrentUser && (
-            <Typography
-              variant="caption"
-              className="msg_sent time text-xxs text-gray-500"
-            >
-              {formatTime(msg.createdAt)}
-            </Typography>
-          )}
+                          {/* Time for sent messages */}
+                          {isCurrentUser && (
+                            <Typography
+                              variant="caption"
+                              className="msg_sent time text-xxs text-gray-500"
+                            >
+                              {formatTime(msg.createdAt)}
+                            </Typography>
+                          )}
 
-          <div className="flex items-end gap-2">
-            {/* Message bubble with conditional content */}
-            <div
-              className={`${
-                isCurrentUser
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-black"
-              } p-3 rounded-md flex items-end gap-2 relative`}
-            >
-              {renderMessageContent(msg)}
-            </div>
+                          <div className="flex items-end gap-2">
+                            {/* Message bubble with conditional content */}
+                            <div
+                              className={`${isCurrentUser
+                                  ? "bg-blue-500 text-white"
+                                  : "bg-gray-300 text-black"
+                                } p-3 rounded-md flex items-end gap-2 relative`}
+                            >
+                              {renderMessageContent(msg)}
+                            </div>
 
-            {/* Time for received messages */}
-            {!isCurrentUser && (
-              <Typography
-                variant="caption"
-                className="msg_received time text-xxs text-gray-500"
-              >
-                {formatTime(msg.createdAt)}
-              </Typography>
-            )}
-          </div>
-        </div>
+                            {/* Time for received messages */}
+                            {!isCurrentUser && (
+                              <Typography
+                                variant="caption"
+                                className="msg_received time text-xxs text-gray-500"
+                              >
+                                {formatTime(msg.createdAt)}
+                              </Typography>
+                            )}
+                          </div>
+                        </div>
 
-        {/* Seen indicator for the last message */}
-        <div className="time_seen flex gap-1">
-          {isLastMessage && (
-            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image} />
-          )}
-        </div>
-      </div>
-    );
-  })}
-</div>
+                        {/* Seen indicator for the last message */}
+                        <div className="time_seen flex gap-1">
+                          {isLastMessage && (
+                            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image} />
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
 
               </div>
             </Box>
