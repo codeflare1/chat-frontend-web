@@ -37,10 +37,11 @@ const MainChat = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
-  const lastMessageRef = useRef(null); // Reference to the last message for auto-scroll
+  const lastMessageRef = useRef(null); 
   const { selectedReceiverId, refreshMsg } = useContext(ChatContext); // Access context values
   const [textareaHeightClass, setTextareaHeightClass] = useState("pb-16");
   const textFieldRef = useRef(null);
+  const emojiPickerRef = useRef(null); 
 
   useEffect(() => {
     const textFieldHeight = textFieldRef.current?.getBoundingClientRect().height;
@@ -116,6 +117,23 @@ const MainChat = () => {
   const toggleEmojiPicker = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
+
+  const handleClickOutside = (event) => {
+    if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+      setShowEmojiPicker(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
 
 
   const handleSendMessage = () => {
@@ -205,6 +223,12 @@ const MainChat = () => {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   };
+
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
 
   const renderMessageContent = (msg) => {
@@ -317,6 +341,7 @@ const MainChat = () => {
                         key={msg._id}
                         className={`flex ${isCurrentUser ? "justify-end flex-col" : "justify-between"
                           } mb-3 gap-1 items-end`}
+                          ref={isLastMessage ? lastMessageRef : null}
                       >
                         <div className="flex items-end gap-2">
                           {/* Avatar for received messages */}
@@ -385,7 +410,7 @@ const MainChat = () => {
 
             <div className="flex items-center p-4 py-3 bg-whites shadow-chatWrite fixed bottom-0 bg-white w-newW z-50">
               {showEmojiPicker && (
-                <div className="absolute bottom-16 z-50">
+                <div className="absolute bottom-16 z-50" ref={emojiPickerRef}>
                   <EmojiPicker onEmojiClick={handleEmojiClick} />
                 </div>
               )}

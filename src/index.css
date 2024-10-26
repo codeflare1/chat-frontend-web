@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+ul.custom-dots .slick-active img {
+    border: 1px solid #0d6efd;
+}
