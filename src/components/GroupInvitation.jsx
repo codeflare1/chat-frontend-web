@@ -7,8 +7,15 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import Typography from '@mui/material/Typography';
+import { io } from "socket.io-client";
 
-const GroupInvitation = ({isButtonDisabled }) => {
+const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
+
+socket.on("connect", () => {
+  console.log("Socket connected:", socket.id);
+});
+
+const GroupInvitation = ({isButtonDisabled ,imgfile, selectedUsers ,groupName}) => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -21,10 +28,25 @@ const GroupInvitation = ({isButtonDisabled }) => {
     borderRadius: '8px',
     padding: '16px',
   };
-
+  const loginUserId = localStorage.getItem("loginUserId");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+
+
+const handleSubmit =(imgfile, selectedUsers, groupName)=>{
+  debugger
+  let merbers = selectedUsers.map(item => item.id)
+    merbers.push(loginUserId)
+    const Data = {
+      adminId: loginUserId,
+      memberIds:merbers,
+      groupName: groupName,
+      image:imgfile
+    }
+    socket.emit("createGroup", Data)
+}
 
   return (
     <div>
@@ -75,7 +97,7 @@ const GroupInvitation = ({isButtonDisabled }) => {
               <Button variant="outlined" onClick={handleClose}>
                 Learn more
               </Button>
-              <Button variant="contained" color="primary" onClick={handleClose}>
+              <Button variant="contained" color="primary" onClick={()=>handleSubmit(imgfile, selectedUsers, groupName)}>
                 Okay
               </Button>
             </Box>

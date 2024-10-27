@@ -65,7 +65,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     return (
         <>
             {chooseMember ? (
-                <GroupMember handleGroup={handleGroup} />
+                <GroupMember handleGroup={handleGroup} Contacts={Contacts} />
             ) : (
                 <Box
                     sx={{

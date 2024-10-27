@@ -58,6 +58,7 @@ const MainChat = () => {
     socket.emit("joinChat", {
       senderId: loginUserId,
       receiverId: selectedReceiverId,
+    
     });
 
     socket.emit("markAsSeen", {
@@ -173,34 +174,7 @@ const MainChat = () => {
     }
   };
 
-  const handleSelectFile = async (event) => {
-    const token = localStorage.getItem("token");
-    const selectedFile = event.target.files[0];
-    if (!selectedFile) return;
-    const formData = new FormData();
-    formData.append("uploadDocument", selectedFile);
-    formData.append("fileType", selectedFile?.type);
 
-    try {
-      const response = await axios.post(
-        `https://api.gatsbychat.com/v1/auth/uploadFiles`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response?.data?.success) {
-        setMessage(response?.data?.imageURI[0]?.imageURI);
-      } else {
-        setMessage("Upload failed");
-      }
-    } catch (error) {
-      console.error(error?.response?.data?.message || error.message);
-    }
-  };
 
   useEffect(() => {
     checkLastScroll();

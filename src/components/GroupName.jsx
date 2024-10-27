@@ -4,20 +4,53 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import GroupInvitation from './GroupInvitation'
+import axios from 'axios';
 
-const GroupName = ({handleNameGroup}) => {
-    const [imagePreview] = useState(''); // Default to no image
+const GroupName = ({handleNameGroup ,selectedUsers}) => {
+
+    const loginUserId = localStorage.getItem('loginUserId');
     const [age, setAge] = useState('');
+    const [imgfile, setImgFile] = useState('');
     const [groupName, setGroupName] = useState(''); // State for group name
-    const [members] = useState(['John Doe']); // Example initial member
-
     const handleChange = (event) => {
         setAge(event.target.value);
     };
 
     // Check if the button should be enabled
-    const isButtonDisabled = groupName.trim() === '' || members.length === 0;
+    const isButtonDisabled = groupName.trim() === '' || selectedUsers.length === 0;
 
+
+    const handleSelectFile = async (event) => {
+        const token = localStorage.getItem("token");
+        const selectedFile = event.target.files[0];
+        if (!selectedFile) return;
+        const formData = new FormData();
+        formData.append("uploadDocument", selectedFile);
+        formData.append("fileType", selectedFile?.type);
+    
+        try {
+          const response = await axios.post(
+            `https://api.gatsbychat.com/v1/auth/uploadFiles`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response?.data?.success) {
+            setImgFile(response?.data?.imageURI[0]?.imageURI);
+          } else {
+            setImgFile("Upload failed");
+          }
+        } catch (error) {
+          console.error(error?.response?.data?.message || error.message);
+        }
+      };
+
+
+      console.log("imgfileimgfileimgfile",imgfile)
     return (
         <Box
             sx={{
@@ -58,8 +91,8 @@ const GroupName = ({handleNameGroup}) => {
                         <div className="upload_img relative flex justify-center items-center mb-6">
                             <div className='relative'>
                                 {/* Image preview or icon if no image is available */}
-                                {imagePreview ? (
-                                    <img src={imagePreview} alt="Profile" className='w-20 h-20 rounded-full object-cover' />
+                                {imgfile ? (
+                                    <img src={imgfile} alt="Profile" className='w-20 h-20 rounded-full object-cover' />
                                 ) : (
                                     <Box
                                         sx={{
@@ -82,6 +115,7 @@ const GroupName = ({handleNameGroup}) => {
                             <input
                                 type="file"
                                 className='w-20 h-20 absolute opacity-0 cursor-pointer'
+                                onChange={handleSelectFile}
                             />
                         </div>
 
@@ -130,25 +164,24 @@ const GroupName = ({handleNameGroup}) => {
                             {/* members */}
                             <Box className='members'>
                                 <Typography variant='h6' className='text-Newblack capitalize text-base font-semibold mb-2'>members</Typography>
-                                {members.map((member, index) => (
-                                    <Box key={index} className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'>
-                                        <Box variant="text" className='text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1'>
-                                            <Avatar alt={member} src='' sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' />
-                                            {member} <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
+
+                                    {selectedUsers.length > 0 && selectedUsers.filter((ele) => ele.id !== loginUserId).map((user ,index)=>{
+                                        return(
+
+                                            <Box key={index} className='w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer'>
+                                            <Box variant="text" className='text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1'>
+                                                <Avatar alt={user?.image} src={user?.image} sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }} className='me-2' />
+                                                {user?.firstName} <AccountCircleOutlinedIcon className='w-4 h-6 p-0 text-newgray' />
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                ))}
+                                        )
+                                    })}
                             </Box>
                         </Box>
                     </Box>
                     <Box className='mb-2 flex justify-end'>
-                        {/* <Button 
-                            disabled={isButtonDisabled}
-                            variant="outlined" 
-                            className='create_group disabled:bg-gray-300 disabled:text-Newblack disabled:cursor-not-allowed bg-primary text-white font-semibold border-none max-w-24 w-full capitalize'>
-                            Next
-                        </Button> */}
-                         <GroupInvitation isButtonDisabled={isButtonDisabled} />
+                         <GroupInvitation isButtonDisabled={isButtonDisabled} imgfile={imgfile} selectedUsers={selectedUsers} groupName={groupName} />
+
                     </Box>
                 </Box>
             </Box>

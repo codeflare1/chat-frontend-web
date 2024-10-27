@@ -6,51 +6,46 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchBar from './common/SearchBar';
 import GroupName from './GroupName';
-const users = [
-    { id: 1, name: 'John Doe', avatar: '' },
-    { id: 2, name: 'Jane Smith', avatar: '' },
-    { id: 3, name: 'Mark Johnson', avatar: '' },
-    { id: 4, name: 'Emily Davis', avatar: '' },
-    { id: 5, name: 'Michael Brown', avatar: '' },
-];
 
-const GroupMember = ({handleGroup}) => {
+const GroupMember = ({ handleGroup, Contacts }) => {
+    const loginUserId = localStorage.getItem('loginUserId');
+    const [groupNameScreen, setGroupNameScreen] = useState(false);
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
-    const [groupNameScrean, setGroupNameScrean] = useState(false);
-    const [checkedUsers, setCheckedUsers] = useState({});
-    const [selectedUsers, setSelectedUsers] = useState([]); // For selected users
+    const handleChange = (user) => {
+        // Check if user is already in selectedUsers
+        const isSelected = selectedUsers.some((u) => u.id === user.id);
 
-    const handleChange = (id, user) => {
-        setCheckedUsers((prev) => ({
-            ...prev,
-            [id]: !prev[id],
-        }));
-
-        // Add or remove users from selected list
-        if (checkedUsers[id]) {
-            setSelectedUsers(selectedUsers.filter((u) => u.id !== id)); // Deselect user
+        if (isSelected) {
+            // If user is already selected, remove them
+            setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
         } else {
-            setSelectedUsers([...selectedUsers, user]); // Select user
+            // If user is not selected, add them
+            setSelectedUsers((prev) => {
+                // Check for duplicates based on user.id before adding
+                const alreadyExists = prev.some((u) => u.id === user.id);
+                if (!alreadyExists) {
+                    return [...prev, user];
+                }
+                return prev; // Return unchanged state if user already exists
+            });
         }
     };
 
-    const handleRemoveUser = (id) => {
-        setCheckedUsers((prev) => ({
-            ...prev,
-            [id]: false,
-        }));
-        setSelectedUsers(selectedUsers.filter((u) => u.id !== id)); // Remove from selected list
+    const handleRemoveUser = (user) => {
+        // Remove user from selectedUsers
+        setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
     };
 
-
     const handleNameGroup = () => {
-        setGroupNameScrean(!groupNameScrean)
+        setGroupNameScreen(!groupNameScreen);
+    };
 
-    }
     return (
         <>
-            {groupNameScrean ?
-                <GroupName handleNameGroup={handleNameGroup} /> :
+            {groupNameScreen ? (
+                <GroupName handleNameGroup={handleNameGroup}  selectedUsers={selectedUsers} />
+            ) : (
                 <Box
                     sx={{
                         width: '100%',
@@ -61,7 +56,7 @@ const GroupMember = ({handleGroup}) => {
                         height: '100vh',
                         padding: '0',
                         borderRight: '1px solid #dfdfdf',
-                        overflowY: 'scroll'
+                        overflowY: 'scroll',
                     }}
                 >
                     <Box
@@ -71,20 +66,25 @@ const GroupMember = ({handleGroup}) => {
                             display: 'flex',
                             flexDirection: 'column',
                             height: '100vh',
-                            padding: '12px'
+                            padding: '12px',
                         }}
                     >
                         <div className="flex flex-col sticky bg-bgChat top-0 z-50">
                             <Box className="flex justify-center relative pb-3">
                                 <Box className="flex items-center">
-                                    <ArrowBackIosIcon className='absolute left-0 w-4 h-4 cursor-pointer' onClick={handleGroup} />
-                                    <Typography variant="h6" className="p-0 font-semibold leading-none text-base text-center">
+                                    <ArrowBackIosIcon
+                                        className="absolute left-0 w-4 h-4 cursor-pointer"
+                                        onClick={handleGroup}
+                                    />
+                                    <Typography
+                                        variant="h6"
+                                        className="p-0 font-semibold leading-none text-base text-center"
+                                    >
                                         Choose members
                                     </Typography>
                                 </Box>
                             </Box>
-                            <SearchBar marginClass="mb-2"  />
-
+                            <SearchBar marginClass="mb-2" />
                         </div>
 
                         {/* Display selected users */}
@@ -97,16 +97,27 @@ const GroupMember = ({handleGroup}) => {
                                             className="selected-user flex items-center bg-gray-200 px-2 py-1 rounded-lg"
                                         >
                                             <Avatar
-                                                alt={user.name}
-                                                src={user.name}
-                                                sx={{ width: 24, height: 24, bgcolor: '#dfdfdf', color: '#4A4A4A', padding: '6px', fontSize: '14px', fontWeight: 600 }}
+                                                alt={user.firstName}
+                                                src={user.image}
+                                                sx={{
+                                                    width: 24,
+                                                    height: 24,
+                                                    bgcolor: '#dfdfdf',
+                                                    color: '#4A4A4A',
+                                                    padding: '6px',
+                                                    fontSize: '14px',
+                                                    fontWeight: 600,
+                                                }}
                                             />
-                                            <Typography variant="body2" className="ml-1.5 text-xs font-medium">
-                                                {user.name}
+                                            <Typography
+                                                variant="body2"
+                                                className="ml-1.5 text-xs font-medium"
+                                            >
+                                                {user.firstName} {user.lastName}
                                             </Typography>
                                             <CloseIcon
                                                 className="ml-1 cursor-pointer"
-                                                onClick={() => handleRemoveUser(user.id)}
+                                                onClick={() => handleRemoveUser(user)}
                                                 sx={{ fontSize: '16px' }}
                                             />
                                         </Box>
@@ -116,49 +127,63 @@ const GroupMember = ({handleGroup}) => {
                         </Box>
 
                         {/* Contact list */}
-                        <Box className='mb-4 h-full'>
-                            <Typography variant='h6' className='text-Newblack text-base font-semibold mb-2'>Contact</Typography>
-                            <Box className='flex flex-col justify-between h-full'>
+                        <Box className="mb-4 h-full">
+                            <Typography
+                                variant="h6"
+                                className="text-Newblack text-base font-semibold mb-2"
+                            >
+                                Contact
+                            </Typography>
+                            <Box className="flex flex-col justify-between h-full">
                                 <div>
-                                    {users.map((user) => (
+                                    {Contacts.length > 0 &&
+                                     Contacts.filter((ele) => ele.id !== loginUserId).map((user) => (
                                         <Box
                                             key={user.id}
-                                            className='user_select w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer mb-0.5'
-                                            onClick={() => handleChange(user.id, user)} // Pass user object to handleChange
+                                            className="user_select w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer mb-0.5"
+                                            onClick={() => handleChange(user)} // Pass user object to handleChange
                                         >
                                             <Box
                                                 variant="text"
-                                                className='text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1'
+                                                className="text-Newblack capitalize text-sm font-medium p-0 flex items-center gap-1"
                                             >
                                                 <Avatar
-                                                    alt={user.name}
-                                                    src={user.avatar}
-                                                    sx={{ width: 36, height: 36, bgcolor: '#dfdfdf', color: '#4A4A4A' }}
-                                                    className='me-2'
+                                                    alt={user.firstName}
+                                                    src={user.image}
+                                                    sx={{
+                                                        width: 36,
+                                                        height: 36,
+                                                        bgcolor: '#dfdfdf',
+                                                        color: '#4A4A4A',
+                                                    }}
+                                                    className="me-2"
                                                 />
-                                                {user.name}
+                                                {user.firstName} {user.lastName}
                                             </Box>
                                             <Checkbox
-                                                checked={checkedUsers[user.id] || false}
-                                                onChange={() => handleChange(user.id, user)} // Update the checkbox handler
+                                                checked={selectedUsers.some((u) => u.id === user.id)} // Check if user is selected
+                                                onChange={() => handleChange(user)} // Update the checkbox handler
                                                 icon={<RadioButtonUncheckedIcon />}
                                                 checkedIcon={<CheckCircleIcon />}
                                             />
                                         </Box>
                                     ))}
                                 </div>
-                                <Box className='mb-2 flex justify-end'>
-                                    <Button variant="outlined" className='bg-primary text-white font-semibold border-none max-w-24 w-full capitalize' onClick={handleNameGroup}>Next</Button>
+                                <Box className="mb-2 flex justify-end">
+                                    <Button
+                                        variant="outlined"
+                                        className="bg-primary text-white font-semibold border-none max-w-24 w-full capitalize"
+                                        onClick={handleNameGroup}
+                                    >
+                                        Next
+                                    </Button>
                                 </Box>
                             </Box>
                         </Box>
-
-                        {/* /* <GroupName /> */}
                     </Box>
                 </Box>
-            }
+            )}
         </>
-
     );
 };
 
