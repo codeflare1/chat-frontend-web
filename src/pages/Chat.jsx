@@ -22,7 +22,7 @@ const Chat = ({ socket }) => {
     const timeoutId = setTimeout(() => {
       setLoading(false);
       clearInterval(intervalId);
-    }, 4500);
+    }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
