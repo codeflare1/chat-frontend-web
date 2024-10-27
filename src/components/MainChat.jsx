@@ -233,33 +233,42 @@ const MainChat = () => {
 
   const renderMessageContent = (msg) => {
     const { message, fileType } = msg;
+
     if (fileType?.startsWith("image/")) {
-      return (
-        <img
-          src={message}
-          alt={"Uploaded Image"}
-          height={100}
-          width={100}
-          className="rounded"
-        />
-      );
+        // Render an image if fileType starts with "image/"
+        return (
+            <img
+                src={message}
+                alt={"Uploaded Image"}
+                height={100}
+                width={100}
+                className="rounded"
+            />
+        );
+    } else if (fileType) {
+        // Render other files with name, size, and download icon
+        return (
+            <div className="flex items-center gap-2">
+                <DescriptionIcon style={{ color: "#fff" }} />
+                <Typography variant="body2" className="text-white-500">
+                    {fileType}
+                </Typography>
+                <a href={message} download>
+                    <IconButton>
+                        <DownloadIcon style={{ color: "#fff" }} />
+                    </IconButton>
+                </a>
+            </div>
+        );
     }
 
-    // For other files: Show name, size, and a download icon
+    // Render text if there's no fileType
     return (
-      <div className="flex items-center gap-2">
-        <DescriptionIcon style={{ color: "#fff" }} />
-        <Typography variant="body2" className="text-white-500">
-          {fileType}
+        <Typography variant="body1" className="text-white-500">
+            {message}
         </Typography>
-        <a href={message} download>
-          <IconButton>
-            <DownloadIcon style={{ color: "#fff" }} />
-          </IconButton>
-        </a>
-      </div>
     );
-  };
+};
 
 
   return (
@@ -286,8 +295,7 @@ const MainChat = () => {
                     }}
                     src={userData?.user?.image}
                   >
-                    {!userData?.user?.image &&
-                      `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                    {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
                   </Avatar>
                   <Typography
                     variant="h6"
@@ -324,8 +332,7 @@ const MainChat = () => {
                       }}
                       src={userData?.user?.image}
                     >
-                      {!userData?.user?.image &&
-                        `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                    {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
                     </Avatar>
                     <ChatNameModal selectedUser={userData} />
                   </Box>
@@ -356,8 +363,7 @@ const MainChat = () => {
                               }}
                               src={userData?.user?.image}
                             >
-                              {!userData?.user?.image &&
-                                `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName?.charAt(0)}`}
+                               {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
                             </Avatar>
                           )}
 
@@ -397,7 +403,9 @@ const MainChat = () => {
                         {/* Seen indicator for the last message */}
                         <div className="time_seen flex gap-1">
                           {isLastMessage && (
-                            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image} />
+                            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image}>
+                                  {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                            </Avatar>
                           )}
                         </div>
                       </div>
