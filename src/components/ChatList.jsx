@@ -9,17 +9,18 @@ import ChatCard from './ChatCard';
 import SearchBar from './common/SearchBar';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
 import NewChat from './NewChat';
-import { ChatContext } from '../context/ChatContext';  // Import ChatContext
+import { ChatContext } from '../context/ChatContext'; // Import ChatContext
 
 const ChatList = ({ socket }) => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
+  const { setSelectedMedia, setIsMediaShow } = useContext(ChatContext);
   const {
     setSelectedReceiverId,
     setSelectedUser,
-    chatList, 
+    chatList,
     refreshMsg,
     setRefreshMsg
-  } = useContext(ChatContext);  // Access context values
+  } = useContext(ChatContext); // Access context values
 
   const loginUserId = localStorage.getItem('loginUserId');
   const [makeGroup, setMakeGroup] = useState(false);
@@ -28,7 +29,6 @@ const ChatList = ({ socket }) => {
   const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
   const joinChat = (chat) => {
-  
     const receiverId = chat?._id;
     console.log("receiverIdreceiverId", receiverId);
     setSelectedUser(chat);
@@ -36,6 +36,8 @@ const ChatList = ({ socket }) => {
     setSelectedReceiverId(receiverId);
     setRefreshMsg(!refreshMsg)
     socket.emit('getAllChats', { senderId: loginUserId });
+    setSelectedMedia([])
+    setIsMediaShow(false)
   };
 
   return (
