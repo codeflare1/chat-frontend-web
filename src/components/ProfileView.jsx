@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
-import { Avatar, Box, Button, TextField } from '@mui/material';
+import { Avatar, Box, Button, InputAdornment, TextField } from '@mui/material';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
 import { styled } from '@mui/material/styles';
+import AddReactionOutlinedIcon from '@mui/icons-material/AddReactionOutlined';
+import WaveIcon from './svgicon/WaveIcon';
+import ShutIcon from './svgicon/ShutIcon';
+import ThumbIcon from './svgicon/ThumbIcon';
+import OffIcon from './svgicon/OffIcon';
+import CoffeeIcon from './svgicon/CoffeeIcon';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 const ProfileView = () => {
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingUsername, setIsEditingUsername] = useState(false); // State for username popup
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [aboutText, setAboutText] = useState('');
+  const [aboutIcon, setAboutIcon] = useState(<AddReactionOutlinedIcon />);
+
+
+  const handleButtonClick = (text, icon) => {
+    setAboutText(text);
+    setAboutIcon(icon);
+  };
+
+  const handleClearText = () => {
+    setAboutText('');
+    setAboutIcon(<AddReactionOutlinedIcon />); 
+  };
+
 
   const handleEditName = () => {
     setIsEditingName(true);
@@ -17,19 +39,28 @@ const ProfileView = () => {
   };
 
   const handleEditUsername = () => {
-    setIsEditingUsername(true); // Show the username popup
-    setIsEditingAvatar(false);  // Hide avatar editing if it's open
+    setIsEditingUsername(true);
+    setIsEditingAvatar(false);
   };
 
+  const handleEditAbout = () => {
+    setIsEditingAbout(true);
+    setIsEditingAvatar(false);
+  };
+
+  const handleCloseAbout = () => {
+    setIsEditingAbout(false);
+    setIsEditingAvatar(false);
+  };
   const handleClosePopup = () => {
-    setIsEditingUsername(false); // Close the username popup
+    setIsEditingUsername(false);
     setIsEditingAvatar(false);
   };
 
   const handleCancelEdit = () => {
     setIsEditingAvatar(false);
     setIsEditingName(false);
-    setIsEditingUsername(false); // Close username popup when canceling
+    setIsEditingUsername(false);
   };
 
   const handleEditAvatar = () => {
@@ -54,7 +85,7 @@ const ProfileView = () => {
 
   return (
     <div className='p-5 w-full'>
-      {!isEditingAvatar && !isEditingName && !isEditingUsername ? (
+      {!isEditingAvatar && !isEditingAbout && !isEditingName && !isEditingUsername ? (
         // Profile Content
         <>
           <div className="profile_header mb-3">
@@ -76,16 +107,16 @@ const ProfileView = () => {
           </div>
 
           <div className="name_field">
-            <Button 
-              onClick={handleEditName} 
-              variant="text" 
-              className='name_field w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack uppercase text-xs' 
+            <Button
+              onClick={handleEditName}
+              variant="text"
+              className='name_field w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack uppercase text-xs'
               startIcon={<Person2OutlinedIcon className=' text-gray-500 w-6 h-6' />}
             >
               John Smith
             </Button>
             <div className="about_btn mb-3">
-              <Button variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
+              <Button onClick={handleEditAbout} variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
                 About
               </Button>
             </div>
@@ -93,10 +124,10 @@ const ProfileView = () => {
               <p className='text-sm text-newgray'>Your profile and changes to it will be visible to people you message, contacts and groups.</p>
             </div>
             <div className="user_name mb-3">
-              <Button 
-                onClick={handleEditUsername} 
-                variant="text" 
-                className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' 
+              <Button
+                onClick={handleEditUsername}
+                variant="text"
+                className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs'
                 startIcon={<AlternateEmailOutlinedIcon className='text-gray-500 w-6 h-6' />}
               >
                 Username
@@ -115,33 +146,116 @@ const ProfileView = () => {
               <h2>Your Name</h2>
             </div>
             <Box className='flex flex-col gap-4 py-5'>
-              <TextField 
-                label="First Name" 
+              <TextField
+                label="First Name"
                 defaultValue="John"
                 variant="outlined"
               />
-              <TextField 
-                label="Last Name" 
+              <TextField
+                label="Last Name"
                 defaultValue="Smith"
                 variant="outlined"
               />
             </Box>
             <div className="avatar_actions flex justify-end gap-3 mt-5">
-              <Button 
-                variant="outlined" 
+              <Button
+                variant="outlined"
                 onClick={handleCancelEdit}
                 className='font-semibold text-xs tracking-tight capitalize'
               >
                 Cancel
               </Button>
-              <Button 
-                variant="contained" 
-                onClick={handleCancelEdit} 
+              <Button
+                variant="contained"
+                onClick={handleCancelEdit}
                 className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
               >
                 Save
               </Button>
             </div>
+          </Box>
+        </>
+      ) : isEditingAbout ? (
+        <>
+          <Box className="rounded-lg max-w-sm w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-medium text-gray-900">About</h2>
+            </div>
+
+            <Box className=' py-5'>
+              <Box className='mb-3'>
+                <TextField
+                  className='w-full about_text' 
+                  placeholder='Write Something about yourself..'
+                  variant="outlined"
+                  value={aboutText}
+                  onChange={(e) => setAboutText(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {aboutIcon}
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      aboutText && (
+                        <InputAdornment position="end">
+                            <CloseOutlinedIcon className='cursor-pointer' onClick={handleClearText}/>
+                        </InputAdornment>
+                      )
+                    ),
+
+                    sx: {
+                      padding: '16px 10px',
+                      '& input': {
+                        padding: '0',
+                        fontSize: '14px',
+
+                      },
+                      '& ::placeholder': {
+                        color: '#212121',
+                        fontSize: '14px',
+
+                      },
+                    },
+                  }}
+                />
+
+              </Box>
+              <Box className="prebuild_button">
+                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Say Anything", <WaveIcon />)} startIcon={<WaveIcon />}>
+                  Say Anything
+                </Button>
+                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Locked Down", <ShutIcon />)} startIcon={<ShutIcon />}>
+                  Locked Down
+                </Button>
+                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Available to Talk", <ThumbIcon />)} startIcon={<ThumbIcon />}>
+                  Available to Talk
+                </Button>
+                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Short Break", <OffIcon />)} startIcon={<OffIcon />}>
+                  Short Break
+                </Button>
+                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Espresso Lover", <CoffeeIcon />)} startIcon={<CoffeeIcon />}>
+                  Espresso Lover
+                </Button>
+              </Box>
+            </Box>
+
+            <Box className="flex justify-end gap-3">
+              <Button
+                variant="outlined"
+                onClick={handleCloseAbout}
+                className='font-semibold text-xs tracking-tight capitalize'
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
+
+              >
+                Save
+              </Button>
+            </Box>
           </Box>
         </>
       ) : isEditingUsername ? (
@@ -178,12 +292,6 @@ const ProfileView = () => {
               </p>
             </Box>
 
-            <Box className="text-xs mb-6">
-              <a href="#" className="text-blue-500">
-                Learn More
-              </a>
-            </Box>
-
             <Box className="flex justify-end gap-3">
               <Button
                 variant="outlined"
@@ -195,7 +303,7 @@ const ProfileView = () => {
               <Button
                 variant="contained"
                 className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
-    
+
               >
                 Save
               </Button>
