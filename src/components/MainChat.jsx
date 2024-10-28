@@ -24,6 +24,8 @@ import { getData, postData } from "../api/apiService";
 import axios from "axios";
 import MediaFile from "./common/MediaFile";
 
+
+// const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
 socket.on("connect", () => {
@@ -53,17 +55,19 @@ const MainChat = () => {
   }, [message]);
 
   useEffect(() => {
-    if (!socket || !selectedReceiverId || !loginUserId) return;
+    if (!socket || !selectedReceiverId?.id || !loginUserId) return;
 
     socket.emit("joinChat", {
       senderId: loginUserId,
-      receiverId: selectedReceiverId,
+      chatId: selectedReceiverId?.id,
+      type: selectedReceiverId?.type,
     
     });
 
     socket.emit("markAsSeen", {
       senderId: loginUserId,
-      receiverId: selectedReceiverId,
+      receiverId: selectedReceiverId?.id,
+      type: selectedReceiverId?.type,
     });
 
     return () => {
@@ -82,12 +86,13 @@ const MainChat = () => {
 
     // Handler for real-time messages
     const handleReceiveMessage = (msg) => {
-      if (msg.senderId === selectedReceiverId) {
+      if (msg.senderId === selectedReceiverId?.id) {
         setMessages((prev) => [...prev, msg]);
         socket.emit("getAllChats", { senderId: loginUserId });
         socket.emit("markAsSeen", {
           senderId: loginUserId,
-          receiverId: selectedReceiverId,
+          receiverId: selectedReceiverId?.id,
+          type: selectedReceiverId?.type,
         });
       } else if (msg.senderId === loginUserId) {
         console.log("chla");
@@ -95,7 +100,8 @@ const MainChat = () => {
         socket.emit("getAllChats", { senderId: loginUserId });
         socket.emit("markAsSeen", {
           senderId: loginUserId,
-          receiverId: selectedReceiverId,
+          receiverId: selectedReceiverId?.id,
+            type: selectedReceiverId?.type,
         });
       }
     };
@@ -138,10 +144,12 @@ const MainChat = () => {
 
 
   const handleSendMessage = () => {
+    debugger
     if (message.trim()) {
       const msgData = {
         senderId: loginUserId,
-        receiverId: selectedReceiverId,
+        chatId: selectedReceiverId?.id,
+        type: selectedReceiverId?.type,
         fileType: null,
         message,
       };
@@ -162,7 +170,7 @@ const MainChat = () => {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const response = await getData(`/fetchOtherUser/${selectedReceiverId}`);
+      const response = await getData(`/fetchOtherUser/${selectedReceiverId?.id}/${selectedReceiverId?.type}`);
       if (response?.success === true) {
         setUserDate(response);
       }
@@ -185,7 +193,8 @@ const MainChat = () => {
     if (lastMessageRef.current) {
       socket.emit("markAsSeen", {
         senderId: loginUserId,
-        receiverId: selectedReceiverId,
+        receiverId: selectedReceiverId?.id,
+        type: selectedReceiverId?.type,
       });
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" }); // Auto-scroll to the last message
     }
@@ -247,7 +256,7 @@ const MainChat = () => {
 
   return (
     <>
-      {selectedReceiverId ? (
+      {selectedReceiverId?.id ? (
         <>
           {loading && (
             <Box className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-50 z-40">

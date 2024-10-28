@@ -33,7 +33,7 @@ const handleGroupToggle = () => setMakeGroup(!makeGroup);
     console.log("receiverIdreceiverId", receiverId);
     setSelectedUser(chat);
     socket.emit('joinChat', { loginUserId, receiverId });
-    setSelectedReceiverId(receiverId);
+    setSelectedReceiverId({id:receiverId,type:chat?.chatType});
     setRefreshMsg(!refreshMsg)
     socket.emit('getAllChats', { senderId: loginUserId });
     setSelectedMedia([])

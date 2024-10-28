@@ -5,6 +5,8 @@ import { io } from 'socket.io-client';
 export const ChatContext = createContext();
 
 // Initialize socket connection
+
+// const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 const socket = io('https://api.gatsbychat.com'); // Replace with your socket server URL
 
 socket.on('connect', () => {
@@ -12,7 +14,7 @@ socket.on('connect', () => {
 });
 
 export const ChatProvider = ({ children }) => {
-  const [selectedReceiverId, setSelectedReceiverId] = useState("");
+  const [selectedReceiverId, setSelectedReceiverId] = useState({id:"",type:""});
   const [selectedUser, setSelectedUser] = useState({});
   const [chatList, setChatList] = useState([]);
   const [selectedMedia, setSelectedMedia] = useState([]);
@@ -27,7 +29,7 @@ export const ChatProvider = ({ children }) => {
       socket.emit('getAllChats', { senderId: loginUserId });
       
       // Call fetchChats again after 1 second
-      setTimeout(fetchChats, 1000);
+      setTimeout(fetchChats, 10000);
     };
 
     const updateChatList = (chats) => {

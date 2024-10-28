@@ -53,8 +53,8 @@ const MediaSlider = ({ socket }) => {
 
     try {
       const response = await axios.post(
-        `https://api.gatsbychat.com/v1/auth/uploadFiles`,
-        formData,
+        // `https://api.gatsbychat.com/v1/auth/uploadFiles`, formData,
+        `https://api.gatsbychat.com/v1/auth/uploadFiles`, formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -82,7 +82,8 @@ const MediaSlider = ({ socket }) => {
       if (uploadedURI) {
         const msgData = {
           senderId: loginUserId,
-          receiverId: selectedReceiverId,
+          chatId: selectedReceiverId?.id,
+          type: selectedReceiverId?.type,
           fileType: file.type,
           message: uploadedURI,
         };

@@ -29,9 +29,8 @@ const GroupName = ({handleNameGroup ,selectedUsers}) => {
         formData.append("fileType", selectedFile?.type);
     
         try {
-          const response = await axios.post(
-            `https://api.gatsbychat.com/v1/auth/uploadFiles`,
-            formData,
+            // const response = await axios.post( `https://api.gatsbychat.com/v1/auth/uploadFiles`,formData,
+            const response = await axios.post( `https://api.gatsbychat.com/v1/auth/uploadFiles`,formData,
             {
               headers: {
                 "Content-Type": "multipart/form-data",

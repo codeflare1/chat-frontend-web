@@ -9,6 +9,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import Typography from '@mui/material/Typography';
 import { io } from "socket.io-client";
 
+// const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
 socket.on("connect", () => {
@@ -36,7 +37,6 @@ const GroupInvitation = ({isButtonDisabled ,imgfile, selectedUsers ,groupName}) 
 
 
 const handleSubmit =(imgfile, selectedUsers, groupName)=>{
-  debugger
   let merbers = selectedUsers.map(item => item.id)
     merbers.push(loginUserId)
     const Data = {
