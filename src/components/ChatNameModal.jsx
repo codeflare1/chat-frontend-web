@@ -35,6 +35,8 @@ const ChatNameModal = ({ selectedUser }) => {
         <div>
             <Typography onClick={handleOpen} className=' p-4 text-Newblack cursor-pointer font-medium text-2xl flex gap-2 items-center'>
             {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}
+            
+            {/* {selectedUser?.groupName} */}
             <ArrowForwardIosIcon className='text-sm font-bold' />
             </Typography>
             <Modal

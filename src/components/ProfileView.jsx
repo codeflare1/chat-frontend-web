@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Button, InputAdornment, TextField } from '@mui/material';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
@@ -12,9 +12,14 @@ import ThumbIcon from './svgicon/ThumbIcon';
 import OffIcon from './svgicon/OffIcon';
 import CoffeeIcon from './svgicon/CoffeeIcon';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { getData, postData } from '../api/apiService';
 
 const ProfileView = () => {
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
+  const [userdata, setUserData] = useState([]);
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
@@ -22,6 +27,25 @@ const ProfileView = () => {
   const [aboutIcon, setAboutIcon] = useState(<AddReactionOutlinedIcon />);
 
 
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  const getUserData = async () => {
+    try {
+      const response = await getData(`/fetchUser`);
+      if (response?.success === true) {
+        setUserData(response?.user);
+      }
+    } catch (error) {
+      console.log(error?.response?.message);
+      setUserData([]);
+    } finally {
+    }
+  };
+
+
+  console.log("userdatauserdatauserdatauserdata",userdata)
   const handleButtonClick = (text, icon) => {
     setAboutText(text);
     setAboutIcon(icon);
@@ -29,7 +53,7 @@ const ProfileView = () => {
 
   const handleClearText = () => {
     setAboutText('');
-    setAboutIcon(<AddReactionOutlinedIcon />); 
+    setAboutIcon(<AddReactionOutlinedIcon />);
   };
 
 
@@ -83,6 +107,25 @@ const ProfileView = () => {
     width: 1,
   });
 
+
+  const AddImage =async()=>{
+    try {
+      const formData = new FormData();
+      formData.append("profileImage","https://picsum.photos/200/300" );
+      const response = await postData("/updateUserProfile", formData);
+      if (response?.code === 400) {
+        toast.error(response.code.message);
+      } else if (response?.success) {
+        toast.success(`${response?.message}`);
+        handleCancelEdit()
+        getUserData()
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+      toast.error(errorMessage);
+    }
+  }
+
   return (
     <div className='p-5 w-full'>
       {!isEditingAvatar && !isEditingAbout && !isEditingName && !isEditingUsername ? (
@@ -99,7 +142,8 @@ const ProfileView = () => {
               <Button
                 variant='contained'
                 className='font-semibold text-xs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-full leading-4 hover:bg-gray-400 shadow-none hover:shadow-none'
-                onClick={handleEditAvatar}
+                // onClick={handleEditAvatar}
+                onChange={AddImage}
               >
                 Edit photo
               </Button>
@@ -113,11 +157,13 @@ const ProfileView = () => {
               className='name_field w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack uppercase text-xs'
               startIcon={<Person2OutlinedIcon className=' text-gray-500 w-6 h-6' />}
             >
-              John Smith
+              {userdata?.firstName}  {userdata?.lastName}
             </Button>
             <div className="about_btn mb-3">
               <Button onClick={handleEditAbout} variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
-                About
+                
+                {userdata?.about}
+            
               </Button>
             </div>
             <div className="stat-content pb-4 border-b mb-3">
@@ -130,7 +176,7 @@ const ProfileView = () => {
                 className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs'
                 startIcon={<AlternateEmailOutlinedIcon className='text-gray-500 w-6 h-6' />}
               >
-                Username
+                 {userdata?.userName}
               </Button>
             </div>
             <div className="stat-content pb-4">
@@ -140,127 +186,263 @@ const ProfileView = () => {
         </>
       ) : isEditingName ? (
         // Profile edit content
+
+
         <>
-          <Box>
-            <div className="profile_header mb-3">
-              <h2>Your Name</h2>
-            </div>
-            <Box className='flex flex-col gap-4 py-5'>
-              <TextField
-                label="First Name"
-                defaultValue="John"
-                variant="outlined"
-              />
-              <TextField
-                label="Last Name"
-                defaultValue="Smith"
-                variant="outlined"
-              />
-            </Box>
-            <div className="avatar_actions flex justify-end gap-3 mt-5">
-              <Button
-                variant="outlined"
-                onClick={handleCancelEdit}
-                className='font-semibold text-xs tracking-tight capitalize'
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleCancelEdit}
-                className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
-              >
-                Save
-              </Button>
-            </div>
-          </Box>
+          <Formik
+            initialValues={{
+              firstName:  userdata?.firstName || '',
+              lastName:  userdata?.lastName || '',
+            }}
+            validationSchema={Yup.object({
+              firstName: Yup.string().required('First Name is required'),
+              lastName: Yup.string().required('Last Name is required'),
+            })}
+            onSubmit={ async(values) => {
+              console.log('Form Values:', values);
+              try {
+                const formData = new FormData();
+                formData.append("firstName", values?.firstName);
+                formData.append("lastName", values?.lastName);
+                const response = await postData("/updateUserProfile", formData);
+        
+                if (response?.code === 400) {
+                  toast.error(response.code.message);
+                } else if (response?.success) {
+                  toast.success(`${response?.message}`);
+                  handleCancelEdit()
+                  getUserData()
+                }
+              } catch (error) {
+                const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+                toast.error(errorMessage);
+              }
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form>
+                <Box>
+                  <div className="profile_header mb-3">
+                    <h2>Your Name</h2>
+                  </div>
+
+                  <Box className="flex flex-col gap-4 py-5">
+                    <Field
+                      as={TextField}
+                      label="First Name"
+                      name="firstName"
+                      variant="outlined"
+                      error={touched.firstName && Boolean(errors.firstName)}
+                      helperText={<ErrorMessage name="firstName" />}
+                    />
+                    <Field
+                      as={TextField}
+                      label="Last Name"
+                      name="lastName"
+                      variant="outlined"
+                      error={touched.lastName && Boolean(errors.lastName)}
+                      helperText={<ErrorMessage name="lastName" />}
+                    />
+                  </Box>
+
+                  <div className="avatar_actions flex justify-end gap-3 mt-5">
+                    <Button
+                      variant="outlined"
+                      onClick={handleCancelEdit}
+                      className="font-semibold text-xs tracking-tight capitalize"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </>
       ) : isEditingAbout ? (
         <>
-          <Box className="rounded-lg max-w-sm w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-medium text-gray-900">About</h2>
-            </div>
+          <Formik
+            initialValues={{ aboutText:  userdata?.about|| '' }}
+            validationSchema={Yup.object({
+              aboutText: Yup.string().required('This field is required'),
+            })}
+            onSubmit={ async(values) => {
+              console.log('Form Values:', values);
 
-            <Box className=' py-5'>
-              <Box className='mb-3'>
-                <TextField
-                  className='w-full about_text' 
-                  placeholder='Write Something about yourself..'
-                  variant="outlined"
-                  value={aboutText}
-                  onChange={(e) => setAboutText(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        {aboutIcon}
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      aboutText && (
-                        <InputAdornment position="end">
-                            <CloseOutlinedIcon className='cursor-pointer' onClick={handleClearText}/>
-                        </InputAdornment>
-                      )
-                    ),
+              try {
+                const formData = new FormData();
+                formData.append("about", values?.aboutText);
+                const response = await postData("/updateUserProfile", formData);
+        
+                if (response?.code === 400) {
+                  toast.error(response.code.message);
+                } else if (response?.success) {
+                  toast.success(`${response?.message}`);
+                  handleCancelEdit()
+                  getUserData()
+                }
+              } catch (error) {
+                const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+                toast.error(errorMessage);
+              }
+      
 
-                    sx: {
-                      padding: '16px 10px',
-                      '& input': {
-                        padding: '0',
-                        fontSize: '14px',
+            }}
+          >
+            {({ values, setFieldValue }) => (
+              <Form>
+                <Box className="rounded-lg max-w-sm w-full">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-medium text-gray-900">About</h2>
+                  </div>
 
-                      },
-                      '& ::placeholder': {
-                        color: '#212121',
-                        fontSize: '14px',
+                  <Box className="py-5">
+                    <Box className="mb-3">
+                      <Field
+                        as={TextField}
+                        name="aboutText"
+                        className="w-full about_text"
+                        placeholder="Write Something about yourself..."
+                        variant="outlined"
+                        value={values.aboutText}
+                        onChange={(e) => setFieldValue('aboutText', e.target.value)}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              {aboutIcon}
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            values.aboutText && (
+                              <InputAdornment position="end">
+                                <CloseOutlinedIcon
+                                  className="cursor-pointer"
+                                  onClick={() => setFieldValue('aboutText', '')}
+                                />
+                              </InputAdornment>
+                            )
+                          ),
+                          sx: {
+                            padding: '16px 10px',
+                            '& input': {
+                              padding: '0',
+                              fontSize: '14px',
+                            },
+                            '& ::placeholder': {
+                              color: '#212121',
+                              fontSize: '14px',
+                            },
+                          },
+                        }}
+                        error={Boolean(values.aboutText === '' && 'This field is required')}
+                        helperText={<ErrorMessage name="aboutText" />}
+                      />
+                    </Box>
 
-                      },
-                    },
-                  }}
-                />
+                    <Box className="prebuild_button">
+                      <Button
+                        className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
+                        variant="text"
+                        onClick={() => handleButtonClick('Say Anything', <span>👋</span>)}
+                        startIcon={<span>👋</span>}
+                      >
+                        Say Anything
+                      </Button>
+                      <Button
+                        className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
+                        variant="text"
+                        onClick={() => handleButtonClick('Locked Down', <span>🔒</span>)}
+                        startIcon={<span>🔒</span>}
+                      >
+                        Locked Down
+                      </Button>
+                      <Button
+                        className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
+                        variant="text"
+                        onClick={() => handleButtonClick('Available to Talk', <span>👍</span>)}
+                        startIcon={<span>👍</span>}
+                      >
+                        Available to Talk
+                      </Button>
+                      <Button
+                        className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
+                        variant="text"
+                        onClick={() => handleButtonClick('Short Break', <span>⏸️</span>)}
+                        startIcon={<span>⏸️</span>}
+                      >
+                        Short Break
+                      </Button>
+                      <Button
+                        className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
+                        variant="text"
+                        onClick={() => handleButtonClick('Espresso Lover', <span>☕</span>)}
+                        startIcon={<span>☕</span>}
+                      >
+                        Espresso Lover
+                      </Button>
+                    </Box>
+                  </Box>
 
-              </Box>
-              <Box className="prebuild_button">
-                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Say Anything", <WaveIcon />)} startIcon={<WaveIcon />}>
-                  Say Anything
-                </Button>
-                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Locked Down", <ShutIcon />)} startIcon={<ShutIcon />}>
-                  Locked Down
-                </Button>
-                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Available to Talk", <ThumbIcon />)} startIcon={<ThumbIcon />}>
-                  Available to Talk
-                </Button>
-                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Short Break", <OffIcon />)} startIcon={<OffIcon />}>
-                  Short Break
-                </Button>
-                <Button className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' variant="text" onClick={() => handleButtonClick("Espresso Lover", <CoffeeIcon />)} startIcon={<CoffeeIcon />}>
-                  Espresso Lover
-                </Button>
-              </Box>
-            </Box>
-
-            <Box className="flex justify-end gap-3">
-              <Button
-                variant="outlined"
-                onClick={handleCloseAbout}
-                className='font-semibold text-xs tracking-tight capitalize'
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
-
-              >
-                Save
-              </Button>
-            </Box>
-          </Box>
+                  <Box className="flex justify-end gap-3">
+                    <Button
+                      variant="outlined"
+                      onClick={handleCloseAbout}
+                      className="font-semibold text-xs tracking-tight capitalize"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </>
       ) : isEditingUsername ? (
         // Username Popup
         <>
+           <Formik
+      initialValues={{ username: userdata?.userName || ''}}
+      validationSchema={Yup.object({
+        username: Yup.string()
+          .required('Username is required')
+          .matches(/^\w+\d+$/, 'Username must end with numbers'),
+      })}
+      onSubmit={async(values) => {
+        console.log('Form Values:', values);
+        try {
+          const formData = new FormData();
+          formData.append("userName", values?.username);
+          const response = await postData("/updateUserProfile", formData);
+  
+          if (response?.code === 400) {
+            toast.error(response.code.message);
+          } else if (response?.success) {
+            toast.success(`${response?.message}`);
+            handleCancelEdit()
+            getUserData()
+          }
+        } catch (error) {
+          const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+          toast.error(errorMessage);
+        }
+      }}
+    >
+      {({ setFieldValue, values }) => (
+        <Form>
           <Box className="rounded-lg max-w-sm w-full">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-medium text-gray-900">Username</h2>
@@ -276,16 +458,20 @@ const ProfileView = () => {
             </Box>
 
             <Box className="mb-0">
-              <TextField
+              <Field
+                as={TextField}
+                name="username"
                 label="Username"
                 variant="outlined"
-                className='mb-3'
+                className="mb-3"
                 fullWidth
                 InputProps={{
                   startAdornment: (
                     <AlternateEmailOutlinedIcon className="mr-2 text-gray-400" />
                   ),
                 }}
+                error={Boolean(values.username === '' || values.username.match(/\D$/))}
+                helperText={<ErrorMessage name="username" />}
               />
               <p className="text-xs text-gray-500 mt-1">
                 Usernames are always paired with a set of numbers.
@@ -296,19 +482,22 @@ const ProfileView = () => {
               <Button
                 variant="outlined"
                 onClick={handleClosePopup}
-                className='font-semibold text-xs tracking-tight capitalize'
+                className="font-semibold text-xs tracking-tight capitalize"
               >
                 Cancel
               </Button>
               <Button
                 variant="contained"
-                className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
-
+                type="submit"
+                className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
               >
                 Save
               </Button>
             </Box>
           </Box>
+        </Form>
+      )}
+    </Formik>
         </>
       ) : (
         // Avatar Selection Content

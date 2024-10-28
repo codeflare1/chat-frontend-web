@@ -25,6 +25,8 @@ const NewChat = ({ handleGroupToggle, socket }) => {
 
     const { setSelectedReceiverId } = useContext(ChatContext); // Access context values
 
+    
+
     const handleGroup = () => {
         setchooseMember(!chooseMember);
     };
@@ -34,8 +36,9 @@ const NewChat = ({ handleGroupToggle, socket }) => {
             senderId: loginUserId,
             receiverId: receiverId,
         });
+        
   
-        setSelectedReceiverId(receiverId);
+        setSelectedReceiverId({id:receiverId,type:"individual"});
         handleGroupToggle();
     };
 

@@ -25,27 +25,6 @@ const ChatCard = ({ chat, isSendingMessage }) => {
     }
   };
 
-  const renderDeliveryIcon = () => {
-    if (chat?.unseenCount > 0) {
-      return null;
-    }
-
-    // if (isSendingMessage) {
-    //   return null;
-    // } else if (!chat.isDelivered) {
-    //   return <DoneIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
-    // } else if (chat.isDelivered && !chat.isSeen) {
-    //   return <DoneAllIcon sx={{ color: '#b3b3b3', fontSize: 16, marginTop: '4px' }} />;
-    // } else if (chat.isSeen) {
-    //   return <DoneAllIcon sx={{ color: '#0d6efd', fontSize: 16, marginTop: '4px' }} />;
-    // }
-  };
-
-  const extractFileName = (message) => {
-    const fileUrlParts = message.split('/');
-    return fileUrlParts[fileUrlParts.length - 1]; // Extract the last part, which is the filename
-  };
-
   const renderMessagePreview = () => {
     const message = chat?.lastMessage || '';
 
@@ -154,9 +133,7 @@ const ChatCard = ({ chat, isSendingMessage }) => {
           {formatChatTimestamp(chat?.createdAt)}
         </Typography>
 
-        {renderDeliveryIcon()}
-
-        {selectedReceiverId !== chat?._id && chat?.unseenCount > 0 && (
+        {selectedReceiverId?.id !== chat?._id && chat?.unseenCount > 0 && (
           <Typography
             variant="caption"
             sx={{ color: '#fff', fontWeight: 'bold' }}
