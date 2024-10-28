@@ -6,10 +6,11 @@ import ImageIcon from '@mui/icons-material/Image';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import DescriptionIcon from '@mui/icons-material/Description';
 import moment from 'moment';
+import GroupIcon from '@mui/icons-material/Group';
 import { ChatContext } from '../context/ChatContext';
 
 const ChatCard = ({ chat, isSendingMessage }) => {
-  const { selectedReceiverId } = useContext(ChatContext); 
+  const { selectedReceiverId } = useContext(ChatContext);
   const loginUserId = localStorage.getItem('loginUserId');
 
   const formatChatTimestamp = (date) => {
@@ -109,9 +110,24 @@ const ChatCard = ({ chat, isSendingMessage }) => {
         }}
       >
         {!chat?.user?.image && (
-          <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
-            {`${chat?.user?.firstName?.charAt(0)}${chat?.user?.lastName?.charAt(0)}`.toUpperCase()}
-          </Typography>
+          <>
+            {chat?.chatType === "group" ?
+              <GroupIcon
+                sx={{
+                  width: 36,
+                  height: 36,
+                  bgcolor: '#dfdfdf',
+                  color: '#4A4A4A'
+                }}
+                className=" p-2 rounded-full"
+              /> :
+              <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                {`${chat?.user?.firstName?.charAt(0)}${chat?.user?.lastName?.charAt(0)}`.toUpperCase()}
+              </Typography>
+              }
+
+          </>
+
         )}
       </Avatar>
 
