@@ -16,6 +16,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { getData, postData } from '../api/apiService';
+import axios from 'axios';
 
 const ProfileView = () => {
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
@@ -23,9 +24,35 @@ const ProfileView = () => {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   const [aboutText, setAboutText] = useState('');
   const [aboutIcon, setAboutIcon] = useState(<AddReactionOutlinedIcon />);
   const [isLoading, setIsLoading] = useState(true);
+
+  const imageUrls = [
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/3092ee8ff98396e379123e89da43cdd8.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/30270901a97bc5421eb14500c909a705.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/1c01244bcb69493a034defe7cda2a334.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/eb6c2b31274457d71de342246040349a.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/8f17553d1b39e8885aa8edf83ec0e638.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/e34f39cefc2f5be9c70fb3a33de66e16.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/66ee359f4c0bce2b79071e7766643fb2.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/bf6c82a3f2d252192a8bee93c83d38d0.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/e4e83ad33bbce62ce4aae2442831cebc.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/4f6b0c20a9f39ede37846d84b4c42e21.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/999a2ad64779e2c6e406a1aecc2a8db7.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/f7a896fff92d96134d8557019a0fb027.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/b3b31741522448cf8d9ec6663d4f1ee1.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/a69bf4c52a33121de0ee9b160bae9438.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/3831bdd6d8b8180fd45789c245b654f4.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/6101983865316eb251dc54e252be5ec2.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/9496a27a70b84634dbdf32486ef44544.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/6934fa7c455373745f234d70b573b0c2.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/7415f176bb53bf3fef1b6f20b79beaec.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/01144e15f1884af5fb4c13b4035cb7c6.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/f4d7205c99af6694213e95571eed4fab.png",
+    "https://gatsbychat-bucket.s3.eu-north-1.amazonaws.com/image/d5f40b5a38e370043561e2dbb3a57ce4.png"
+  ];
 
 
   useEffect(() => {
@@ -34,6 +61,7 @@ const ProfileView = () => {
       getUserData();
     }, 500);
   }, []);
+
 
   const getUserData = async () => {
     try {
@@ -113,16 +141,42 @@ const ProfileView = () => {
   });
 
 
-  const AddImage = async () => {
+
+  const handleSelectFile = async (event) => {
+    const token = localStorage.getItem("token");
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) return;
+    const formData = new FormData();
+    formData.append("uploadDocument", selectedFile);
+    formData.append("fileType", selectedFile?.type);
+    try {
+      // const response = await axios.post( `https://api.gatsbychat.com/v1/auth/uploadFiles`,formData,
+      const response = await axios.post(`https://api.gatsbychat.com/v1/auth/uploadFiles`, formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response?.data?.success) {
+        setSelectedAvatar(response?.data?.imageURI[0]?.imageURI)
+      } else {
+      }
+    } catch (error) {
+      console.error(error?.response?.data?.message || error.message);
+    }
+  };
+
+  const AddImage = async (imgFile) => {
     try {
       const formData = new FormData();
-      formData.append("profileImage", "https://picsum.photos/200/300");
+      formData.append("profileImage", imgFile);
       const response = await postData("/updateUserProfile", formData);
       if (response?.code === 400) {
         toast.error(response.code.message);
       } else if (response?.success) {
-        toast.success(`${response?.message}`);
-        handleCancelEdit()
+        toast.success(response?.message);
         getUserData()
       }
     } catch (error) {
@@ -172,7 +226,7 @@ const ProfileView = () => {
                     variant='contained'
                     className='font-semibold text-xs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-full leading-4 hover:bg-gray-400 shadow-none hover:shadow-none'
                     onClick={handleEditAvatar}
-                    onChange={AddImage}
+
                   >
                     Edit photo
                   </Button>
@@ -312,6 +366,7 @@ const ProfileView = () => {
                       variant="contained"
                       type="submit"
                       className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
+                     
                     >
                       Save
                     </Button>
@@ -559,25 +614,45 @@ const ProfileView = () => {
               <h2>Your avatar</h2>
             </div>
             <Box className='flex flex-col gap-4 items-center py-5 border-b border-gray-300'>
-              <Avatar
-                alt={`${userdata?.firstName} ${userdata?.lastName}`}
-                src={userdata?.image || ''}
-                sx={{
-                  width: 80,
-                  height: 80,
-                  bgcolor: '#dfdfdf',
-                  color: '#4A4A4A',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {!userdata?.image && (
-                  <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
-                    {`${userdata?.firstName?.charAt(0)}${userdata?.lastName?.charAt(0)}`.toUpperCase()}
-                  </Typography>
-                )}
-              </Avatar>
+
+
+              {selectedAvatar ? (
+                <Avatar
+                  alt="avatar"
+                  src={selectedAvatar}
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    bgcolor: '#dfdfdf',
+                    color: '#4A4A4A',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                />
+              ) : (
+
+                <Avatar
+                  alt={`${userdata?.firstName} ${userdata?.lastName}`}
+                  src={userdata?.image || ''}
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    bgcolor: '#dfdfdf',
+                    color: '#4A4A4A',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {!userdata?.image && (
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      {`${userdata?.firstName?.charAt(0)}${userdata?.lastName?.charAt(0)}`.toUpperCase()}
+                    </Typography>
+                  )}
+                </Avatar>
+              )}
+
               <Button
                 component="label"
                 variant="contained"
@@ -587,8 +662,7 @@ const ProfileView = () => {
                 Photo
                 <VisuallyHiddenInput
                   type="file"
-                  onChange={(event) => console.log(event.target.files)}
-                  multiple
+                  onChange={handleSelectFile}
                 />
               </Button>
             </Box>
@@ -599,27 +673,9 @@ const ProfileView = () => {
             </div>
             <div className="avatar_selection grid grid-cols-6 place-items-center gap-4 mb-5 items py-2">
               {/* Avatar options */}
-              <Avatar alt="Avatar 1" className="cursor-pointer" src="../assets/img/avatar-1.png" />
-              <Avatar alt="Avatar 2" className="cursor-pointer" src="../assets/img/avatar-2.png" />
-              <Avatar alt="Avatar 3" className="cursor-pointer" src="../assets/img/avatar-3.png" />
-              <Avatar alt="Avatar 4" className="cursor-pointer" src="../assets/img/avatar-4.png" />
-              <Avatar alt="Avatar 5" className="cursor-pointer" src="../assets/img/avatar-5.png" />
-              <Avatar alt="Avatar 6" className="cursor-pointer" src="../assets/img/avatar-6.png" />
-              <Avatar alt="Avatar 7" className="cursor-pointer" src="../assets/img/avatar-7.png" />
-              <Avatar alt="Avatar 8" className="cursor-pointer" src="../assets/img/avatar-8.png" />
-              <Avatar alt="Avatar 9" className="cursor-pointer" src="../assets/img/avatar-9.png" />
-              <Avatar alt="Avatar 10" className="cursor-pointer" src="../assets/img/avatar-10.png" />
-              <Avatar alt="Avatar 11" className="cursor-pointer" src="../assets/img/avatar-11.png" />
-              <Avatar alt="Avatar 12" className="cursor-pointer" src="../assets/img/avatar-12.png" />
-              <Avatar alt="Avatar 13" className="cursor-pointer" src="../assets/img/avatar-13.png" />
-              <Avatar alt="Avatar 14" className="cursor-pointer" src="../assets/img/avatar-14.png" />
-              <Avatar alt="Avatar 15" className="cursor-pointer" src="../assets/img/avatar-15.png" />
-              <Avatar alt="Avatar 16" className="cursor-pointer" src="../assets/img/avatar-16.png" />
-              <Avatar alt="Avatar 17" className="cursor-pointer" src="../assets/img/avatar-17.png" />
-              <Avatar alt="Avatar 18" className="cursor-pointer" src="../assets/img/avatar-18.png" />
-              <Avatar alt="Avatar 19" className="cursor-pointer" src="../assets/img/avatar-19.png" />
-              <Avatar alt="Avatar 20" className="cursor-pointer" src="../assets/img/avatar-20.png" />
-              <Avatar alt="Avatar 21" className="cursor-pointer" src="../assets/img/avatar-21.png" />
+              {imageUrls.map((url, index) => (
+                <Avatar key={index} alt={`image-${index}`} className="cursor-pointer" src={url} onClick={() => setSelectedAvatar(url)} />
+              ))}
             </div>
             <div className="avatar_actions flex justify-end gap-3">
               <Button
@@ -631,8 +687,10 @@ const ProfileView = () => {
               </Button>
               <Button
                 variant="contained"
-                onClick={handleCancelAvatarEdit}
+                // onClick={handleCancelAvatarEdit}
                 className='font-semibold text-xs tracking-tight capitalize bg-primary text-white'
+                onClick={()=>AddImage(selectedAvatar)}
+                disabled={selectedAvatar !== "" ? false :true }
               >
                 Save
               </Button>
