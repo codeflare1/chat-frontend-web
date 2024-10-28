@@ -29,7 +29,7 @@ export const ChatProvider = ({ children }) => {
       socket.emit('getAllChats', { senderId: loginUserId });
       
       // Call fetchChats again after 1 second
-      // setTimeout(fetchChats, 10000);
+      setTimeout(fetchChats, 10000);
     };
 
     const updateChatList = (chats) => {

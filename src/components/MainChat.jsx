@@ -40,11 +40,11 @@ const MainChat = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userData, setUserDate] = useState([]);
-  const lastMessageRef = useRef(null); 
+  const lastMessageRef = useRef(null);
   const { selectedReceiverId, refreshMsg } = useContext(ChatContext); // Access context values
   const [textareaHeightClass, setTextareaHeightClass] = useState("pb-16");
   const textFieldRef = useRef(null);
-  const emojiPickerRef = useRef(null); 
+  const emojiPickerRef = useRef(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageUrls, setImageUrls] = useState([]);
@@ -64,12 +64,11 @@ const MainChat = () => {
 
   useEffect(() => {
     if (!socket || !selectedReceiverId?.id || !loginUserId) return;
-
     socket.emit("joinChat", {
       senderId: loginUserId,
       chatId: selectedReceiverId?.id,
       type: selectedReceiverId?.type,
-    
+
     });
 
     socket.emit("markAsSeen", {
@@ -109,7 +108,7 @@ const MainChat = () => {
         socket.emit("markAsSeen", {
           senderId: loginUserId,
           receiverId: selectedReceiverId?.id,
-            type: selectedReceiverId?.type,
+          type: selectedReceiverId?.type,
         });
       }
     };
@@ -233,41 +232,41 @@ const MainChat = () => {
     const { message, fileType } = msg;
 
     if (fileType?.startsWith("image/")) {
-        // Render an image if fileType starts with "image/"
-        return (
-            <img
-                src={message}
-                alt={"Uploaded Image"}
-                // height={100}
-                width={280}
-                className="rounded cursor-pointer"
-                onClick={() => handleImageClick()}
-            />
-        );
+      // Render an image if fileType starts with "image/"
+      return (
+        <img
+          src={message}
+          alt={"Uploaded Image"}
+          // height={100}
+          width={280}
+          className="rounded cursor-pointer"
+          onClick={() => handleImageClick()}
+        />
+      );
     } else if (fileType) {
-        // Render other files with name, size, and download icon
-        return (
-            <div className="flex items-center gap-2">
-                <DescriptionIcon style={{ color: "#fff" }} />
-                <Typography variant="body2" className="text-white-500">
-                    {fileType}
-                </Typography>
-                <a href={message} download>
-                    <IconButton>
-                        <DownloadIcon style={{ color: "#fff" }} />
-                    </IconButton>
-                </a>
-            </div>
-        );
+      // Render other files with name, size, and download icon
+      return (
+        <div className="flex items-center gap-2">
+          <DescriptionIcon style={{ color: "#fff" }} />
+          <Typography variant="body2" className="text-white-500">
+            {fileType}
+          </Typography>
+          <a href={message} download>
+            <IconButton>
+              <DownloadIcon style={{ color: "#fff" }} />
+            </IconButton>
+          </a>
+        </div>
+      );
     }
 
     // Render text if there's no fileType
     return (
-        <Typography variant="body1" className="text-white-500">
-            {message}
-        </Typography>
+      <Typography variant="body1" className="text-white-500">
+        {message}
+      </Typography>
     );
-};
+  };
 
 
   return (
@@ -300,7 +299,16 @@ const MainChat = () => {
                     variant="h6"
                     className="font-medium text-base flex gap-2 capitalize cursor-pointer"
                   >
-                    {userData?.user?.firstName} {userData?.user?.lastName || ""}
+
+                    {userData?.user?.groupName ?
+
+                      <span>
+                        {userData?.user?.groupName}
+                      </span> :
+
+                      <span>
+                        {userData?.user?.firstName} {userData?.user?.lastName || ""}
+                      </span>}
                     <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
                   </Typography>
                 </div>
@@ -331,7 +339,7 @@ const MainChat = () => {
                       }}
                       src={userData?.user?.image}
                     >
-                    {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                      {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
                     </Avatar>
                     <ChatNameModal selectedUser={userData} />
                   </Box>
@@ -347,63 +355,119 @@ const MainChat = () => {
                         key={msg._id}
                         className={`flex ${isCurrentUser ? "justify-end flex-col" : "justify-between"
                           } mb-3 gap-1 items-end`}
-                          ref={isLastMessage ? lastMessageRef : null}
+                        ref={isLastMessage ? lastMessageRef : null}
                       >
-                        <div className="flex items-end gap-2">
-                          {/* Avatar for received messages */}
-                          {!isCurrentUser && (
-                            <Avatar
-                              sx={{
-                                width: 32,
-                                height: 32,
-                                bgcolor: "#dfdfdf",
-                                fontWeight: 800,
-                                color: "#1E1E1E",
-                              }}
-                              src={userData?.user?.image}
-                            >
-                               {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
-                            </Avatar>
-                          )}
 
-                          {/* Time for sent messages */}
-                          {isCurrentUser && (
-                            <Typography
-                              variant="caption"
-                              className="msg_sent time text-xxs text-gray-500"
-                            >
-                              {formatTime(msg.createdAt)}
-                            </Typography>
-                          )}
-
+                        {msg?.chatType == "group" ?
                           <div className="flex items-end gap-2">
-                            {/* Message bubble with conditional content */}
-                            <div
-                              className={`${isCurrentUser
-                                  ? "bg-blue-500 text-white"
-                                  : "bg-gray-300 text-black"
-                                } p-3 rounded-md flex items-end gap-2 relative`}
-                            >
-                              {renderMessageContent(msg)}
-                            </div>
-
-                            {/* Time for received messages */}
+                            {/* Avatar for received messages */}
                             {!isCurrentUser && (
+                              <Avatar
+                                sx={{
+                                  width: 32,
+                                  height: 32,
+                                  bgcolor: "#dfdfdf",
+                                  fontWeight: 800,
+                                  color: "#1E1E1E",
+                                }}
+                                src={msg?.user?.image}
+                              >
+
+                              </Avatar>
+                            )}
+
+                            {/* Time for sent messages */}
+                            {isCurrentUser && (
                               <Typography
                                 variant="caption"
-                                className="msg_received time text-xxs text-gray-500"
+                                className="msg_sent time text-xxs text-gray-500"
                               >
                                 {formatTime(msg.createdAt)}
                               </Typography>
                             )}
+
+                            <div className="flex items-end gap-2">
+                              {/* Message bubble with conditional content */}
+                              <div
+                                className={`${isCurrentUser
+                                  ? "bg-blue-500 !text-white "
+                                  : "bg-gray-300 text-black  justify-start !gap-0 !items-start"
+                                  } p-3 rounded-md flex flex-col gap-2 relative`}
+                              >
+                                {!isCurrentUser  && 
+                                <span className={`${isCurrentUser ? "text-white" : "text-gray-800"} text-xxs font-bold `} >{msg?.user?.firstName}   {msg?.user?.lastName}</span>}
+                                {renderMessageContent(msg)}
+                              </div>
+
+                              {/* Time for received messages */}
+                              {!isCurrentUser && (
+                                <Typography
+                                  variant="caption"
+                                  className="msg_received time text-xxs text-gray-500"
+                                >
+                                  {formatTime(msg.createdAt)}
+                                </Typography>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                          :
+                          <div className="flex items-end gap-2">
+                            {/* Avatar for received messages */}
+                            {!isCurrentUser && (
+                              <Avatar
+                                sx={{
+                                  width: 32,
+                                  height: 32,
+                                  bgcolor: "#dfdfdf",
+                                  fontWeight: 800,
+                                  color: "#1E1E1E",
+                                }}
+                                src={userData?.user?.image}
+                              >
+                                {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                              </Avatar>
+                            )}
+
+                            {/* Time for sent messages */}
+                            {isCurrentUser && (
+                              <Typography
+                                variant="caption"
+                                className="msg_sent time text-xxs text-gray-500"
+                              >
+                                {formatTime(msg.createdAt)}
+                              </Typography>
+                            )}
+
+                            <div className="flex items-end gap-2">
+                              {/* Message bubble with conditional content */}
+                              <div
+                                className={`${isCurrentUser
+                                  ? "bg-blue-500 text-white"
+                                  : "bg-gray-300 text-black"
+                                  } p-3 rounded-md flex items-end gap-2 relative`}
+                              >
+                                {renderMessageContent(msg)}
+                              </div>
+
+                              {/* Time for received messages */}
+                              {!isCurrentUser && (
+                                <Typography
+                                  variant="caption"
+                                  className="msg_received time text-xxs text-gray-500"
+                                >
+                                  {formatTime(msg.createdAt)}
+                                </Typography>
+                              )}
+                            </div>
+                          </div>
+                        }
+
 
                         {/* Seen indicator for the last message */}
                         <div className="time_seen flex gap-1">
                           {isLastMessage && (
                             <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image}>
-                                  {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                              {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
                             </Avatar>
                           )}
                         </div>

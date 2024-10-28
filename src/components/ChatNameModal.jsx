@@ -15,7 +15,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 
 const ChatNameModal = ({ selectedUser }) => {
     // console.log(selectedUser, 'this is chatname');
-    
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -34,10 +34,18 @@ const ChatNameModal = ({ selectedUser }) => {
     return (
         <div>
             <Typography onClick={handleOpen} className=' p-4 text-Newblack cursor-pointer font-medium text-2xl flex gap-2 items-center'>
-            {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}
-            
-            {/* {selectedUser?.groupName} */}
-            <ArrowForwardIosIcon className='text-sm font-bold' />
+
+                {selectedUser?.user?.groupName ?
+                    <span>
+                        {selectedUser?.user?.groupName}
+                    </span> :
+
+                    <span>
+                        {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ""}
+                    </span>}
+
+                {/* {selectedUser?.groupName} */}
+                <ArrowForwardIosIcon className='text-sm font-bold' />
             </Typography>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -62,7 +70,7 @@ const ChatNameModal = ({ selectedUser }) => {
                         </IconButton>
                         <Box className='flex justify-center w-full'>
                             <Avatar src={selectedUser?.user?.image} className="first_last_name rounded-full bg-gray-200 max-w-24 h-24 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
-                            {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
+                                {(!selectedUser?.user?.image) && `${selectedUser?.user?.firstName?.charAt(0)}${selectedUser?.user?.lastName?.charAt(0)}`}
                             </Avatar>
                         </Box>
                         <Box className='flex flex-col gap-6'>
@@ -70,18 +78,34 @@ const ChatNameModal = ({ selectedUser }) => {
                             <Box className='flex flex-col gap-4'>
                                 <Box className='flex gap-2'>
                                     <PersonOutlineOutlinedIcon className='text-newgray text-lg' />
-                                    <Typography className='name text-sm' variant='body'>{selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''}</Typography>
+                                    <Typography className='name text-sm' variant='body'>
+                                        {selectedUser?.user?.groupName ?
+                                            <span>
+                                                {selectedUser?.user?.groupName}
+                                            </span> :
+
+                                            <span>
+                                                {selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ""}
+                                            </span>}
+
+                                    </Typography>
                                 </Box>
                                 <Box className='flex gap-2'>
                                     <AccountCircleOutlinedIcon className='text-newgray text-lg' />
                                     <Typography className='name text-sm' variant='body'>{selectedUser?.user?.firstName} {selectedUser?.user?.lastName || ''} is in your system contacts</Typography>
                                 </Box>
-                                <Box className='flex gap-2'>
-                                    <CallOutlinedIcon className='text-newgray text-lg' />
-                                    <Typography className='name text-sm' variant='body'>
-                                       {selectedUser?.user?.phoneNumber} 
-                                    </Typography>
-                                </Box>
+
+
+                                {selectedUser?.user?.groupName ?
+                                    null :
+
+                                    <Box className='flex gap-2'>
+                                        <CallOutlinedIcon className='text-newgray text-lg' />
+                                        <Typography className='name text-sm' variant='body'>
+                                            {selectedUser?.user?.phoneNumber}
+                                        </Typography>
+                                    </Box>}
+
                                 <Box className='flex gap-2'>
                                     <GroupOutlinedIcon className='text-newgray text-lg' />
                                     <Typography className='name text-sm' variant='body'>No common group</Typography>
