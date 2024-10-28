@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ChatIcon from '@mui/icons-material/Chat';
 import CallIcon from '@mui/icons-material/Call';
@@ -12,6 +12,8 @@ import SettingPopup from './SettingPopup';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ProfileModal from './ProfileModal';
 import { LayoutContext } from '../context/LayotContextToggleProvider';
+import { getData } from '../api/apiService';
+
 
 const NAVIGATION = [
   {
@@ -27,14 +29,22 @@ const NAVIGATION = [
   },
 ];
 
+
+
+
 const MainSidebar = () => {
   const { isSidebarOpen, toggleSidebar } = useContext(LayoutContext);
+  
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
+
+ 
+  
 
   return (
     <Box
