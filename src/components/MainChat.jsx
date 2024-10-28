@@ -23,6 +23,7 @@ import { ChatContext } from "../context/ChatContext";
 import { getData, postData } from "../api/apiService";
 import axios from "axios";
 import MediaFile from "./common/MediaFile";
+import ImageGalleryModal from "./ImageGalleryModal";
 
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
@@ -42,7 +43,14 @@ const MainChat = () => {
   const [textareaHeightClass, setTextareaHeightClass] = useState("pb-16");
   const textFieldRef = useRef(null);
   const emojiPickerRef = useRef(null); 
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageUrls, setImageUrls] = useState([]);
 
+  const handleImageClick = (index) => {
+    setCurrentImageIndex(index);
+    setIsGalleryOpen(true);
+  };
   useEffect(() => {
     const textFieldHeight = textFieldRef.current?.getBoundingClientRect().height;
     if (textFieldHeight > 80) { // Adjust the threshold as needed
@@ -204,6 +212,13 @@ const MainChat = () => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    const imageMessages = messages
+      .filter((msg) => msg.fileType?.startsWith("image/"))
+      .map((msg) => msg.message);
+    setImageUrls(imageMessages);
+  }, [messages]);
+
 
   const renderMessageContent = (msg) => {
     const { message, fileType } = msg;
@@ -214,9 +229,10 @@ const MainChat = () => {
             <img
                 src={message}
                 alt={"Uploaded Image"}
-                height={100}
-                width={100}
-                className="rounded"
+                // height={100}
+                width={280}
+                className="rounded cursor-pointer"
+                onClick={() => handleImageClick()}
             />
         );
     } else if (fileType) {
@@ -386,6 +402,14 @@ const MainChat = () => {
                     );
                   })}
                 </div>
+
+                <ImageGalleryModal
+                  images={imageUrls}
+                  open={isGalleryOpen}
+                  onClose={() => setIsGalleryOpen(false)}
+                  currentIndex={currentImageIndex}
+                  setCurrentIndex={setCurrentImageIndex}
+                />
 
               </div>
             </Box>
