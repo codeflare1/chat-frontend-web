@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Button, InputAdornment, TextField } from '@mui/material';
+import { Avatar, Box, Button, InputAdornment, TextField, Skeleton, Typography } from '@mui/material';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
@@ -25,10 +25,14 @@ const ProfileView = () => {
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [aboutText, setAboutText] = useState('');
   const [aboutIcon, setAboutIcon] = useState(<AddReactionOutlinedIcon />);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
-    getUserData();
+    // Mimic API call delay
+    setTimeout(() => {
+      getUserData();
+    }, 500);
   }, []);
 
   const getUserData = async () => {
@@ -41,11 +45,12 @@ const ProfileView = () => {
       console.log(error?.response?.message);
       setUserData([]);
     } finally {
+      setIsLoading(false);
     }
   };
 
 
-  console.log("userdatauserdatauserdatauserdata",userdata)
+  console.log("userdatauserdatauserdatauserdata", userdata)
   const handleButtonClick = (text, icon) => {
     setAboutText(text);
     setAboutIcon(icon);
@@ -108,10 +113,10 @@ const ProfileView = () => {
   });
 
 
-  const AddImage =async()=>{
+  const AddImage = async () => {
     try {
       const formData = new FormData();
-      formData.append("profileImage","https://picsum.photos/200/300" );
+      formData.append("profileImage", "https://picsum.photos/200/300");
       const response = await postData("/updateUserProfile", formData);
       if (response?.code === 400) {
         toast.error(response.code.message);
@@ -136,52 +141,102 @@ const ProfileView = () => {
           </div>
           <div className="profile_img">
             <div className="img flex flex-col items-center justify-center w-full gap-4 mb-5 font-medium -tracking-wide">
-              <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-20 h-20 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
-                JS
-              </Avatar>
-              <Button
-                variant='contained'
-                className='font-semibold text-xs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-full leading-4 hover:bg-gray-400 shadow-none hover:shadow-none'
-                // onClick={handleEditAvatar}
-                onChange={AddImage}
-              >
-                Edit photo
-              </Button>
+              {isLoading ? (
+                <>
+                  <Skeleton variant="circular" width={80} height={80} />
+                  <Skeleton variant="circular" width={89} height={28} sx={{ borderRadius: '50px', transform: 'unset' }} />
+                </>
+              ) : (
+                <>
+                  <Avatar
+                    alt={`${userdata?.firstName} ${userdata?.lastName}`}
+                    src={userdata?.image || ''}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      bgcolor: '#dfdfdf',
+                      color: '#4A4A4A',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {!userdata?.image && (
+                      <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                        {`${userdata?.firstName?.charAt(0)}${userdata?.lastName?.charAt(0)}`.toUpperCase()}
+                      </Typography>
+                    )}
+                  </Avatar>
+
+                  <Button
+                    variant='contained'
+                    className='font-semibold text-xs tracking-tight capitalize bg-[#DDD] text-Newblack rounded-full leading-4 hover:bg-gray-400 shadow-none hover:shadow-none'
+                    onClick={handleEditAvatar}
+                    onChange={AddImage}
+                  >
+                    Edit photo
+                  </Button>
+
+                </>
+              )}
             </div>
           </div>
 
           <div className="name_field">
-            <Button
-              onClick={handleEditName}
-              variant="text"
-              className='name_field w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack uppercase text-xs'
-              startIcon={<Person2OutlinedIcon className=' text-gray-500 w-6 h-6' />}
-            >
-              {userdata?.firstName}  {userdata?.lastName}
-            </Button>
-            <div className="about_btn mb-3">
-              <Button onClick={handleEditAbout} variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
-                
-                {userdata?.about}
-            
-              </Button>
-            </div>
-            <div className="stat-content pb-4 border-b mb-3">
-              <p className='text-sm text-newgray'>Your profile and changes to it will be visible to people you message, contacts and groups.</p>
-            </div>
-            <div className="user_name mb-3">
+            {isLoading ? (
+              <Skeleton variant="text" width="100%" height='48px' className='mb-3 transform-none' />
+            ) : (
               <Button
-                onClick={handleEditUsername}
+                onClick={handleEditName}
                 variant="text"
-                className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs'
-                startIcon={<AlternateEmailOutlinedIcon className='text-gray-500 w-6 h-6' />}
+                className='name_field w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack uppercase text-xs'
+                startIcon={<Person2OutlinedIcon className=' text-gray-500 w-6 h-6' />}
               >
-                 {userdata?.userName}
+                {userdata?.firstName}  {userdata?.lastName}
               </Button>
+            )}
+            <div className="about_btn mb-3">
+              {isLoading ? (
+                <Skeleton variant="text" width="100%" height='48px' sx={{ transform: 'unset' }} />
+              ) : (
+                <Button onClick={handleEditAbout} variant="text" className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs' startIcon={<CreateOutlinedIcon className=' text-gray-500 w-6 h-6' />}>
+
+                  {userdata?.about}
+
+                </Button>
+              )}
             </div>
-            <div className="stat-content pb-4">
-              <p className='text-sm text-newgray'>People can now message you using your optional username so you don’t have to give out your phone number.</p>
+
+            {isLoading ? (
+              <Skeleton variant="text" width="100%" height={40} className='stat-content pb-4 border-b mb-3 !transform-none' />
+            ) : (
+              <div className="stat-content pb-4 border-b mb-3">
+                <p className='text-sm text-newgray'>Your profile and changes to it will be visible to people you message, contacts and groups.</p>
+              </div>
+
+            )}
+
+            <div className="user_name mb-3">
+              {isLoading ? (
+                <Skeleton variant="text" width="100%" height='48px' sx={{ transform: 'unset' }} />
+              ) : (
+                <Button
+                  onClick={handleEditUsername}
+                  variant="text"
+                  className='w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs'
+                  startIcon={<AlternateEmailOutlinedIcon className='text-gray-500 w-6 h-6' />}
+                >
+                  {userdata?.userName}
+                </Button>
+              )}
             </div>
+            {isLoading ? (
+              <Skeleton variant="text" width="100%" height={60} sx={{ transform: 'unset' }} />
+            ) : (
+              <div className="stat-content pb-4">
+                <p className='text-sm text-newgray'>People can now message you using your optional username so you don’t have to give out your phone number.</p>
+              </div>
+            )}
           </div>
         </>
       ) : isEditingName ? (
@@ -191,21 +246,21 @@ const ProfileView = () => {
         <>
           <Formik
             initialValues={{
-              firstName:  userdata?.firstName || '',
-              lastName:  userdata?.lastName || '',
+              firstName: userdata?.firstName || '',
+              lastName: userdata?.lastName || '',
             }}
             validationSchema={Yup.object({
               firstName: Yup.string().required('First Name is required'),
               lastName: Yup.string().required('Last Name is required'),
             })}
-            onSubmit={ async(values) => {
+            onSubmit={async (values) => {
               console.log('Form Values:', values);
               try {
                 const formData = new FormData();
                 formData.append("firstName", values?.firstName);
                 formData.append("lastName", values?.lastName);
                 const response = await postData("/updateUserProfile", formData);
-        
+
                 if (response?.code === 400) {
                   toast.error(response.code.message);
                 } else if (response?.success) {
@@ -269,31 +324,28 @@ const ProfileView = () => {
       ) : isEditingAbout ? (
         <>
           <Formik
-            initialValues={{ aboutText:  userdata?.about|| '' }}
+            initialValues={{ aboutText: userdata?.about || '' }}
             validationSchema={Yup.object({
               aboutText: Yup.string().required('This field is required'),
             })}
-            onSubmit={ async(values) => {
+            onSubmit={async (values) => {
               console.log('Form Values:', values);
-
               try {
                 const formData = new FormData();
                 formData.append("about", values?.aboutText);
                 const response = await postData("/updateUserProfile", formData);
-        
+
                 if (response?.code === 400) {
                   toast.error(response.code.message);
                 } else if (response?.success) {
                   toast.success(`${response?.message}`);
-                  handleCancelEdit()
-                  getUserData()
+                  handleCloseAbout();
+                  getUserData();
                 }
               } catch (error) {
                 const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
                 toast.error(errorMessage);
               }
-      
-
             }}
           >
             {({ values, setFieldValue }) => (
@@ -350,7 +402,7 @@ const ProfileView = () => {
                       <Button
                         className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
                         variant="text"
-                        onClick={() => handleButtonClick('Say Anything', <span>👋</span>)}
+                        onClick={() => setFieldValue('aboutText', '👋 Say Anything')}
                         startIcon={<span>👋</span>}
                       >
                         Say Anything
@@ -358,7 +410,7 @@ const ProfileView = () => {
                       <Button
                         className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
                         variant="text"
-                        onClick={() => handleButtonClick('Locked Down', <span>🔒</span>)}
+                        onClick={() => setFieldValue('aboutText', '🔒 Locked Down')}
                         startIcon={<span>🔒</span>}
                       >
                         Locked Down
@@ -366,7 +418,7 @@ const ProfileView = () => {
                       <Button
                         className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
                         variant="text"
-                        onClick={() => handleButtonClick('Available to Talk', <span>👍</span>)}
+                        onClick={() => setFieldValue('aboutText', '👍 Available to Talk')}
                         startIcon={<span>👍</span>}
                       >
                         Available to Talk
@@ -374,7 +426,7 @@ const ProfileView = () => {
                       <Button
                         className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
                         variant="text"
-                        onClick={() => handleButtonClick('Short Break', <span>⏸️</span>)}
+                        onClick={() => setFieldValue('aboutText', '⏸️ Short Break')}
                         startIcon={<span>⏸️</span>}
                       >
                         Short Break
@@ -382,7 +434,7 @@ const ProfileView = () => {
                       <Button
                         className="w-full h-12 hover:bg-sidebar justify-start ps-14d text-Newblack capitalize text-xs"
                         variant="text"
-                        onClick={() => handleButtonClick('Espresso Lover', <span>☕</span>)}
+                        onClick={() => setFieldValue('aboutText', '☕ Espresso Lover')}
                         startIcon={<span>☕</span>}
                       >
                         Espresso Lover
@@ -414,90 +466,90 @@ const ProfileView = () => {
       ) : isEditingUsername ? (
         // Username Popup
         <>
-           <Formik
-      initialValues={{ username: userdata?.userName || ''}}
-      validationSchema={Yup.object({
-        username: Yup.string()
-          .required('Username is required')
-          .matches(/^\w+\d+$/, 'Username must end with numbers'),
-      })}
-      onSubmit={async(values) => {
-        console.log('Form Values:', values);
-        try {
-          const formData = new FormData();
-          formData.append("userName", values?.username);
-          const response = await postData("/updateUserProfile", formData);
-  
-          if (response?.code === 400) {
-            toast.error(response.code.message);
-          } else if (response?.success) {
-            toast.success(`${response?.message}`);
-            handleCancelEdit()
-            getUserData()
-          }
-        } catch (error) {
-          const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
-          toast.error(errorMessage);
-        }
-      }}
-    >
-      {({ setFieldValue, values }) => (
-        <Form>
-          <Box className="rounded-lg max-w-sm w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-medium text-gray-900">Username</h2>
-            </div>
+          <Formik
+            initialValues={{ username: userdata?.userName || '' }}
+            validationSchema={Yup.object({
+              username: Yup.string()
+                .required('Username is required')
+                .matches(/^\w+\d+$/, 'Username must end with numbers'),
+            })}
+            onSubmit={async (values) => {
+              console.log('Form Values:', values);
+              try {
+                const formData = new FormData();
+                formData.append("userName", values?.username);
+                const response = await postData("/updateUserProfile", formData);
 
-            <Box className="flex flex-col items-center justify-center">
-              <Avatar className="bg-gray-200 mb-4 p-2 w-20 h-20">
-                <AlternateEmailOutlinedIcon className="text-gray-500 w-10 h-10" />
-              </Avatar>
-              <h3 className="text-sm font-semibold text-gray-600 mb-4">
-                Choose your username
-              </h3>
-            </Box>
+                if (response?.code === 400) {
+                  toast.error(response.code.message);
+                } else if (response?.success) {
+                  toast.success(`${response?.message}`);
+                  handleCancelEdit()
+                  getUserData()
+                }
+              } catch (error) {
+                const errorMessage = error?.response?.data?.message || error.message || "An unexpected error occurred";
+                toast.error(errorMessage);
+              }
+            }}
+          >
+            {({ setFieldValue, values }) => (
+              <Form>
+                <Box className="rounded-lg max-w-sm w-full">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-medium text-gray-900">Username</h2>
+                  </div>
 
-            <Box className="mb-0">
-              <Field
-                as={TextField}
-                name="username"
-                label="Username"
-                variant="outlined"
-                className="mb-3"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <AlternateEmailOutlinedIcon className="mr-2 text-gray-400" />
-                  ),
-                }}
-                error={Boolean(values.username === '' || values.username.match(/\D$/))}
-                helperText={<ErrorMessage name="username" />}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Usernames are always paired with a set of numbers.
-              </p>
-            </Box>
+                  <Box className="flex flex-col items-center justify-center">
+                    <Avatar className="bg-gray-200 mb-4 p-2 w-20 h-20">
+                      <AlternateEmailOutlinedIcon className="text-gray-500 w-10 h-10" />
+                    </Avatar>
+                    <h3 className="text-sm font-semibold text-gray-600 mb-4">
+                      Choose your username
+                    </h3>
+                  </Box>
 
-            <Box className="flex justify-end gap-3">
-              <Button
-                variant="outlined"
-                onClick={handleClosePopup}
-                className="font-semibold text-xs tracking-tight capitalize"
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                type="submit"
-                className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
-              >
-                Save
-              </Button>
-            </Box>
-          </Box>
-        </Form>
-      )}
-    </Formik>
+                  <Box className="mb-0">
+                    <Field
+                      as={TextField}
+                      name="username"
+                      label="Username"
+                      variant="outlined"
+                      className="mb-3"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <AlternateEmailOutlinedIcon className="mr-2 text-gray-400" />
+                        ),
+                      }}
+                      error={Boolean(values.username === '' || values.username.match(/\D$/))}
+                      helperText={<ErrorMessage name="username" />}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Usernames are always paired with a set of numbers.
+                    </p>
+                  </Box>
+
+                  <Box className="flex justify-end gap-3">
+                    <Button
+                      variant="outlined"
+                      onClick={handleClosePopup}
+                      className="font-semibold text-xs tracking-tight capitalize"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="font-semibold text-xs tracking-tight capitalize bg-primary text-white"
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </>
       ) : (
         // Avatar Selection Content
@@ -507,8 +559,24 @@ const ProfileView = () => {
               <h2>Your avatar</h2>
             </div>
             <Box className='flex flex-col gap-4 items-center py-5 border-b border-gray-300'>
-              <Avatar className="first_last_name p-8 rounded-full bg-gray-200 max-w-20 h-20 w-full flex justify-center items-center text-3xl font-semibold text-Newblack">
-                JS
+              <Avatar
+                alt={`${userdata?.firstName} ${userdata?.lastName}`}
+                src={userdata?.image || ''}
+                sx={{
+                  width: 80,
+                  height: 80,
+                  bgcolor: '#dfdfdf',
+                  color: '#4A4A4A',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {!userdata?.image && (
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                    {`${userdata?.firstName?.charAt(0)}${userdata?.lastName?.charAt(0)}`.toUpperCase()}
+                  </Typography>
+                )}
               </Avatar>
               <Button
                 component="label"
