@@ -25,7 +25,7 @@ export const ChatProvider = ({ children }) => {
     const loginUserId = localStorage.getItem('loginUserId');
 
     const fetchChats = () => {
-      console.log('Fetching chats for user ID:', loginUserId);
+      // console.log('Fetching chats for user ID:', loginUserId);
       socket.emit('getAllChats', { senderId: loginUserId });
       
       // Call fetchChats again after 1 second
@@ -33,7 +33,7 @@ export const ChatProvider = ({ children }) => {
     };
 
     const updateChatList = (chats) => {
-      console.log('Received chats:', chats);
+      // console.log('Received chats:', chats);
       setChatList(chats?.data || []);
     };
 

@@ -102,7 +102,7 @@ const MainChat = () => {
           type: selectedReceiverId?.type,
         });
       } else if (msg.senderId === loginUserId) {
-        console.log("chla");
+        // console.log("chla");
         setMessages((prev) => [...prev, msg]);
         socket.emit("getAllChats", { senderId: loginUserId });
         socket.emit("markAsSeen", {
@@ -196,7 +196,7 @@ const MainChat = () => {
   useEffect(() => {
     checkLastScroll();
   }, [messages, socket, loginUserId, selectedReceiverId, refreshMsg]); // Trigger auto-scroll when messages change
-  console.log("messages66", messages);
+  // console.log("messages66", messages);
 
   const checkLastScroll = () => {
     if (lastMessageRef.current) {
@@ -513,7 +513,7 @@ const MainChat = () => {
                               sx={{ width: 16, height: 16 }}
                               src={userData?.user?.image}
                             >
-                              {!userData?.user?.image == "" &&
+                              {!userData?.user?.image === "" &&
                                 `${userData?.user?.firstName?.charAt(0)}`}
                             </Avatar>
                           )}

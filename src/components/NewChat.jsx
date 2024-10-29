@@ -13,6 +13,8 @@ import SearchBar from './common/SearchBar';
 import GroupMember from './GroupMember';
 import { ChatContext } from '../context/ChatContext';
 import { getData } from '../api/apiService';
+import FindByUsername from './FindByUsername';
+import FindByNumber from './FindByNumber';
 
 const NewChat = ({ handleGroupToggle, socket }) => {
     const loginUserId = localStorage.getItem('loginUserId');
@@ -24,8 +26,23 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     const skeletonCount = Contacts.length > 0 ? Contacts.length : 4;
 
     const { setSelectedReceiverId } = useContext(ChatContext); // Access context values
+    const [findUsername, setFindUsername] = useState(false);
+    const [findNumber, setFindNumber] = useState(false);
 
-    
+    const handleFindUsername = () => {
+        setFindUsername(true); 
+    };
+    const handleFindNumber = () => {
+        setFindNumber(true); 
+    };
+
+    const handleBack = () => {
+        setFindUsername(false); 
+    };
+
+    const handleNumberBack = () => {
+        setFindNumber(false); 
+    };
 
     const handleGroup = () => {
         setchooseMember(!chooseMember);
@@ -51,7 +68,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
     }, [searchValue]);
 
     const getUserData = async () => {
-        setLoading(true);  // Set loading to true when fetching starts
+        setLoading(true);  
         try {
             const response = await getData(`/getAllUsers?search=${searchValue}`);
             if (response?.status === true) {
@@ -61,15 +78,19 @@ const NewChat = ({ handleGroupToggle, socket }) => {
             console.log(error?.response?.message);
             setContacts([]);
         } finally {
-            setLoading(false);  // Set loading to false when fetching completes
+            setLoading(false);  
         }
     };
 
     return (
         <>
-            {chooseMember ? (
+             {chooseMember ? (
                 <GroupMember handleGroup={handleGroup} Contacts={Contacts} />
-            ) : (
+            ) : findUsername ? ( 
+                <FindByUsername handleBack={handleBack} />
+            ) : findNumber ? ( 
+                <FindByNumber handleBack={handleNumberBack} />
+             ) : (
                 <Box
                     sx={{
                         width: '100%',
@@ -139,6 +160,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             <Button
                                 variant="text"
                                 className="w-full h-12 rounded-xl hover:bg-sidebar justify-start p-3 text-Newblack capitalize text-sm font-medium"
+                                onClick={handleFindUsername}
                                 startIcon={
                                     <AlternateEmailIcon
                                         sx={{
@@ -155,6 +177,7 @@ const NewChat = ({ handleGroupToggle, socket }) => {
                             </Button>
                             <Button
                                 variant="text"
+                                onClick={handleFindNumber}
                                 className="w-full h-12 rounded-xl hover:bg-sidebar justify-start p-3 text-Newblack capitalize text-sm font-medium"
                                 startIcon={
                                     <TagIcon

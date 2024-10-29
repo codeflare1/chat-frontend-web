@@ -30,7 +30,7 @@ const handleGroupToggle = () => setMakeGroup(!makeGroup);
 
   const joinChat = (chat) => {
     const receiverId = chat?._id;
-    console.log("receiverIdreceiverId", receiverId);
+    // console.log("receiverIdreceiverId", receiverId);
     setSelectedUser(chat);
     socket.emit('joinChat', { loginUserId, receiverId });
     setSelectedReceiverId({id:receiverId,type:chat?.chatType});
