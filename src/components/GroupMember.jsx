@@ -13,27 +13,22 @@ const GroupMember = ({ handleGroup, Contacts }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
 
     const handleChange = (user) => {
-        // Check if user is already in selectedUsers
         const isSelected = selectedUsers.some((u) => u.id === user.id);
 
         if (isSelected) {
-            // If user is already selected, remove them
             setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
         } else {
-            // If user is not selected, add them
             setSelectedUsers((prev) => {
-                // Check for duplicates based on user.id before adding
                 const alreadyExists = prev.some((u) => u.id === user.id);
                 if (!alreadyExists) {
                     return [...prev, user];
                 }
-                return prev; // Return unchanged state if user already exists
+                return prev;
             });
         }
     };
 
     const handleRemoveUser = (user) => {
-        // Remove user from selectedUsers
         setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
     };
 
@@ -44,7 +39,7 @@ const GroupMember = ({ handleGroup, Contacts }) => {
     return (
         <>
             {groupNameScreen ? (
-                <GroupName handleNameGroup={handleNameGroup}  selectedUsers={selectedUsers} />
+                <GroupName handleNameGroup={handleNameGroup} selectedUsers={selectedUsers} />
             ) : (
                 <Box
                     sx={{
@@ -141,7 +136,7 @@ const GroupMember = ({ handleGroup, Contacts }) => {
                                         <Box
                                             key={user.id}
                                             className="user_select w-full h-12 rounded-xl justify-between flex items-center p-3 hover:bg-sidebar cursor-pointer mb-0.5"
-                                            onClick={() => handleChange(user)} // Pass user object to handleChange
+                                            onClick={() => handleChange(user)}
                                         >
                                             <Box
                                                 variant="text"
@@ -161,8 +156,8 @@ const GroupMember = ({ handleGroup, Contacts }) => {
                                                 {user.firstName} {user.lastName}
                                             </Box>
                                             <Checkbox
-                                                checked={selectedUsers.some((u) => u.id === user.id)} // Check if user is selected
-                                                onChange={() => handleChange(user)} // Update the checkbox handler
+                                                checked={selectedUsers.some((u) => u.id === user.id)}
+                                                onChange={() => handleChange(user)}
                                                 icon={<RadioButtonUncheckedIcon />}
                                                 checkedIcon={<CheckCircleIcon />}
                                             />
@@ -172,8 +167,9 @@ const GroupMember = ({ handleGroup, Contacts }) => {
                                 <Box className="mb-2 flex justify-end">
                                     <Button
                                         variant="outlined"
-                                        className="bg-primary text-white font-semibold border-none max-w-24 w-full capitalize"
+                                        className="disabled:bg-gray-300 disabled:text-Newblack disabled:cursor-not-allowed bg-primary text-white font-semibold border-none max-w-24 w-full capitalize"
                                         onClick={handleNameGroup}
+                                        disabled={selectedUsers.length === 0} // Disable button if no users are selected
                                     >
                                         Next
                                     </Button>

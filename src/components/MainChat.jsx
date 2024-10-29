@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
+import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
 import DownloadIcon from "@mui/icons-material/Download";
 import CallIcon from "@mui/icons-material/Call";
 import VideocamIcon from "@mui/icons-material/Videocam";
@@ -16,17 +17,15 @@ import SendIcon from "@mui/icons-material/Send";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import EmojiPicker from "emoji-picker-react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import GroupIcon from "@mui/icons-material/Group";
 import ChatNameModal from "./ChatNameModal";
 import MainChatMore from "./MainChatMore";
 import MainContent from "./MainContent";
 import { ChatContext } from "../context/ChatContext";
-import { getData, postData } from "../api/apiService";
-import axios from "axios";
+import { getData, } from "../api/apiService";
 import MediaFile from "./common/MediaFile";
 import ImageGalleryModal from "./ImageGalleryModal";
 
-
-// const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 const socket = io("https://api.gatsbychat.com"); // Replace with your socket server URL
 
 socket.on("connect", () => {
@@ -54,8 +53,10 @@ const MainChat = () => {
     setIsGalleryOpen(true);
   };
   useEffect(() => {
-    const textFieldHeight = textFieldRef.current?.getBoundingClientRect().height;
-    if (textFieldHeight > 80) { // Adjust the threshold as needed
+    const textFieldHeight =
+      textFieldRef.current?.getBoundingClientRect().height;
+    if (textFieldHeight > 80) {
+      // Adjust the threshold as needed
       setTextareaHeightClass("pb-24");
     } else {
       setTextareaHeightClass("pb-16");
@@ -68,7 +69,6 @@ const MainChat = () => {
       senderId: loginUserId,
       chatId: selectedReceiverId?.id,
       type: selectedReceiverId?.type,
-
     });
 
     socket.emit("markAsSeen", {
@@ -133,7 +133,10 @@ const MainChat = () => {
   };
 
   const handleClickOutside = (event) => {
-    if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+    if (
+      emojiPickerRef.current &&
+      !emojiPickerRef.current.contains(event.target)
+    ) {
       setShowEmojiPicker(false);
     }
   };
@@ -149,9 +152,8 @@ const MainChat = () => {
     };
   }, [showEmojiPicker]);
 
-
   const handleSendMessage = () => {
-    debugger
+    debugger;
     if (message.trim()) {
       const msgData = {
         senderId: loginUserId,
@@ -177,7 +179,9 @@ const MainChat = () => {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const response = await getData(`/fetchOtherUser/${selectedReceiverId?.id}/${selectedReceiverId?.type}`);
+      const response = await getData(
+        `/fetchOtherUser/${selectedReceiverId?.id}/${selectedReceiverId?.type}`
+      );
       if (response?.success === true) {
         setUserDate(response);
       }
@@ -188,8 +192,6 @@ const MainChat = () => {
       setLoading(false);
     }
   };
-
-
 
   useEffect(() => {
     checkLastScroll();
@@ -227,7 +229,6 @@ const MainChat = () => {
     setImageUrls(imageMessages);
   }, [messages]);
 
-
   const renderMessageContent = (msg) => {
     const { message, fileType } = msg;
 
@@ -248,7 +249,7 @@ const MainChat = () => {
       return (
         <div className="flex items-center gap-2">
           <DescriptionIcon style={{ color: "#fff" }} />
-          <Typography variant="body2" className="text-white-500">
+          <Typography variant="body2" className="text-white-500 text-sm">
             {fileType}
           </Typography>
           <a href={message} download>
@@ -268,7 +269,6 @@ const MainChat = () => {
     );
   };
 
-
   return (
     <>
       {selectedReceiverId?.id ? (
@@ -282,33 +282,44 @@ const MainChat = () => {
             <Box className="overflow-auto">
               <div className="flex items-center justify-between shadow p-4 fixed bg-white h-20 w-newW z-50 ">
                 <div className="flex items-center gap-2">
-                  <Avatar
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      bgcolor: "#dfdfdf",
-                      fontWeight: 700,
-                      color: "#1E1E1E",
-                      fontSize: "10px",
-                    }}
-                    src={userData?.user?.image}
-                  >
-                    {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
-                  </Avatar>
+                  {userData?.user?.groupId ? (
+                    <GroupIcon
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        bgcolor: "#dfdfdf",
+                        color: "#4A4A4A",
+                      }}
+                      className="p-2 rounded-full"
+                    />
+                  ) : (
+                    <Avatar
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        bgcolor: "#dfdfdf",
+                        fontWeight: 700,
+                        color: "#1E1E1E",
+                        fontSize: "32px",
+                      }}
+                      src={userData?.user?.image}
+                    >
+                      {!userData?.user?.image &&
+                        `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName ? userData?.user?.lastName.charAt(0) : ""}`}
+                    </Avatar>
+                  )}
                   <Typography
                     variant="h6"
                     className="font-medium text-base flex gap-2 capitalize cursor-pointer"
                   >
-
-                    {userData?.user?.groupName ?
-
+                    {userData?.user?.groupName ? (
+                      <span>{userData?.user?.groupName}</span>
+                    ) : (
                       <span>
-                        {userData?.user?.groupName}
-                      </span> :
-
-                      <span>
-                        {userData?.user?.firstName} {userData?.user?.lastName || ""}
-                      </span>}
+                        {userData?.user?.firstName}{" "}
+                        {userData?.user?.lastName || ""}
+                      </span>
+                    )}
                     <AccountCircleOutlinedIcon className="w-4 h-6 text-newgray" />
                   </Typography>
                 </div>
@@ -325,23 +336,48 @@ const MainChat = () => {
                 </div>
               </div>
 
-              <div className={`main_chat overflow-auto pt-20 ${textareaHeightClass}`}>
+              <div
+                className={`main_chat overflow-auto pt-20 ${textareaHeightClass}`}
+              >
                 <Box className="mt-6 mb-6">
                   <Box className="user_profile flex flex-col items-center">
-                    <Avatar
-                      sx={{
-                        width: 80,
-                        height: 80,
-                        bgcolor: "#dfdfdf",
-                        fontWeight: 700,
-                        color: "#1E1E1E",
-                        fontSize: "32px",
-                      }}
-                      src={userData?.user?.image}
-                    >
-                      {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
-                    </Avatar>
+                    {userData?.user?.groupId ? (
+                      <GroupIcon
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          bgcolor: "#dfdfdf",
+                          color: "#4A4A4A",
+                        }}
+                        className="p-2 rounded-full"
+                      />
+                    ) : (
+                      <Avatar
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          bgcolor: "#dfdfdf",
+                          fontWeight: 700,
+                          color: "#1E1E1E",
+                          fontSize: "32px",
+                        }}
+                        src={userData?.user?.image}
+                      >
+                        {!userData?.user?.image &&
+                          `${userData?.user?.firstName?.charAt(0)}${userData?.user?.lastName ? userData?.user?.lastName.charAt(0) : ""}`}
+                      </Avatar>
+                    )}
+
                     <ChatNameModal selectedUser={userData} />
+                    {/* Conditional rendering for member count */}
+                    {userData?.user?.groupName ? (
+                      <Typography
+                        variant="body2"
+                        className="font-normal text-gray-600 mb-2"
+                      >
+                        {userData?.user?.members?.length || 0} Members
+                      </Typography>
+                    ) : null}
                   </Box>
                 </Box>
 
@@ -353,12 +389,14 @@ const MainChat = () => {
                     return (
                       <div
                         key={msg._id}
-                        className={`flex ${isCurrentUser ? "justify-end flex-col" : "justify-between"
-                          } mb-3 gap-1 items-end`}
+                        className={`flex ${
+                          isCurrentUser
+                            ? "justify-end flex-col"
+                            : "justify-between"
+                        } mb-3 gap-1 items-end`}
                         ref={isLastMessage ? lastMessageRef : null}
                       >
-
-                        {msg?.chatType == "group" ?
+                        {msg?.chatType == "group" ? (
                           <div className="flex items-end gap-2">
                             {/* Avatar for received messages */}
                             {!isCurrentUser && (
@@ -371,9 +409,7 @@ const MainChat = () => {
                                   color: "#1E1E1E",
                                 }}
                                 src={msg?.user?.image}
-                              >
-
-                              </Avatar>
+                              ></Avatar>
                             )}
 
                             {/* Time for sent messages */}
@@ -389,13 +425,19 @@ const MainChat = () => {
                             <div className="flex items-end gap-2">
                               {/* Message bubble with conditional content */}
                               <div
-                                className={`${isCurrentUser
-                                  ? "bg-blue-500 !text-white "
-                                  : "bg-gray-300 text-black  justify-start !gap-0 !items-start"
-                                  } p-3 rounded-md flex flex-col gap-2 relative`}
+                                className={`${
+                                  isCurrentUser
+                                    ? "bg-blue-500 !text-white "
+                                    : "bg-gray-300 text-black  justify-start !gap-0 !items-start"
+                                } p-3 rounded-md flex flex-col gap-2 relative`}
                               >
-                                {!isCurrentUser  && 
-                                <span className={`${isCurrentUser ? "text-white" : "text-gray-800"} text-xxs font-bold `} >{msg?.user?.firstName}   {msg?.user?.lastName}</span>}
+                                {!isCurrentUser && (
+                                  <span
+                                    className={`${isCurrentUser ? "text-white" : "text-gray-800"} text-xxs font-bold`}
+                                  >
+                                    {msg?.user?.firstName} {msg?.user?.lastName}
+                                  </span>
+                                )}
                                 {renderMessageContent(msg)}
                               </div>
 
@@ -410,7 +452,7 @@ const MainChat = () => {
                               )}
                             </div>
                           </div>
-                          :
+                        ) : (
                           <div className="flex items-end gap-2">
                             {/* Avatar for received messages */}
                             {!isCurrentUser && (
@@ -424,7 +466,8 @@ const MainChat = () => {
                                 }}
                                 src={userData?.user?.image}
                               >
-                                {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                                {!userData?.user?.image == "" &&
+                                  `${userData?.user?.firstName?.charAt(0)}`}
                               </Avatar>
                             )}
 
@@ -441,10 +484,11 @@ const MainChat = () => {
                             <div className="flex items-end gap-2">
                               {/* Message bubble with conditional content */}
                               <div
-                                className={`${isCurrentUser
-                                  ? "bg-blue-500 text-white"
-                                  : "bg-gray-300 text-black"
-                                  } p-3 rounded-md flex items-end gap-2 relative`}
+                                className={`${
+                                  isCurrentUser
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-gray-300 text-black"
+                                } p-3 rounded-md flex items-end gap-2 relative`}
                               >
                                 {renderMessageContent(msg)}
                               </div>
@@ -460,14 +504,17 @@ const MainChat = () => {
                               )}
                             </div>
                           </div>
-                        }
-
+                        )}
 
                         {/* Seen indicator for the last message */}
                         <div className="time_seen flex gap-1">
                           {isLastMessage && (
-                            <Avatar sx={{ width: 16, height: 16 }} src={userData?.user?.image}>
-                              {!userData?.user?.image == "" && `${userData?.user?.firstName?.charAt(0)}`}
+                            <Avatar
+                              sx={{ width: 16, height: 16 }}
+                              src={userData?.user?.image}
+                            >
+                              {!userData?.user?.image == "" &&
+                                `${userData?.user?.firstName?.charAt(0)}`}
                             </Avatar>
                           )}
                         </div>
@@ -483,7 +530,6 @@ const MainChat = () => {
                   currentIndex={currentImageIndex}
                   setCurrentIndex={setCurrentImageIndex}
                 />
-
               </div>
             </Box>
 
@@ -525,32 +571,31 @@ const MainChat = () => {
                     }
                   }}
                   sx={{
-                    '& .MuiOutlinedInput-root': {
-                      padding: '12px',
-                      '& textarea': {
-                        padding: '0',
-                        lineHeight: '1',
-
+                    "& .MuiOutlinedInput-root": {
+                      padding: "12px",
+                      "& textarea": {
+                        padding: "0",
+                        lineHeight: "1",
                       },
                     },
-                    '& .MuiInputBase-input': {
-                      height: '1.2em',
+                    "& .MuiInputBase-input": {
+                      height: "1.2em",
                     },
-                    '& fieldset': {
-                      borderColor: '#d1d5db',
-                      borderRadius: '12px',
+                    "& fieldset": {
+                      borderColor: "#d1d5db",
+                      borderRadius: "12px",
                     },
-                    '&:hover fieldset': {
-                      borderColor: '#0d6efd',
+                    "&:hover fieldset": {
+                      borderColor: "#0d6efd",
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#0d6efd',
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#0d6efd",
                     },
                   }}
                 />
-
               )}
 
+              <KeyboardVoiceOutlinedIcon />
               <MediaFile />
               <IconButton
                 className="ml-2 text-blue-500"

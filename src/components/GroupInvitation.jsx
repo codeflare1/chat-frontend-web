@@ -46,6 +46,9 @@ const handleSubmit =(imgfile, selectedUsers, groupName)=>{
       image:imgfile
     }
     socket.emit("createGroup", Data)
+
+     // Redirect to the chat page
+  window.location.href = 'https://gatsbychat.com/chat';
 }
 
   return (
@@ -93,11 +96,8 @@ const handleSubmit =(imgfile, selectedUsers, groupName)=>{
               </Typography>
             </Box>
 
-            <Box className="modal-footer flex justify-between space-x-2 mt-4">
-              <Button variant="outlined" onClick={handleClose}>
-                Learn more
-              </Button>
-              <Button variant="contained" color="primary" onClick={()=>handleSubmit(imgfile, selectedUsers, groupName)}>
+            <Box className="modal-footer mt-4">
+              <Button variant="contained" color="primary" className='w-full' onClick={()=>handleSubmit(imgfile, selectedUsers, groupName)}>
                 Okay
               </Button>
             </Box>

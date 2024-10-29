@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { Box } from "@mui/material";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
-import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
 import { ChatContext } from "../../context/ChatContext";
 import { toast, ToastContainer } from "react-toastify"; // Import toast components
 import "react-toastify/dist/ReactToastify.css"; // Toast CSS
@@ -33,7 +32,6 @@ const MediaFile = () => {
 
   return (
     <Box className="ms-1.5 flex gap-2">
-      <KeyboardVoiceOutlinedIcon />
       <AttachFileOutlinedIcon
         onClick={handleIconClick} // Trigger the file input on icon click
         style={{ cursor: "pointer" }}
