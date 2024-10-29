@@ -263,7 +263,7 @@ const MainChat = () => {
 
     // Render text if there's no fileType
     return (
-      <Typography variant="body1" className="text-white-500">
+      <Typography variant="body1" className="text-white-500 text-sm">
         {message}
       </Typography>
     );
@@ -428,8 +428,8 @@ const MainChat = () => {
                                 className={`${
                                   isCurrentUser
                                     ? "bg-blue-500 !text-white "
-                                    : "bg-gray-300 text-black  justify-start !gap-0 !items-start"
-                                } p-3 rounded-md flex flex-col gap-2 relative`}
+                                    : "bg-gray-300 text-black  justify-start !gap-1 !items-start"
+                                } p-3 rounded-md flex flex-col gap-2 relative max-w-80`}
                               >
                                 {!isCurrentUser && (
                                   <span
@@ -488,7 +488,7 @@ const MainChat = () => {
                                   isCurrentUser
                                     ? "bg-blue-500 text-white"
                                     : "bg-gray-300 text-black"
-                                } p-3 rounded-md flex items-end gap-2 relative`}
+                                } p-3 rounded-md flex items-end gap-2 relative max-w-80`}
                               >
                                 {renderMessageContent(msg)}
                               </div>
